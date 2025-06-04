@@ -1,0 +1,59 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}SecureCheck - Verificación de Seguridad{% endblock %}</title>
+    
+    <!-- Meta tag para CSRF -->
+    <meta name="csrf-token" content="{{ csrf_token }}">
+    
+    <!-- Tailwind CSS desde CDN -->
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    
+    <!-- Estilos personalizados -->
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+    
+    <!-- HTMX -->
+    <script src="https://unpkg.com/htmx.org@1.9.6"></script>
+    
+    <!-- Configuración CSRF para HTMX -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Configurar HTMX para incluir el token CSRF en todas las peticiones POST
+            document.body.addEventListener('htmx:configRequest', function(evt) {
+                if (evt.detail.verb === 'post') {
+                    const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+                    evt.detail.headers['X-CSRFToken'] = csrfToken;
+                }
+            });
+        });
+    </script>
+    
+    <!-- Alpine.js -->
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    
+    {% block extra_head %}{% endblock %}
+</head>
+<body class="bg-gray-100 min-h-screen flex flex-col">
+    <!-- Cabecera -->
+    {% include 'core/components/header.html' %}
+    
+    <!-- Contenido principal -->
+    <main class="flex-grow">
+        {% block content %}{% endblock %}
+    </main>
+    
+    <!-- Pie de página -->
+    {% include 'core/components/footer.html' %}
+    
+    <!-- Sistema de notificaciones Toast -->
+    {% include 'core/components/toast.html' %}
+    
+    <!-- Scripts personalizados -->
+    <script src="{% static 'js/alpine-init.js' %}"></script>
+    
+    {% block extra_scripts %}{% endblock %}
+</body>
+</html>
