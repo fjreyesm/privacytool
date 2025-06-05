@@ -124,3 +124,8 @@ DEFAULT_FROM_EMAIL = 'noreply@securecheck.com'
 
 # Configuración de API Keys
 HIBP_API_KEY = os.environ.get("HIBP_API_KEY", "")
+
+# Añade estas líneas al final del archivo
+# Media files
+MEDIA_URL = '/media/'
+MEDIA_ROOT = BASE_DIR / 'media'
