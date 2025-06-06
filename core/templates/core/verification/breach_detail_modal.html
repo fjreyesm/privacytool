@@ -1,79 +1,63 @@
-<div class="modal-header bg-primary text-white px-4 py-3 flex justify-between items-center">
-  <h3 class="text-xl font-semibold">Detalles de la filtración: {{ breach.name }}</h3>
-  <button @click="open = false" class="text-white hover:text-gray-200 focus:outline-none">
-    <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
-    </svg>
+<div class="modal-header bg-primary text-white px-6 py-4 flex justify-between items-center rounded-t-lg">
+  <h3 class="text-xl font-medium">Detalles de la filtración: {{ breach.Name }}</h3>
+  <button onclick="document.getElementById('breach-modal').classList.add('hidden')" class="text-white hover:text-gray-200">
+    <i class="fas fa-times"></i>
   </button>
 </div>
-<div class="modal-body p-6">
-  <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+
+<div class="p-6">
+  <div class="flex items-start mb-6">
+    {% if breach.LogoPath %}
+      <img src="{{ breach.LogoPath }}" alt="{{ breach.Name }} Logo" class="w-16 h-16 object-contain mr-4">
+    {% else %}
+      <div class="w-16 h-16 bg-gray-200 flex items-center justify-center rounded mr-4">
+        <i class="fas fa-building text-gray-400 text-2xl"></i>
+      </div>
+    {% endif %}
+    
     <div>
-      <h4 class="text-sm font-medium text-gray-500">Dominio</h4>
-      <p class="text-gray-900">{{ breach.domain|default:"No disponible" }}</p>
-    </div>
-    <div>
-      <h4 class="text-sm font-medium text-gray-500">Fecha de filtración</h4>
-      <p class="text-gray-900">{{ breach.breach_date|date:"d/m/Y"|default:"Desconocida" }}</p>
-    </div>
-    <div>
-      <h4 class="text-sm font-medium text-gray-500">Fecha de descubrimiento</h4>
-      <p class="text-gray-900">{{ breach.added_date|date:"d/m/Y"|default:"Desconocida" }}</p>
-    </div>
-    <div>
-      <h4 class="text-sm font-medium text-gray-500">Severidad</h4>
-      <p>
-        <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full 
-          {% if breach.severity == 'high' %}
-            bg-red-100 text-red-800
-          {% elif breach.severity == 'medium' %}
-            bg-yellow-100 text-yellow-800
-          {% else %}
-            bg-green-100 text-green-800
-          {% endif %}">
-          {{ breach.severity|title }}
+      <h4 class="text-lg font-medium">{{ breach.Name }}</h4>
+      <p class="text-sm text-gray-500">{{ breach.Domain }}</p>
+      <div class="mt-2">
+        <span class="text-sm bg-gray-100 text-gray-800 px-2 py-1 rounded">
+          <i class="far fa-calendar-alt mr-1"></i> {{ breach.BreachDate }}
         </span>
-      </p>
+        <span class="text-sm bg-gray-100 text-gray-800 px-2 py-1 rounded ml-2">
+          <i class="fas fa-users mr-1"></i> {{ breach.PwnCount|default:"Desconocido" }} cuentas afectadas
+        </span>
+      </div>
     </div>
   </div>
   
   <div class="mb-6">
-    <h4 class="text-sm font-medium text-gray-500 mb-2">Descripción</h4>
-    <div class="text-gray-900 prose">
-      {{ breach.description|safe }}
-    </div>
+    <h5 class="text-md font-medium mb-2">Descripción</h5>
+    <p class="text-gray-700">{{ breach.Description|safe }}</p>
   </div>
   
-  <div>
-    <h4 class="text-sm font-medium text-gray-500 mb-2">Datos comprometidos</h4>
+  <div class="mb-6">
+    <h5 class="text-md font-medium mb-2">Datos comprometidos</h5>
     <div class="flex flex-wrap gap-2">
-      {% for data_class in breach.data_classes %}
-        <span class="px-2 py-1 bg-gray-100 text-gray-800 text-xs rounded-full">{{ data_class }}</span>
-      {% empty %}
-        <span class="text-gray-500">No hay información disponible</span>
+      {% for data_class in breach.DataClasses %}
+        <span class="badge {% if data_class == 'Passwords' or data_class == 'Credit cards' %}badge-danger{% else %}badge-primary{% endif %}">
+          {{ data_class }}
+        </span>
       {% endfor %}
     </div>
   </div>
   
-  {% if breach.is_sensitive %}
-  <div class="mt-6 bg-red-50 border-l-4 border-red-400 p-4">
-    <div class="flex">
-      <div class="flex-shrink-0">
-        <svg class="h-5 w-5 text-red-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path>
-        </svg>
-      </div>
-      <div class="ml-3">
-        <p class="text-sm text-red-700">
-          Esta filtración contiene datos sensibles. Te recomendamos tomar medidas inmediatas.
-        </p>
-      </div>
-    </div>
+  <div class="border-t border-gray-200 pt-4">
+    <h5 class="text-md font-medium mb-2">Acciones recomendadas</h5>
+    <ul class="list-disc pl-5 space-y-2 text-gray-700">
+      <li>Cambia tu contraseña en <strong>{{ breach.Name }}</strong> inmediatamente.</li>
+      <li>Si usaste la misma contraseña en otros sitios, cámbiala también en esos servicios.</li>
+      {% if 'Passwords' in breach.DataClasses %}
+        <li class="text-danger font-medium">¡Contraseñas comprometidas! Cambia todas tus contraseñas similares.</li>
+      {% endif %}
+      {% if 'Credit cards' in breach.DataClasses %}
+        <li class="text-danger font-medium">¡Datos de tarjetas comprometidos! Contacta con tu banco inmediatamente.</li>
+      {% endif %}
+      <li>Considera usar un gestor de contraseñas para generar y almacenar contraseñas únicas.</li>
+      <li>Activa la autenticación de dos factores en todos los servicios que lo permitan.</li>
+    </ul>
   </div>
-  {% endif %}
-</div>
-<div class="modal-footer bg-gray-50 px-4 py-3 flex justify-end">
-  <button @click="open = false" class="bg-gray-500 text-white px-4 py-2 rounded-md hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-opacity-50">
-    Cerrar
-  </button>
 </div>

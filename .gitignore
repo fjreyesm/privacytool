@@ -1,0 +1,7 @@
+.env
+core/templates/core/blog/blog_list2.html
+core/templates/core/blog/blog_post_detail2.html
+core/templates/core/tools/tools_list2.html
+core/templates/core/verification/breach_detail_modal - copia.html
+core/templates/core/verification/check - copia.html
+core/templates/core/verification/results_partial - copia.html
