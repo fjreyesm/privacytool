@@ -4,6 +4,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- Fuente Roboto desde Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
+  
+    <!-- Font Awesome desde CDN -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" integrity="sha512-Z7pLd4QDR1Vj+V9XUNsoHkXaq0bkRnBSy+2e1+9vH9rWx/xC5TssFtL5gU5FdoyD5AXzKY2sl/9ECgQ4h7xa7A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+  
+ 
     <title>{% block title %}SecureCheck - Verificación de Seguridad{% endblock %}</title>
     
     <!-- Meta tag para CSRF -->
@@ -14,7 +22,8 @@
     
     <!-- Estilos personalizados -->
     <link rel="stylesheet" href="{% static 'css/styles.css' %}">
-    
+    <link rel="stylesheet" href="{% static 'css/card-system.css' %}">
+
     <!-- HTMX -->
     <script src="https://unpkg.com/htmx.org@1.9.6"></script>
     
@@ -34,7 +43,7 @@
     <!-- Alpine.js -->
     <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
     
-    {% block extra_head %}{% endblock %}
+    {% load static %} {% block extra_head %}{% endblock %}
 </head>
 <body class="bg-gray-100 min-h-screen flex flex-col">
     <!-- Cabecera -->
