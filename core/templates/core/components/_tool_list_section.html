@@ -1,0 +1,11 @@
+{# core/components/_tool_list_section.html #}
+<div class="mb-12">
+    <h2 class="text-2xl font-semibold mb-4 border-b border-gray-200 pb-2">{{ title }}</h2>
+    <div class="card">
+        <div class="divide-y divide-gray-200">
+            {% for tool in tool_list %}
+                {% include 'core/components/_tool_list_item.html' with tool=tool %}
+            {% endfor %}
+        </div>
+    </div>
+</div>

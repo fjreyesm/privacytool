@@ -1,66 +1,51 @@
 {% load static %}
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <!-- Fuente Roboto desde Google Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
-  
-    <!-- Font Awesome desde CDN -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" integrity="sha512-Z7pLd4QDR1Vj+V9XUNsoHkXaq0bkRnBSy+2e1+9vH9rWx/xC5TssFtL5gU5FdoyD5AXzKY2sl/9ECgQ4h7xa7A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-  
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
  
-    <title>{% block title %}SecureCheck - Verificación de Seguridad{% endblock %}</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" integrity="sha512-Z7pLd4QDR1Vj+V9XUNsoHkXaq0bkRnBSy+2e1+9vH9rWx/xC5TssFtL5gU5FdoyD5AXzKY2sl/9ECgQ4h7xa7A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+ 
+    <link href="{% static 'css/output.css' %}" rel="stylesheet">
     
-    <!-- Meta tag para CSRF -->
+    <title>{% block title %}SecureCheck{% endblock %}</title>
+    
     <meta name="csrf-token" content="{{ csrf_token }}">
     
-    <!-- Tailwind CSS desde CDN -->
-    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link href="{% static 'css/output.css' %}" rel="stylesheet">
     
-    <!-- Estilos personalizados -->
-    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
-    <link rel="stylesheet" href="{% static 'css/card-system.css' %}">
 
-    <!-- HTMX -->
     <script src="https://unpkg.com/htmx.org@1.9.6"></script>
     
-    <!-- Configuración CSRF para HTMX -->
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            // Configurar HTMX para incluir el token CSRF en todas las peticiones POST
-            document.body.addEventListener('htmx:configRequest', function(evt) {
-                if (evt.detail.verb === 'post') {
-                    const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
-                    evt.detail.headers['X-CSRFToken'] = csrfToken;
-                }
-            });
-        });
-    </script>
-    
-    <!-- Alpine.js -->
     <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
     
-    {% load static %} {% block extra_head %}{% endblock %}
+    {% block extra_head %}{% endblock %}
 </head>
-<body class="bg-gray-100 min-h-screen flex flex-col">
-    <!-- Cabecera -->
+<body class="bg-gray-100 font-sans text-gray-800 min-h-screen flex flex-col">
     {% include 'core/components/header.html' %}
     
-    <!-- Contenido principal -->
     <main class="flex-grow">
+
         {% block content %}{% endblock %}
     </main>
     
-    <!-- Pie de página -->
     {% include 'core/components/footer.html' %}
     
-    <!-- Sistema de notificaciones Toast -->
     {% include 'core/components/toast.html' %}
     
-    <!-- Scripts personalizados -->
+    <script>
+        document.body.addEventListener('htmx:configRequest', function(evt) {
+            if (evt.detail.verb === 'post') {
+                const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+                evt.detail.headers['X-CSRFToken'] = csrfToken;
+            }
+        });
+    </script>
+    
     <script src="{% static 'js/alpine-init.js' %}"></script>
     
     {% block extra_scripts %}{% endblock %}

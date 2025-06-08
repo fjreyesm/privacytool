@@ -1,0 +1,27 @@
+{# core/components/_post_card.html #}
+<div class="card group flex flex-col h-full">
+    {% if post.featured_image %}
+    <a href="{{ post.get_absolute_url }}" class="block h-48 overflow-hidden">
+        <img src="{{ post.featured_image.url }}" alt="{{ post.title }}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300 ease-in-out">
+    </a>
+    {% endif %}
+
+    <div class="p-5 flex flex-col flex-grow">
+        <div class="flex justify-between items-center mb-2">
+            <span class="text-sm text-gray-500">{{ post.published_at|date:"d/m/Y" }}</span>
+            {% if post.category %}
+                <span class="bg-blue-100 text-primary text-xs font-semibold px-2.5 py-1 rounded-full">{{ post.category.name }}</span>
+            {% endif %}
+        </div>
+        <h3 class="text-lg font-bold text-gray-900 mb-2">
+            <a href="{{ post.get_absolute_url }}" class="hover:text-primary transition-colors">{{ post.title }}</a>
+        </h3>
+        <p class="text-gray-600 mb-4 text-sm flex-grow">{{ post.excerpt }}</p>
+        
+        <div class="mt-auto pt-2">
+            <a href="{{ post.get_absolute_url }}" class="font-semibold text-primary hover:underline">
+                Leer más →
+            </a>
+        </div>
+    </div>
+</div>

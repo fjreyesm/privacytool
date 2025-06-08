@@ -1,7 +1,59 @@
 .env
-core/templates/core/blog/blog_list2.html
-core/templates/core/blog/blog_post_detail2.html
-core/templates/core/tools/tools_list2.html
-core/templates/core/verification/breach_detail_modal - copia.html
-core/templates/core/verification/check - copia.html
-core/templates/core/verification/results_partial - copia.html
+
+# Python
+venv/
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Entorno y variables de configuración
+.env
+.env.*
+*.env
+*.env.local
+*.env.*.local
+
+# Flask instance folder
+instance/
+*.db
+*.sqlite3
+
+# Logs
+*.log
+
+# Node.js
+node_modules/
+package-lock.json
+npm-debug.log*
+
+# Salidas de Tailwind / herramientas de build
+dist/
+build/
+public/css/
+*.css.map
+
+# Archivos de sistema
+.DS_Store
+Thumbs.db
+
+# IDEs/editores
+.vscode/
+.idea/
+*.code-workspace
+
+# Test coverage
+htmlcov/
+.coverage
+coverage.xml
+.cache/
+.pytest_cache/
+
+# Otros temporales
+*.swp
+*.tmp
+*.bak
+*.pid
+
+# Django static and media files
+staticfiles/
+media/

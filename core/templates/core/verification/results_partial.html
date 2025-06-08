@@ -1,193 +1,132 @@
-{% if count == 0 %}
-  <!-- Si no hay filtraciones -->
-  <div class="card card-success mb-6">
-    <div class="card-body">
-      <div class="flex items-center">
-        <div class="mr-4 text-secondary text-4xl">
-          <i class="fas fa-check-circle"></i>
-        </div>
-        <div>
-          <h3 class="text-xl font-medium mb-2">¡Buenas noticias!</h3>
-          <p class="text-gray-700">Tu email no aparece en ninguna filtración de datos conocida.</p>
-        </div>
-      </div>
-    </div>
-  </div>
-  
-  <div class="card mb-6">
-    <div class="card-header">
-      <i class="fas fa-shield-alt mr-2"></i> Recomendaciones de seguridad
-    </div>
-    <div class="card-body">
-      <p class="mb-4">Aunque tu email no aparece en filtraciones conocidas, siempre es recomendable seguir estas prácticas de seguridad:</p>
-      
-      <div class="space-y-6">
-        <div class="flex">
-          <div class="flex-shrink-0">
-            <div class="flex items-center justify-center h-10 w-10 rounded-full bg-primary text-white">
-              <i class="fas fa-key"></i>
+<!-- Envuelve toda la sección en el contexto de Alpine -->
+<div x-data="{ isModalOpen: false, modalContent: '' }">
+    
+    {% if count == 0 %}
+    <div class="bg-green-50 border-l-4 border-green-500 p-6 rounded-r-lg mb-6">
+        <div class="flex items-center">
+            <div class="flex-shrink-0">
+                <i class="fas fa-check-circle text-green-600 text-4xl"></i>
             </div>
-          </div>
-          <div class="ml-4">
-            <h4 class="text-lg font-medium">Usar contraseñas seguras</h4>
-            <p class="mt-1 text-gray-600">Utiliza contraseñas largas y complejas, diferentes para cada servicio.</p>
-          </div>
-        </div>
-        
-        <div class="flex">
-          <div class="flex-shrink-0">
-            <div class="flex items-center justify-center h-10 w-10 rounded-full bg-primary text-white">
-              <i class="fas fa-user-shield"></i>
+            <div class="ml-4">
+                <h3 class="text-xl font-medium text-green-800 mb-1">¡Buenas noticias!</h3>
+                <p class="text-green-700">Tu email no aparece en ninguna filtración de datos conocida.</p>
             </div>
-          </div>
-          <div class="ml-4">
-            <h4 class="text-lg font-medium">Activar autenticación de dos factores</h4>
-            <p class="mt-1 text-gray-600">Añade una capa extra de seguridad a tus cuentas importantes.</p>
-          </div>
         </div>
-        
-        <div class="flex">
-          <div class="flex-shrink-0">
-            <div class="flex items-center justify-center h-10 w-10 rounded-full bg-primary text-white">
-              <i class="fas fa-sync-alt"></i>
-            </div>
-          </div>
-          <div class="ml-4">
-            <h4 class="text-lg font-medium">Mantener el software actualizado</h4>
-            <p class="mt-1 text-gray-600">Actualiza regularmente tu sistema operativo, navegadores y aplicaciones.</p>
-          </div>
-        </div>
-      </div>
     </div>
-  </div>
 
-{% else %}
-  <!-- Si hay filtraciones -->
-  <div class="card card-alert mb-6">
-    <div class="card-body">
-      <div class="flex items-center">
-        <div class="mr-4 text-danger text-4xl">
-          <i class="fas fa-exclamation-triangle"></i>
+    <div class="bg-white rounded-lg shadow-md overflow-hidden mb-6">
+        <div class="px-6 py-4 bg-gray-50 border-b border-gray-200">
+            <h2 class="text-lg font-semibold text-gray-800 flex items-center">
+                <i class="fas fa-shield-alt mr-3 text-primary"></i>
+                Recomendaciones de seguridad
+            </h2>
         </div>
-        <div>
-          <h3 class="text-xl font-medium mb-2">¡Alerta de seguridad!</h3>
-          <p class="text-gray-700">Tu email aparece en {{ count }} filtraciones de datos.</p>
+        <div class="p-6">
+            <p class="mb-6 text-gray-600">Aunque tu email no aparece en filtraciones conocidas, siempre es recomendable seguir estas prácticas de seguridad:</p>
+            <div class="space-y-6">
+            </div>
         </div>
-      </div>
     </div>
-  </div>
 
-  <div class="card mb-6">
-    <div class="card-header">
-      <i class="fas fa-database mr-2"></i> Filtraciones detectadas
+    {% else %}
+    <div class="bg-red-50 border-l-4 border-red-500 p-6 rounded-r-lg mb-6">
+        <div class="flex items-center">
+            <div class="flex-shrink-0">
+                <i class="fas fa-exclamation-triangle text-red-600 text-4xl"></i>
+            </div>
+            <div class="ml-4">
+                <h3 class="text-xl font-medium text-red-800 mb-1">¡Alerta de seguridad!</h3>
+                <p class="text-red-700">Tu email aparece en <strong>{{ count }}</strong> filtraciones de datos.</p>
+            </div>
+        </div>
     </div>
-    <div class="card-body p-0">
-      <div class="overflow-x-auto">
-        <table class="w-full">
-          <thead class="bg-gray-50">
-            <tr>
-              <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Servicio</th>
-              <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Fecha</th>
-              <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Severidad</th>
-              <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Acciones</th>
-            </tr>
-          </thead>
-          <tbody class="bg-white divide-y divide-gray-200">
-            {% for breach in breaches %}
-            <tr>
-              <td class="px-6 py-4 whitespace-nowrap">
-                <div class="font-medium text-gray-900">{{ breach.Name }}</div>
-              </td>
-              <td class="px-6 py-4 whitespace-nowrap">
-                <div class="text-sm text-gray-500">{{ breach.BreachDate }}</div>
-              </td>
-              <td class="px-6 py-4 whitespace-nowrap">
-                {% if breach.DataClasses|length > 5 %}
-                  <span class="severity severity-high">Alto</span>
-                {% elif breach.DataClasses|length > 2 %}
-                  <span class="severity severity-medium">Medio</span>
-                {% else %}
-                  <span class="severity severity-low">Bajo</span>
-                {% endif %}
-              </td>
-              <td class="px-6 py-4 whitespace-nowrap">
-                <button 
-                  hx-get="{% url 'core:breach_detail' breach.id %}" 
-                  hx-target="#modal-content"
-                  hx-trigger="click"
-                  onclick="document.getElementById('breach-modal').classList.remove('hidden')"
-                  class="text-primary hover:text-primary-light font-medium">
-                  Ver detalles
+
+    <div class="bg-white rounded-lg shadow-md overflow-hidden mb-6">
+        <div class="px-6 py-4 bg-gray-50 border-b border-gray-200">
+            <h2 class="text-lg font-semibold text-gray-800 flex items-center">
+                <i class="fas fa-database mr-3 text-gray-600"></i>
+                Filtraciones detectadas
+            </h2>
+        </div>
+        <div class="overflow-x-auto">
+            <table class="w-full text-sm text-left text-gray-500">
+                <thead class="text-xs text-gray-700 uppercase bg-gray-100">
+                    <tr>
+                        <th scope="col" class="px-6 py-3">Servicio</th>
+                        <th scope="col" class="px-6 py-3">Fecha</th>
+                        <th scope="col" class="px-6 py-3">Severidad</th>
+                        <th scope="col" class="px-6 py-3">Acciones</th>
+                    </tr>
+                </thead>
+                <tbody class="bg-white divide-y divide-gray-200">
+                    {% for breach in breaches %}
+                    <tr class="hover:bg-gray-50">
+                        <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap">{{ breach.Name }}</td>
+                        <td class="px-6 py-4">{{ breach.BreachDate }}</td>
+                        <td class="px-6 py-4">
+                            {% if breach.DataClasses|length > 5 %}
+                                <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-red-100 text-red-800">Alto</span>
+                            {% elif breach.DataClasses|length > 2 %}
+                                <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-yellow-100 text-yellow-800">Medio</span>
+                            {% else %}
+                                <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">Bajo</span>
+                            {% endif %}
+                        </td>
+                        <td class="px-6 py-4">
+                            <!-- Aquí está la magia: Alpine + HTMX -->
+                            <button 
+                                hx-get="{% url 'core:breach_detail' breach.id %}" 
+                                hx-target="#modal-content"
+                                @click="isModalOpen = true"
+                                class="font-medium text-primary hover:text-opacity-80 transition-colors">
+                                Ver detalles
+                            </button>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- Modal mejorado con Alpine.js -->
+    <div x-show="isModalOpen" 
+         x-transition:enter="transition ease-out duration-300"
+         x-transition:enter-start="opacity-0"
+         x-transition:enter-end="opacity-100"
+         x-transition:leave="transition ease-in duration-200"
+         x-transition:leave-start="opacity-100"
+         x-transition:leave-end="opacity-0"
+         @keydown.escape.window="isModalOpen = false"
+         @click.self="isModalOpen = false"
+         class="fixed inset-0 bg-black bg-opacity-60 flex items-center justify-center z-50"
+         style="display: none;">
+        
+        <div x-show="isModalOpen"
+             x-transition:enter="transition ease-out duration-300 transform"
+             x-transition:enter-start="opacity-0 scale-95"
+             x-transition:enter-end="opacity-100 scale-100"
+             x-transition:leave="transition ease-in duration-200 transform"
+             x-transition:leave-start="opacity-100 scale-100"
+             x-transition:leave-end="opacity-0 scale-95"
+             class="bg-white rounded-lg shadow-xl max-w-2xl w-full max-h-[90vh] flex flex-col mx-4">
+            
+            <div id="modal-content" class="overflow-y-auto">
+                <div class="p-8 text-center">
+                    <i class="fas fa-circle-notch fa-spin text-primary text-3xl"></i>
+                    <p class="mt-3 text-gray-600">Cargando detalles...</p>
+                </div>
+            </div>
+            
+            <div class="bg-gray-100 px-6 py-4 flex justify-end rounded-b-lg border-t">
+                <button type="button" 
+                        @click="isModalOpen = false" 
+                        class="bg-primary text-white font-medium py-2 px-5 rounded-md hover:bg-opacity-90 transition-colors">
+                    Cerrar
                 </button>
-              </td>
-            </tr>
-            {% endfor %}
-          </tbody>
-        </table>
-      </div>
+            </div>
+        </div>
     </div>
-  </div>
 
-  <div class="card mb-6">
-    <div class="card-header">
-      <i class="fas fa-shield-alt mr-2"></i> Recomendaciones de seguridad
-    </div>
-    <div class="card-body">
-      <div class="space-y-6">
-        <div class="flex">
-          <div class="flex-shrink-0">
-            <div class="flex items-center justify-center h-10 w-10 rounded-full bg-danger text-white">
-              <i class="fas fa-key"></i>
-            </div>
-          </div>
-          <div class="ml-4">
-            <h4 class="text-lg font-medium">Cambiar contraseñas</h4>
-            <p class="mt-1 text-gray-600">Cambia inmediatamente tus contraseñas en los servicios afectados y en cualquier otro donde hayas usado la misma contraseña.</p>
-          </div>
-        </div>
-        
-        <div class="flex">
-          <div class="flex-shrink-0">
-            <div class="flex items-center justify-center h-10 w-10 rounded-full bg-warning text-gray-900">
-              <i class="fas fa-user-shield"></i>
-            </div>
-          </div>
-          <div class="ml-4">
-            <h4 class="text-lg font-medium">Activar autenticación de dos factores</h4>
-            <p class="mt-1 text-gray-600">Añade una capa extra de seguridad a tus cuentas importantes mediante la autenticación de dos factores.</p>
-          </div>
-        </div>
-        
-        <div class="flex">
-          <div class="flex-shrink-0">
-            <div class="flex items-center justify-center h-10 w-10 rounded-full bg-secondary text-white">
-              <i class="fas fa-lock"></i>
-            </div>
-          </div>
-          <div class="ml-4">
-            <h4 class="text-lg font-medium">Usar un gestor de contraseñas</h4>
-            <p class="mt-1 text-gray-600">Utiliza un gestor de contraseñas para generar y almacenar contraseñas únicas y seguras para cada servicio.</p>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- Modal para detalles de filtración -->
-  <div id="breach-modal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 hidden">
-    <div class="bg-white rounded-lg shadow-xl max-w-2xl w-full max-h-screen overflow-y-auto">
-      <div id="modal-content">
-        <!-- El contenido se cargará aquí mediante HTMX -->
-        <div class="p-6 text-center">
-          <i class="fas fa-circle-notch fa-spin text-primary text-2xl"></i>
-          <p class="mt-2">Cargando detalles...</p>
-        </div>
-      </div>
-      <div class="bg-gray-50 px-4 py-3 sm:px-6 sm:flex sm:flex-row-reverse rounded-b-lg">
-        <button type="button" onclick="document.getElementById('breach-modal').classList.add('hidden')" class="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-primary text-base font-medium text-white hover:bg-primary-light focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary sm:ml-3 sm:w-auto sm:text-sm">
-          Cerrar
-        </button>
-      </div>
-    </div>
-  </div>
-{% endif %}
+    {% endif %}
+</div>
