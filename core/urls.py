@@ -1,8 +1,8 @@
 from core.views.verification_views import verification_home, check_email_view, breach_detail
 from core.views.dashboard_views import index
 from core.views import verification_views, dashboard_views, tools_views, blog_views
+from core.views.views import terms_of_use_view,faq_view,privacy_policy_view  # Importación específica
 from django.urls import path
-from . import views
 
 app_name = 'core'
 
@@ -14,16 +14,17 @@ urlpatterns = [
     path('verification/', verification_home, name='verification_home'),
     path('verification/check/', check_email_view, name='check_email'),
     path('breach/detail/<uuid:breach_id>/', breach_detail, name='breach_detail'),
-
-        # Herramientas
+    
+    # Herramientas
     path('tools/', tools_views.tools_list, name='tools_list'),
     
     # Blog
     path('blog/', blog_views.blog_list, name='blog_list'),
     path('blog/<slug:slug>/', blog_views.blog_post_detail, name='blog_post_detail'),
-
+    
     # Páginas estáticas
-    #path('faq/', views.faq_view, name='faq'),
-    #path('privacidad/', views.privacy_policy_view, name='privacy_policy'),
-    #path('terminos/', views.terms_of_use_view, name='terms_of_use'),
+    path('terminos/', terms_of_use_view, name='terms_of_use'),
+    path('faq/', faq_view, name='faq'),
+    path('privacidad/', privacy_policy_view, name='privacy_policy'),
+
 ]

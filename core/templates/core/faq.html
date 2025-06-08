@@ -1,0 +1,118 @@
+{% extends 'core/base.html' %}
+
+{% block content %}
+
+<div class="max-w-7xl mx-auto py-8 px-4 sm:px-6 lg:px-8">
+  <h2 class="text-3xl font-bold text-center text-gray-800 dark:text-white mb-8">
+    Preguntas Frecuentes (FAQ)
+  </h2>
+
+  <div class="space-y-4" x-data="{ openPanel: null }">
+
+    <h3 class="text-xl font-semibold text-gray-700 dark:text-gray-300 pt-6 pb-2 border-b border-gray-200 dark:border-gray-700">Sobre el Servicio</h3>
+
+    <div class="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700">
+      <h2>
+        <button type="button" @click="openPanel = (openPanel === 1 ? null : 1)" class="flex items-center justify-between w-full p-5 font-medium text-left text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700 transition duration-300">
+          <span class="text-base md:text-lg">¿Qué es una "filtración de datos" y de dónde provienen?</span>
+          <svg class="w-5 h-5 shrink-0 transition-transform duration-300" :class="{ 'rotate-180': openPanel === 1 }" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+        </button>
+      </h2>
+      <div x-show="openPanel === 1" class="p-5 border-t border-gray-200 dark:border-gray-700">
+        <p class="text-gray-600 dark:text-gray-400">
+          Una "filtración" o "breach" es un incidente en el que los datos de un sistema son expuestos de forma involuntaria, normalmente por ciberataques o fallos de seguridad. Nuestro servicio utiliza la reconocida base de datos de <strong>Have I Been Pwned (HIBP)</strong> como única fuente para comprobar si tu email ha sido expuesto en alguna de estas filtraciones.
+        </p>
+      </div>
+    </div>
+
+    <div class="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700">
+      <h2>
+        <button type="button" @click="openPanel = (openPanel === 2 ? null : 2)" class="flex items-center justify-between w-full p-5 font-medium text-left text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700 transition duration-300">
+          <span class="text-base md:text-lg">Mi email no se encontró, ¿significa que estoy a salvo?</span>
+          <svg class="w-5 h-5 shrink-0 transition-transform duration-300" :class="{ 'rotate-180': openPanel === 2 }" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+        </button>
+      </h2>
+      <div x-show="openPanel === 2" class="p-5 border-t border-gray-200 dark:border-gray-700">
+        <p class="text-gray-600 dark:text-gray-400">
+          No necesariamente. Si tu email no aparece en nuestros resultados, significa que no ha sido encontrado en las filtraciones que HIBP tiene registradas, que es la base de datos más grande de su tipo. Sin embargo, muchas filtraciones nunca se hacen públicas o no son descubiertas. La ausencia de evidencia no es evidencia de ausencia. Te recomendamos seguir siempre buenas prácticas de seguridad.
+        </p>
+      </div>
+    </div>
+    
+    <div class="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700">
+      <h2>
+        <button type="button" @click="openPanel = (openPanel === 3 ? null : 3)" class="flex items-center justify-between w-full p-5 font-medium text-left text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700 transition duration-300">
+          <span class="text-base md:text-lg">¿Por qué mi email aparece en una filtración de un servicio que no recuerdo haber usado?</span>
+          <svg class="w-5 h-5 shrink-0 transition-transform duration-300" :class="{ 'rotate-180': openPanel === 3 }" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+        </button>
+      </h2>
+      <div x-show="openPanel === 3" class="p-5 border-t border-gray-200 dark:border-gray-700">
+        <p class="text-gray-600 dark:text-gray-400">
+            Existen varias razones posibles: (1) El servicio fue renombrado o adquirido por otra empresa. (2) Una empresa con la que sí interactuaste compartió tus datos con un tercero. (3) Alguien pudo haber registrado tu dirección de correo sin tu consentimiento.
+        </p>
+      </div>
+    </div>
+
+    <h3 class="text-xl font-semibold text-gray-700 dark:text-gray-300 pt-6 pb-2 border-b border-gray-200 dark:border-gray-700">Privacidad y Seguridad</h3>
+
+    <div class="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700">
+      <h2>
+        <button type="button" @click="openPanel = (openPanel === 4 ? null : 4)" class="flex items-center justify-between w-full p-5 font-medium text-left text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700 transition duration-300">
+          <span class="text-base md:text-lg">¿Almacenan los emails o contraseñas que busco?</span>
+          <svg class="w-5 h-5 shrink-0 transition-transform duration-300" :class="{ 'rotate-180': openPanel === 4 }" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+        </button>
+      </h2>
+      <div x-show="openPanel === 4" class="p-5 border-t border-gray-200 dark:border-gray-700">
+        <p class="text-gray-600 dark:text-gray-400">
+            <strong>No.</strong> Las búsquedas que realizas en nuestro sitio son anónimas y no se registran. No almacenamos las direcciones de correo que se consultan en la herramienta gratuita. Solo guardamos los correos de aquellos usuarios que explícitamente se suscriben a nuestros servicios de pago o notificaciones, con el único fin de prestar dicho servicio.
+        </p>
+      </div>
+    </div>
+    
+    <div class="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700">
+        <h2>
+          <button type="button" @click="openPanel = (openPanel === 5 ? null : 5)" class="flex items-center justify-between w-full p-5 font-medium text-left text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700 transition duration-300">
+            <span class="text-base md:text-lg">¿Pueden enviarme las contraseñas que fueron expuestas?</span>
+            <svg class="w-5 h-5 shrink-0 transition-transform duration-300" :class="{ 'rotate-180': openPanel === 5 }" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+          </button>
+        </h2>
+        <div x-show="openPanel === 5" class="p-5 border-t border-gray-200 dark:border-gray-700">
+          <p class="text-gray-600 dark:text-gray-400">
+            No. Sería una práctica muy insegura y pondría en riesgo tanto a los usuarios como a nosotros. Nuestro objetivo es informarte del riesgo, no distribuir información sensible.
+          </p>
+        </div>
+      </div>
+
+    <h3 class="text-xl font-semibold text-gray-700 dark:text-gray-300 pt-6 pb-2 border-b border-gray-200 dark:border-gray-700">Sobre los Tipos de Filtraciones</h3>
+
+    <div class="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700">
+      <h2>
+        <button type="button" @click="openPanel = (openPanel === 6 ? null : 6)" class="flex items-center justify-between w-full p-5 font-medium text-left text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700 transition duration-300">
+          <span class="text-base md:text-lg">¿Qué significa una "filtración sensible"?</span>
+          <svg class="w-5 h-5 shrink-0 transition-transform duration-300" :class="{ 'rotate-180': openPanel === 6 }" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+        </button>
+      </h2>
+      <div x-show="openPanel === 6" class="p-5 border-t border-gray-200 dark:border-gray-700">
+        <p class="text-gray-600 dark:text-gray-400">
+            Algunas filtraciones provienen de sitios de naturaleza sensible (por ejemplo, sitios de citas o foros políticos). Para proteger la privacidad de los afectados, HIBP clasifica estas filtraciones como "sensibles" y no se muestran en búsquedas públicas. Solo el dueño verificado de la cuenta de correo puede ver si ha sido afectado por una de ellas a través de servicios de notificación.
+        </p>
+      </div>
+    </div>
+    
+    <div class="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700">
+        <h2>
+          <button type="button" @click="openPanel = (openPanel === 7 ? null : 7)" class="flex items-center justify-between w-full p-5 font-medium text-left text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700 transition duration-300">
+            <span class="text-base md:text-lg">¿Qué es una "lista de spam"?</span>
+            <svg class="w-5 h-5 shrink-0 transition-transform duration-300" :class="{ 'rotate-180': openPanel === 7 }" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+          </button>
+        </h2>
+        <div x-show="openPanel === 7" class="p-5 border-t border-gray-200 dark:border-gray-700">
+          <p class="text-gray-600 dark:text-gray-400">
+            A veces, los datos no provienen de un hackeo directo, sino de listas recopiladas para enviar spam masivo. Estas listas pueden contener datos personales (nombres, emails, teléfonos) y, aunque no incluyan contraseñas, suponen un riesgo para tu privacidad. Por eso, también las reportamos.
+          </p>
+        </div>
+      </div>
+      
+  </div>
+</div>
+{% endblock %}

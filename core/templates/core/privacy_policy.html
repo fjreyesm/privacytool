@@ -1,0 +1,58 @@
+{% extends "core/base.html" %}
+
+{% block content %}
+<div class="max-w-7xl mx-auto py-8 px-4 sm:px-6 lg:px-8">
+  <h1 class="text-3xl font-bold text-gray-800 mb-6">¿Te han robado el email? Averígualo en 3 minutos (sin complicaciones)</h1>
+
+  <p class="text-gray-700 mb-4">
+    Imagina que tu email, ese que usas para todo, aparece en una lista filtrada tras un ataque a una empresa. ¿Qué significa eso? ¿Qué deberías hacer? La buena noticia es que puedes comprobarlo tú mismo en minutos.
+  </p>
+
+  <h2 class="text-2xl font-semibold text-gray-800 mt-8 mb-2">¿Qué es una filtración de datos?</h2>
+  <p class="text-gray-700 mb-4">
+    Una filtración ocurre cuando alguien accede sin permiso a los datos de una empresa. Muchas veces, esos datos acaban en internet (o en la dark web).<br>
+    👉 Tu email, contraseña, número de teléfono o dirección pueden estar entre ellos.
+  </p>
+
+  <h2 class="text-2xl font-semibold text-gray-800 mt-8 mb-2">¿Cómo saber si tu correo fue filtrado?</h2>
+  <p class="text-gray-700 mb-4">
+    Puedes usar herramientas públicas y gratuitas como:
+  </p>
+  <ul class="list-disc list-inside text-gray-700 mb-4">
+    <li><a href="https://haveibeenpwned.com" target="_blank" class="text-blue-600 hover:underline">HaveIBeenPwned.com</a></li>
+    <li><a href="https://monitor.firefox.com" target="_blank" class="text-blue-600 hover:underline">Firefox Monitor</a></li>
+  </ul>
+  <p class="text-gray-700 mb-4">
+    Solo tienes que ingresar tu email. No te pedirá contraseña ni acceso a tu cuenta.
+  </p>
+
+  <h2 class="text-2xl font-semibold text-gray-800 mt-8 mb-2">¿Y si aparece en una filtración?</h2>
+  <p class="text-gray-700 mb-4">
+    No entres en pánico. Haz esto:
+  </p>
+  <ul class="list-disc list-inside text-gray-700 mb-4">
+    <li>Cambia la contraseña de ese servicio (¡y de otros donde uses la misma!).</li>
+    <li>Activa el doble factor de autenticación (2FA).</li>
+    <li>Evita volver a usar esa contraseña.</li>
+  </ul>
+
+  <div class="bg-yellow-100 border-l-4 border-yellow-500 text-yellow-800 p-4 mt-6 rounded-lg shadow-sm">
+    <p class="font-medium">🧠 Recomendación final:</p>
+    <p>Revisa tu email cada pocos meses. Las filtraciones no paran. Si te interesa, pronto ofreceremos una forma sencilla de recibir alertas personalizadas sin complicaciones.</p>
+  </div>
+
+  <!-- Call to Action -->
+  <div class="mt-12 bg-gray-100 rounded-lg p-6 text-center shadow-md">
+    <h3 class="text-xl font-semibold text-gray-800 mb-2">¿Te gustó este artículo?</h3>
+    <p class="text-gray-700 mb-4">Suscríbete para más consejos sencillos sobre seguridad y privacidad digital.</p>
+    <form action="/suscribirse" method="POST" class="flex flex-col sm:flex-row justify-center gap-2">
+      <input type="email" name="email" placeholder="Tu correo electrónico" required
+             class="px-4 py-2 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500 w-full sm:w-64">
+      <button type="submit"
+              class="px-6 py-2 bg-blue-600 text-white font-medium rounded-lg hover:bg-blue-700 transition">
+        Suscribirme
+      </button>
+    </form>
+  </div>
+</div>
+{% endblock %}

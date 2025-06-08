@@ -5,9 +5,9 @@
                 <p class="text-sm">&copy; 2025 SecureCheck. Todos los derechos reservados.</p>
             </div>
             <div class="flex space-x-4">
-                <a href="#" class="text-sm hover:text-gray-200">Política de Privacidad</a>
-                <a href="#" class="text-sm hover:text-gray-200">Términos de Uso</a>
-                <a href="#" class="text-sm hover:text-gray-200">Contacto</a>
+                <a href="{% url 'core:privacy_policy' %}" class="text-sm hover:text-gray-200">Política de Privacidad</a>
+                <a href="{% url 'core:terms_of_use' %}" class="text-sm hover:text-gray-200">Términos de Uso</a>
+                <a href="{% url 'core:faq' %}" class="text-sm hover:text-gray-200">Faq</a>
             </div>
         </div>
     </div>
