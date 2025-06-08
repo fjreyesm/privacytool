@@ -21,4 +21,9 @@ urlpatterns = [
     # Blog
     path('blog/', blog_views.blog_list, name='blog_list'),
     path('blog/<slug:slug>/', blog_views.blog_post_detail, name='blog_post_detail'),
+
+    # Páginas estáticas
+    #path('faq/', views.faq_view, name='faq'),
+    #path('privacidad/', views.privacy_policy_view, name='privacy_policy'),
+    #path('terminos/', views.terms_of_use_view, name='terms_of_use'),
 ]
