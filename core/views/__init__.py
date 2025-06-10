@@ -1,3 +1,6 @@
-from .verification_views import verification_home, check_email_view, breach_detail
-from .dashboard_views import index
+# views/__init__.py
 
+from .verification_views import *
+from .blog_views import *
+from .tools_views import *
+from .dashboard_views import *

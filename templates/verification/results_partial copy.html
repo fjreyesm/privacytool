@@ -1,0 +1,115 @@
+{# Este div contenedor inicializa Alpine.js para que el modal funcione #}
+<div x-data="{ isModalOpen: false }" style="width: 100%; min-width: 100%;">
+    {% if count == 0 %}
+        <div class="alert alert-success mt-8">
+            <div class="alert-icon"><i class="fas fa-check-circle"></i></div>
+            <div class="alert-content">
+                <h3 class="alert-title">¡Buenas noticias!</h3>
+                <p>Tu email no aparece en ninguna filtración de datos conocida.</p>
+            </div>
+        </div>
+
+    {% else %}
+        <div class="alert alert-danger mb-6" style="width: 100%;">
+            <div class="alert-icon"><i class="fas fa-exclamation-triangle"></i></div>
+            <div class="alert-content">
+                <h3 class="alert-title">¡Alerta de seguridad!</h3>
+                <p>Tu email aparece en <strong>{{ count }}</strong> filtraciones de datos.</p>
+            </div>
+        </div>
+
+        {# Contenedor con estilos inline para forzar el ancho #}
+        <div style="width: 100%; min-width: 100%; max-width: none; display: block;">
+            <div style="background: white; border-radius: 8px; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1); overflow: hidden; width: 100%;">
+                <div style="background: #f9fafb; padding: 1rem 1.5rem; border-bottom: 1px solid #e5e7eb;">
+                    <div style="display: flex; align-items: center;">
+                        <i class="fas fa-database" style="margin-right: 0.75rem; color: #6b7280;"></i>
+                        <h3 style="font-size: 1.125rem; font-weight: 600; color: #111827; margin: 0;">Filtraciones detectadas</h3>
+                    </div>
+                </div>
+                
+                {# Tabla con estilos inline #}
+                <div style="width: 100%; overflow-x: visible;">
+                    <table style="width: 100%; border-collapse: collapse; table-layout: fixed;">
+                        <thead style="background: #f9fafb;">
+                            <tr>
+                                <th style="width: 25%; padding: 0.75rem 1.5rem; text-align: left; font-size: 0.75rem; font-weight: 500; color: #6b7280; text-transform: uppercase; letter-spacing: 0.05em; border-bottom: 1px solid #e5e7eb;">
+                                    Servicio
+                                </th>
+                                <th style="width: 25%; padding: 0.75rem 1.5rem; text-align: left; font-size: 0.75rem; font-weight: 500; color: #6b7280; text-transform: uppercase; letter-spacing: 0.05em; border-bottom: 1px solid #e5e7eb;">
+                                    Fecha
+                                </th>
+                                <th style="width: 25%; padding: 0.75rem 1.5rem; text-align: left; font-size: 0.75rem; font-weight: 500; color: #6b7280; text-transform: uppercase; letter-spacing: 0.05em; border-bottom: 1px solid #e5e7eb;">
+                                    Severidad
+                                </th>
+                                <th style="width: 25%; padding: 0.75rem 1.5rem; text-align: left; font-size: 0.75rem; font-weight: 500; color: #6b7280; text-transform: uppercase; letter-spacing: 0.05em; border-bottom: 1px solid #e5e7eb;">
+                                    Acciones
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody style="background: white;">
+                            {% for breach in breaches %}
+                            <tr style="border-bottom: 1px solid #e5e7eb;" onmouseover="this.style.backgroundColor='#f9fafb'" onmouseout="this.style.backgroundColor='white'">
+                                <td style="padding: 1rem 1.5rem; font-size: 0.875rem; font-weight: 500; color: #111827; word-wrap: break-word;">
+                                    {{ breach.name }}
+                                </td>
+                                <td style="padding: 1rem 1.5rem; font-size: 0.875rem; color: #6b7280;">
+                                    {{ breach.breach_date }}
+                                </td>
+                                <td style="padding: 1rem 1.5rem;">
+                                    {% if 'Passwords' in breach.data_classes or 'Credit cards' in breach.data_classes %}
+                                        <span style="display: inline-flex; align-items: center; padding: 0.125rem 0.625rem; border-radius: 9999px; font-size: 0.75rem; font-weight: 500; background: #fee2e2; color: #991b1b;">
+                                            Alto
+                                        </span>
+                                    {% elif 'Physical addresses' in breach.data_classes or 'Phone numbers' in breach.data_classes %}
+                                        <span style="display: inline-flex; align-items: center; padding: 0.125rem 0.625rem; border-radius: 9999px; font-size: 0.75rem; font-weight: 500; background: #fef3c7; color: #92400e;">
+                                            Medio
+                                        </span>
+                                    {% else %}
+                                        <span style="display: inline-flex; align-items: center; padding: 0.125rem 0.625rem; border-radius: 9999px; font-size: 0.75rem; font-weight: 500; background: #d1fae5; color: #065f46;">
+                                            Bajo
+                                        </span>
+                                    {% endif %}
+                                </td>
+                                <td style="padding: 1rem 1.5rem;">
+                                    <button 
+                                        hx-get="{% url 'core:breach_detail' breach.id %}" 
+                                        hx-target="#modal-content"
+                                        hx-trigger="click"
+                                        x-on:click="isModalOpen = true"
+                                        style="display: inline-flex; align-items: center; padding: 0.5rem 0.75rem; border: none; font-size: 0.875rem; font-weight: 500; border-radius: 0.375rem; color: white; background: #2563eb; cursor: pointer; transition: background-color 0.2s;"
+                                        onmouseover="this.style.backgroundColor='#1d4ed8'"
+                                        onmouseout="this.style.backgroundColor='#2563eb'">
+                                        Ver detalles
+                                    </button>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        {# Modal igual que antes #}
+        <div id="breach-modal" 
+            x-show="isModalOpen" 
+            x-on:keydown.escape.window="isModalOpen = false"
+            class="fixed inset-0 bg-black bg-opacity-60 flex items-center justify-center z-50"
+            style="display: none;">
+            <div class="bg-white rounded-lg shadow-xl max-w-2xl w-full max-h-[90vh] flex flex-col" x-on:click.away="isModalOpen = false">
+                <div id="modal-content" class="overflow-y-auto">
+                    <div class="p-8 text-center">
+                        <i class="fas fa-circle-notch fa-spin text-primary text-3xl"></i>
+                        <p class="mt-3 text-gray-600">Cargando detalles...</p>
+                    </div>
+                </div>
+                <div class="bg-gray-100 px-6 py-4 flex justify-end rounded-b-lg border-t">
+                    <button type="button" x-on:click="isModalOpen = false" class="btn-primary">
+                        Cerrar
+                    </button>
+                </div>
+            </div>
+        </div>
+    {% endif %}
+</div>

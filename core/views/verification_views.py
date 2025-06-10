@@ -3,6 +3,8 @@ from django.http import HttpResponse
 from django.views.decorators.http import require_http_methods
 from django.contrib.auth.decorators import login_required
 from django.utils import timezone
+from django.conf import settings
+
 
 from core.services.hibp_service import check_email
 from core.services.report_service import generate_verification_report
@@ -12,16 +14,18 @@ from core.models.breach import Breach
 @require_http_methods(["GET"])
 def verification_home(request):
     """Vista principal de verificación."""
-    return render(request, "core/verification/check.html")
+    return render(request, "verification/check.html")
 
 @require_http_methods(["POST"])
+# tu_app/views.py
+
 def check_email_view(request):
     """Vista para verificar un email usando HTMX."""
     email = request.POST.get("email")
     if not email:
         return HttpResponse(
-            "<div class='text-danger'>Por favor, introduce un email válido.</div>",
-            headers={"HX-Trigger": '{"showToast": {"message": "Email inválido", "type": "error"}}'}
+            "<div class='alert alert-danger'>Por favor, introduce un email válido.</div>",
+            status=400
         )
     
     # Crear verificación en la base de datos
@@ -45,27 +49,24 @@ def check_email_view(request):
             verification.breaches.set(breaches)
         
         # Renderizar resultados con HTMX
-        return render(
-            request,
-            "core/verification/results_partial.html",
-            {
-                "verification": verification, 
-                "breaches": breaches,
-                "count": len(breaches)
-            }
-        )
+        context = {
+            "verification": verification, 
+            "breaches": breaches,
+            "count": len(breaches) if breaches else 0,
+        }
+        return render(request, "verification/results_partial.html", context)
+
     except Exception as e:
         verification.status = "failed"
         verification.error_message = str(e)
         verification.save()
         
         return HttpResponse(
-            f"<div class='text-danger'>Error al verificar el email: {str(e)}</div>",
-            headers={"HX-Trigger": f'{{"showToast": {{"message": "Error en la verificación: {str(e)}", "type": "error"}}}}'}
+            f"<div class='alert alert-danger'>Error al verificar el email: {str(e)}</div>"
         )
 
 @require_http_methods(["GET"])
 def breach_detail(request, breach_id):
     """Vista para mostrar detalles de una filtración (cargada en modal vía HTMX)."""
     breach = get_object_or_404(Breach, id=breach_id)
-    return render(request, "core/verification/breach_detail_modal.html", {"breach": breach})
+    return render(request, "verification/breach_detail_modal.html", {"breach": breach})

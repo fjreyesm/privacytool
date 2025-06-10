@@ -8,7 +8,7 @@
 
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
  
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" integrity="sha512-Z7pLd4QDR1Vj+V9XUNsoHkXaq0bkRnBSy+2e1+9vH9rWx/xC5TssFtL5gU5FdoyD5AXzKY2sl/9ECgQ4h7xa7A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
  
     <link href="{% static 'css/output.css' %}" rel="stylesheet">
     
@@ -26,16 +26,16 @@
     {% block extra_head %}{% endblock %}
 </head>
 <body class="bg-gray-100 font-sans text-gray-800 min-h-screen flex flex-col">
-    {% include 'core/components/header.html' %}
+    {% include 'components/header.html' %}
     
     <main class="flex-grow">
 
         {% block content %}{% endblock %}
     </main>
     
-    {% include 'core/components/footer.html' %}
+    {% include 'components/footer.html' %}
     
-    {% include 'core/components/toast.html' %}
+    {% include 'components/toast.html' %}
     
     <script>
         document.body.addEventListener('htmx:configRequest', function(evt) {

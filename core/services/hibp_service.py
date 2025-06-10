@@ -64,6 +64,7 @@ def check_email(email):
         
         # Procesar respuesta exitosa
         breach_data = response.json()
+        logger.info(f"[HIBP Service] Datos crudos de la API para {email}: {breach_data}")
         breach_objects = []
         breach_ids = []
         
@@ -74,6 +75,8 @@ def check_email(email):
                 defaults={
                     'domain': breach.get('Domain'),
                     'breach_date': breach.get('BreachDate'),
+                    'pwn_count': breach.get('PwnCount', 0),
+                    'added_date': breach.get('AddedDate'),
                     'added_date': breach.get('AddedDate'),
                     'description': breach.get('Description'),
                     'data_classes': breach.get('DataClasses', []),

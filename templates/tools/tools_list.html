@@ -1,4 +1,4 @@
-{% extends 'core/base.html' %}
+{% extends 'base.html' %}
 
 {% block title %}SecureCheck - Herramientas Recomendadas{% endblock %}
 
@@ -23,7 +23,7 @@
                         <span class="flex-shrink-0 bg-blue-100 text-primary text-xs font-medium px-2.5 py-1 rounded-full">{{ tool.get_category_display }}</span>
                     </div>
                     
-                    {% include 'core/components/_rating_stars.html' with rating_value=tool.rating %}
+                    {% include 'components/_rating_stars.html' with rating_value=tool.rating %}
                     
                     <p class="text-sm text-gray-600 my-4 flex-grow">{{ tool.description|truncatechars:100 }}</p>
                     
@@ -39,16 +39,16 @@
     {% endif %}
     
     {% if vpn_tools %}
-        {% include 'core/components/_tool_list_section.html' with title="VPNs Recomendadas" tool_list=vpn_tools %}
+        {% include 'components/_tool_list_section.html' with title="VPNs Recomendadas" tool_list=vpn_tools %}
     {% endif %}
 
     {% if antivirus_tools %}
-        {% include 'core/components/_tool_list_section.html' with title="Antivirus" tool_list=antivirus_tools %}
+        {% include 'components/_tool_list_section.html' with title="Antivirus" tool_list=antivirus_tools %}
     {% endif %}
     
     {# Puedes seguir añadiendo más categorías fácilmente #}
     {% if password_tools %}
-        {% include 'core/components/_tool_list_section.html' with title="Gestores de Contraseñas" tool_list=password_tools %}
+        {% include 'components/_tool_list_section.html' with title="Gestores de Contraseñas" tool_list=password_tools %}
     {% endif %}
 
 

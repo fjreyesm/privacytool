@@ -28,7 +28,7 @@ def blog_list(request):
         'current_category': context_category,
     }
     
-    return render(request, 'core/blog/blog_list.html', context)
+    return render(request, 'blog/blog_list.html', context)
 
 def blog_post_detail(request, slug):
     """Vista para mostrar un artículo específico del blog."""
@@ -45,4 +45,4 @@ def blog_post_detail(request, slug):
         'related_posts': related_posts,
     }
     
-    return render(request, 'core/blog/blog_post_detail.html', context)
+    return render(request, 'blog/blog_post_detail.html', context)

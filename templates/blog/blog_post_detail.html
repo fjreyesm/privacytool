@@ -1,19 +1,10 @@
-{% extends 'core/base.html' %}
+{% extends 'base.html' %}
 
 {% block title %}{{ post.title }} - SecureCheck Blog{% endblock %}
 
 {% block content %}
 <div class="max-w-7xl mx-auto py-8 px-4 sm:px-6 lg:px-8">
-    <nav class="mb-6 text-sm text-gray-500">
-        <a href="{% url 'core:index' %}" class="hover:text-primary">Inicio</a>
-        <span class="mx-2">/</span>
-        <a href="{% url 'core:blog_list' %}" class="hover:text-primary">Blog</a>
-        {% if post.category %}
-            <span class="mx-2">/</span>
-            <a href="{% url 'core:blog_list' %}?category={{ post.category.slug }}" class="hover:text-primary">{{ post.category.name }}</a>
-        {% endif %}
-    </nav>
-    
+
     <article class="bg-white p-6 sm:p-8 rounded-lg shadow-md">
         <header class="mb-8">
             <h1 class="text-4xl font-bold text-gray-900 mb-3">{{ post.title }}</h1>
@@ -27,8 +18,9 @@
         </header>
         
         {% if post.featured_image %}
-            <div class="rounded-lg overflow-hidden mb-8">
-                <img src="{{ post.featured_image.url }}" alt="{{ post.title }}" class="w-full h-auto">
+            <div class="featured-image-container" style="max-height: 450px !important;">
+                <img src="{{ post.featured_image.url }}" alt="{{ post.title }}" 
+                class="featured-image">
             </div>
         {% endif %}
         
@@ -42,7 +34,7 @@
         <h3 class="text-2xl font-semibold mb-4 border-b border-gray-200 pb-2">Artículos Relacionados</h3>
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {% for related in related_posts %}
-                {% include 'core/components/_post_card.html' with post=related %}
+                {% include 'components/_post_card.html' with post=related %}
             {% endfor %}
         </div>
     </div>

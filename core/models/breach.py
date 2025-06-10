@@ -11,6 +11,7 @@ class Breach(models.Model):
     added_date = models.DateTimeField(null=True, blank=True)
     description = models.TextField(null=True, blank=True)
     data_classes = models.JSONField(default=list)
+    pwn_count = models.BigIntegerField(default=0)
     
     # Flags de estado
     is_verified = models.BooleanField(default=True)

@@ -17,9 +17,14 @@
   }
   .card-header-primary {
   @apply px-6 py-4 bg-primary text-white text-lg font-semibold flex items-center rounded-t-lg;
-}
+  }
   .card-body {
     @apply p-6;
+  }
+
+    /* --- NUEVA CLASE PARA TARJETAS CON TABLAS --- */
+  .card-table {
+    @apply bg-white rounded-lg shadow-md; /* Es igual que .card, pero SIN 'overflow-hidden' */
   }
 
   /* ----- Componentes de Botón (Button) ----- */
@@ -66,4 +71,13 @@
 
   .filter2-tag {
     @apply px-4 py-2 rounded-full text-sm font-medium transition-colors;}
+
+    /* --- NUEVAS CLASES PARA LA IMAGEN DESTACADA --- */
+  .featured-image-container {
+    @apply block max-h-[450px] rounded-lg overflow-hidden mb-8 shadow-lg;
+  }
+
+  .featured-image {
+    @apply w-full h-full object-cover;
+  }
 }

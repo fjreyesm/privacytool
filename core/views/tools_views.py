@@ -24,4 +24,4 @@ def tools_list(request):
         'featured_tools': featured_tools,
     }
     
-    return render(request, 'core/tools/tools_list.html', context)
+    return render(request, 'tools/tools_list.html', context)
