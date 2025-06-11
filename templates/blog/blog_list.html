@@ -1,0 +1,54 @@
+{% extends 'base.html' %}
+
+{% block title %}SecureCheck - Blog de Seguridad{% endblock %}
+
+
+{% block content %}
+<div class="max-w-7xl mx-auto py-8 px-4 sm:px-6 lg:px-8">
+    <h1 class="text-3xl font-bold mb-6 text-gray-900">Blog de Seguridad</h1>
+    
+    <div class="mb-8">
+        <div class="flex flex-wrap items-center gap-2">
+            <a href="{% url 'core:blog_list' %}" class="filter-tag {% if not current_category %}bg-primary text-white{% else %}bg-gray-200 text-gray-700 hover:bg-gray-300{% endif %}">
+                Todos
+            </a>
+            {% for category in categories %}
+                <a href="{% url 'core:blog_list' %}?category={{ category.slug }}" class="filter-tag {% if current_category.id == category.id %}bg-primary text-white{% else %}bg-gray-200 text-gray-700 hover:bg-gray-300{% endif %}">
+                    {{ category.name }}
+                </a>
+            {% endfor %}
+        </div>
+    </div>
+    
+    {% if featured_posts and not current_category %}
+    <div class="mb-12">
+        <h2 class="text-2xl font-semibold mb-4 border-b border-gray-200 pb-2">Artículos Destacados</h2>
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {% for post in featured_posts %}
+                {% include 'components/_post_card.html' with post=post %}
+            {% endfor %}
+        </div>
+    </div>
+    {% endif %}
+    
+    <div>
+        <h2 class="text-2xl font-semibold mb-4 border-b border-gray-200 pb-2">
+            {% if current_category %}Artículos en "{{ current_category.name }}"{% else %}Todos los Artículos{% endif %}
+        </h2>
+        
+        {% if posts %}
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                {% for post in posts %}
+                    {% include 'components/_post_card.html' with post=post %}
+                {% endfor %}
+            </div>
+        {% else %}
+            <div class="bg-gray-50 p-8 rounded-lg text-center">
+                <p class="text-gray-600">No hay artículos disponibles en esta categoría.</p>
+            </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}
+
+

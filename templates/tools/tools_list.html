@@ -1,0 +1,56 @@
+{% extends 'base.html' %}
+
+{% block title %}SecureCheck - Herramientas Recomendadas{% endblock %}
+
+{% block content %}
+<div class="max-w-7xl mx-auto py-8 px-4 sm:px-6 lg:px-8">
+    <h1 class="text-3xl font-bold text-gray-900 mb-8">Herramientas de Seguridad Recomendadas</h1>
+    
+    {% if featured_tools %}
+    <div class="mb-12">
+        <h2 class="text-2xl font-semibold mb-4 border-b border-gray-200 pb-2">Herramientas Destacadas</h2>
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {% for tool in featured_tools %}
+            <div class="card group hover:shadow-xl transition-shadow duration-300 flex flex-col">
+                <div class="h-48 overflow-hidden">
+                    <img src="{{ tool.image.url | default:'/static/images/placeholder.svg' }}" 
+                         alt="{{ tool.name }}" 
+                         class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300">
+                </div>
+                <div class="p-5 flex flex-col flex-grow">
+                    <div class="flex justify-between items-start mb-2">
+                        <h3 class="text-lg font-semibold text-gray-900">{{ tool.name }}</h3>
+                        <span class="flex-shrink-0 bg-blue-100 text-primary text-xs font-medium px-2.5 py-1 rounded-full">{{ tool.get_category_display }}</span>
+                    </div>
+                    
+                    {% include 'components/_rating_stars.html' with rating_value=tool.rating %}
+                    
+                    <p class="text-sm text-gray-600 my-4 flex-grow">{{ tool.description|truncatechars:100 }}</p>
+                    
+                    <a href="{{ tool.display_url }}" target="_blank" rel="noopener noreferrer" 
+                       class="btn-primary mt-auto w-full">
+                       Visitar sitio
+                    </a>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+    {% endif %}
+    
+    {% if vpn_tools %}
+        {% include 'components/_tool_list_section.html' with title="VPNs Recomendadas" tool_list=vpn_tools %}
+    {% endif %}
+
+    {% if antivirus_tools %}
+        {% include 'components/_tool_list_section.html' with title="Antivirus" tool_list=antivirus_tools %}
+    {% endif %}
+    
+    {# Puedes seguir añadiendo más categorías fácilmente #}
+    {% if password_tools %}
+        {% include 'components/_tool_list_section.html' with title="Gestores de Contraseñas" tool_list=password_tools %}
+    {% endif %}
+
+
+</div>
+{% endblock %}
