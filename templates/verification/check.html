@@ -1,113 +1,181 @@
 {% extends 'base.html' %}
 {% block title %}Verificar Email - SecureCheck{% endblock %}
+
 {% block content %}
 <div class="max-w-7xl mx-auto py-8 px-4 sm:px-6 lg:px-8">
-    <h1 class="text-3xl font-bold text-gray-900 mb-8">Verificación de Seguridad</h1>
+    <h1 class="text-3xl font-bold tracking-tight text-gray-900 mb-8 text-center sm:text-4xl">
+        Comprueba si tu email ha sido expuesto
+    </h1>
     
     <div class="grid grid-cols-1 lg:grid-cols-3 lg:gap-8">
+        
         <div class="lg:col-span-2">
-            <div class="card mb-6 lg:mb-0">
-                <div class="card-header-primary">
+            <div class="bg-white rounded-lg shadow-lg overflow-hidden mb-6 lg:mb-0">
+                <div class="bg-primary text-white px-6 py-4 font-semibold text-lg flex items-center">
                     <i class="fas fa-shield-alt mr-3"></i>
                     Verificar Email
                 </div>
-                <div class="card-body">
-                    <p class="mb-4 text-gray-600">Comprueba si tu dirección de email ha sido comprometida en filtraciones de datos conocidas.</p>
+                <div class="p-6">
+                    <p class="mb-6 text-gray-600">Introduce tu dirección de email para comprobar si ha aparecido en alguna filtración de datos conocida, usando una conexión segura y anónima.</p>
                     
                     <form hx-post="{% url 'core:check_email' %}" 
                           hx-target="#results" 
                           hx-indicator="#loading"
-                          x-data="{ email: '' }">
+                          x-data="{ 
+                              email: '', 
+                              dataProcessingAccepted: false, 
+                              newsletterSubscription: false,
+                              isFormValid: false
+                          }"
+                          x-effect="isFormValid = email && dataProcessingAccepted">
                         {% csrf_token %}
-                        <div class="mb-4">
-                            <label for="email" class="block text-sm font-medium text-gray-700 mb-1">Email a verificar</label>
+                        
+                        <!-- Campo Email -->
+                        <div class="mb-6">
+                            <label for="email" class="block text-sm font-medium text-gray-700 mb-2">
+                                Email a verificar
+                            </label>
                             <div class="relative">
                                 <input type="email" 
                                        id="email" 
                                        name="email" 
-                                       class="w-full px-4 py-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition" 
+                                       class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200" 
                                        placeholder="ejemplo@correo.com"
                                        x-model="email"
                                        required>
                                 <div id="loading" class="htmx-indicator absolute right-3 top-1/2 -translate-y-1/2">
-                                    <i class="fas fa-circle-notch fa-spin text-primary text-xl"></i>
+                                    <i class="fas fa-circle-notch fa-spin text-blue-600 text-xl"></i>
                                 </div>
                             </div>
                         </div>
-                        
-                        <button type="submit" class="btn-primary" :disabled="!email">
-                            <i class="fas fa-search mr-2"></i> Verificar
+
+                        <!-- Términos y Condiciones OBLIGATORIO -->
+                        <div class="mb-4 p-4 bg-blue-50 border border-blue-200 rounded-lg">
+                            <div class="flex items-start">
+                                <div class="flex items-center h-5">
+                                    <input id="data-processing" 
+                                           name="data_processing_accepted"
+                                           type="checkbox" 
+                                           class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 focus:ring-2" 
+                                           x-model="dataProcessingAccepted"
+                                           required>
+                                </div>
+                                <div class="ml-3 text-sm">
+                                    <label for="data-processing" class="font-medium text-gray-700 cursor-pointer">
+                                        <span class="text-red-600">*</span> Acepto el tratamiento de mis datos
+                                    </label>
+                                    <p class="text-gray-600 mt-1">
+                                        Consiento que mi dirección de email sea procesada únicamente para realizar la consulta con Have I Been Pwned. 
+                                        <a href="{% url 'core:privacy_policy' %}" class="text-blue-600 hover:underline" target="_blank">Ver política de privacidad</a>
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Newsletter OPCIONAL -->
+                        <div class="mb-6 p-4 bg-gray-50 border border-gray-200 rounded-lg">
+                            <div class="flex items-start">
+                                <div class="flex items-center h-5">
+                                    <input id="newsletter" 
+                                           name="newsletter_subscription"
+                                           type="checkbox" 
+                                           class="w-4 h-4 text-green-600 bg-gray-100 border-gray-300 rounded focus:ring-green-500 focus:ring-2" 
+                                           x-model="newsletterSubscription">
+                                </div>
+                                <div class="ml-3 text-sm">
+                                    <label for="newsletter" class="font-medium text-gray-700 cursor-pointer">
+                                        <i class="fas fa-envelope-open-text text-green-600 mr-1"></i>
+                                        Quiero recibir consejos de seguridad (opcional)
+                                    </label>
+                                    <p class="text-gray-600 mt-1">
+                                        Recibe alertas de nuevas filtraciones, guías de seguridad y recomendaciones personalizadas. 
+                                        Puedes cancelar en cualquier momento.
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Botón de Verificar -->
+                        <button type="submit" 
+                                class="w-full sm:w-auto inline-flex items-center justify-center px-8 py-4 border border-transparent text-base font-semibold rounded-lg shadow-lg text-white transition-all duration-200"
+                                :class="isFormValid ? 'bg-blue-600 hover:bg-blue-700 hover:shadow-xl transform hover:-translate-y-0.5' : 'bg-gray-400 cursor-not-allowed'"
+                                :disabled="!isFormValid">
+                            <i class="fas fa-search mr-2"></i> 
+                            <span x-show="!isFormValid">Acepta los términos para continuar</span>
+                            <span x-show="isFormValid">Verificar Ahora</span>
                         </button>
+
+                        <!-- Información adicional -->
+                        <div class="mt-4 text-xs text-gray-500">
+                            <i class="fas fa-info-circle mr-1"></i>
+                            <span class="text-red-600">*</span> Campos obligatorios. Tu email no se almacena en nuestros servidores.
+                        </div>
                     </form>
                 </div>
             </div>
         </div>
         
+        <!-- Sidebar con garantías de privacidad -->
         <div class="lg:col-span-1">
-            <!-- Panel de información rediseñado -->
-            <div class="bg-gradient-to-br from-blue-50 to-indigo-100 border border-blue-200 rounded-lg shadow-sm">
-                <div class="px-6 py-4 border-b border-blue-200 bg-white bg-opacity-70 rounded-t-lg">
-                    <div class="flex items-center">
-                        <div class="flex-shrink-0">
-                            <div class="w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center">
-                                <i class="fas fa-shield-alt text-blue-600 text-sm"></i>
-                            </div>
-                        </div>
-                        <div class="ml-3">
-                            <h3 class="text-sm font-semibold text-gray-900">Tu Privacidad Protegida</h3>
-                        </div>
-                    </div>
-                </div>
-                
+            <div class="bg-white border border-gray-200 rounded-lg shadow-lg">
                 <div class="px-6 py-5">
+                    <h3 class="text-lg font-semibold text-blue-800 mb-4 flex items-center">
+                        <i class="fas fa-user-shield text-blue-800 mr-2"></i>
+                        Tu Privacidad, Nuestra Prioridad
+                    </h3>
                     <div class="space-y-4">
                         <div class="flex items-start">
-                            <div class="flex-shrink-0">
-                                <i class="fas fa-check-circle text-green-500 text-sm mt-0.5"></i>
-                            </div>
+                            <i class="fas fa-database text-blue-500 text-xl mt-0.5 flex-shrink-0 w-6 text-center"></i>
                             <div class="ml-3">
-                                <p class="text-sm text-gray-700 font-medium">Sin almacenamiento</p>
-                                <p class="text-xs text-gray-500">Tu email no se guarda</p>
+                                <p class="text-sm font-semibold text-gray-800">Sin almacenamiento</p>
+                                <p class="text-sm text-gray-600">Tu email nunca se guarda en nuestros servidores.</p>
                             </div>
                         </div>
-                        
                         <div class="flex items-start">
-                            <div class="flex-shrink-0">
-                                <i class="fas fa-check-circle text-green-500 text-sm mt-0.5"></i>
-                            </div>
+                            <i class="fas fa-check-shield text-blue-500 text-xl mt-0.5 flex-shrink-0 w-6 text-center"></i>
                             <div class="ml-3">
-                                <p class="text-sm text-gray-700 font-medium">Fuente confiable</p>
-                                <p class="text-xs text-gray-500">API "Have I Been Pwned"</p>
+                                <p class="text-sm font-semibold text-gray-800">Fuente confiable</p>
+                                <p class="text-sm text-gray-600">Usamos la API oficial de "Have I Been Pwned".</p>
                             </div>
                         </div>
-                        
                         <div class="flex items-start">
-                            <div class="flex-shrink-0">
-                                <i class="fas fa-check-circle text-green-500 text-sm mt-0.5"></i>
-                            </div>
+                             <i class="fas fa-user-secret text-blue-500 text-xl mt-0.5 flex-shrink-0 w-6 text-center"></i>
                             <div class="ml-3">
-                                <p class="text-sm text-gray-700 font-medium">Verificación anónima</p>
-                                <p class="text-xs text-gray-500">Proceso completamente privado</p>
+                                <p class="text-sm font-semibold text-gray-800">Verificación anónima</p>
+                                <p class="text-sm text-gray-600">El proceso es 100% privado y anónimo.</p>
                             </div>
                         </div>
-                        
                         <div class="flex items-start">
-                            <div class="flex-shrink-0">
-                                <i class="fas fa-check-circle text-green-500 text-sm mt-0.5"></i>
-                            </div>
+                            <i class="fas fa-lock text-blue-500 text-xl mt-0.5 flex-shrink-0 w-6 text-center"></i>
                             <div class="ml-3">
-                                <p class="text-sm text-gray-700 font-medium">Datos seguros</p>
-                                <p class="text-xs text-gray-500">No compartimos información</p>
+                                <p class="text-sm font-semibold text-gray-800">Datos seguros</p>
+                                <p class="text-sm text-gray-600">Toda la comunicación está cifrada (HTTPS).</p>
                             </div>
                         </div>
+
                     </div>
-                    
-                    <div class="mt-5 pt-4 border-t border-blue-200">
-                        <div class="flex items-center justify-center">
-                            <div class="flex items-center text-xs text-blue-600">
-                                <i class="fas fa-lock mr-1"></i>
-                                <span class="font-medium">Verificación 100% segura</span>
-                            </div>
+                </div>
+            </div>
+
+            <!-- Nueva sección: Estadísticas -->
+            <div class="bg-gradient-to-br from-blue-50 to-indigo-100 border border-blue-200 rounded-lg shadow-lg mt-6">
+                <div class="px-6 py-5">
+                    <h3 class="text-lg font-semibold text-gray-900 mb-4 flex items-center">
+                        <i class="fas fa-chart-line text-indigo-600 mr-2"></i>
+                        Verificaciones Recientes
+                    </h3>
+                    <div class="space-y-3">
+                        <div class="flex justify-between items-center">
+                            <span class="text-sm text-gray-600">Esta semana</span>
+                            <span class="text-lg font-bold text-indigo-600">+1,247</span>
+                        </div>
+                        <div class="flex justify-between items-center">
+                            <span class="text-sm text-gray-600">Filtraciones detectadas</span>
+                            <span class="text-lg font-bold text-red-600">892</span>
+                        </div>
+                        <div class="flex justify-between items-center">
+                            <span class="text-sm text-gray-600">Emails seguros</span>
+                            <span class="text-lg font-bold text-green-600">355</span>
                         </div>
                     </div>
                 </div>
@@ -115,28 +183,103 @@
         </div>
     </div>
     
-    <!-- Contenedor de resultados con ancho completo -->
     <div id="results" class="mt-8 w-full">
+        <!-- Los resultados aparecen aquí -->
     </div>
 </div>
 
-<!-- CSS adicional para mejorar la responsividad -->
-<style>
-@media (max-width: 1024px) {
-    .max-w-7xl {
-        max-width: 100%;
-    }
-}
+<!-- Sección de herramientas mejorada -->
+<div class="bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-50 mt-16 sm:mt-24">
+    <div class="max-w-7xl mx-auto py-12 px-4 sm:py-16 sm:px-6 lg:px-8">
+        <div class="text-center">
+            <h2 class="text-base font-semibold text-blue-600 tracking-wider uppercase">Herramientas Gratuitas</h2>
+            <p class="mt-2 text-3xl font-extrabold text-gray-900 tracking-tight sm:text-4xl">
+                Fortalece tu Seguridad Digital
+            </p>
+            <p class="mt-5 max-w-prose mx-auto text-xl text-gray-500">
+                Además de verificar tu email, descubre nuestras herramientas gratuitas para proteger tu información.
+            </p>
+        </div>
 
-@media (max-width: 640px) {
-    .grid {
-        gap: 1rem;
-    }
-    
-    .card {
-        margin-left: 0;
-        margin-right: 0;
-    }
+        <div class="mt-12 grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
+        
+            <!-- Generador de Contraseñas -->
+            <div class="group">
+                <div class="bg-white rounded-xl shadow-lg h-full flex flex-col transition-all duration-300 hover:-translate-y-2 hover:shadow-2xl border border-gray-100">
+                    <div class="flex-grow p-8">
+                        <div class="inline-block bg-gradient-to-br from-blue-100 to-indigo-100 text-blue-600 p-4 rounded-xl mb-4 icon-bounce">
+                            <i class="fas fa-key text-2xl"></i>
+                        </div>
+                        <h3 class="text-xl font-semibold text-gray-900 mb-3">Generador de Contraseñas</h3>
+                        <p class="text-gray-600 mb-4">Crea contraseñas robustas e impredecibles con configuración personalizable.</p>
+                        <div class="flex items-center text-sm text-green-600 mb-2">
+                            <i class="fas fa-check-circle mr-2"></i>
+                            <span>100% gratis </span>
+                        </div>
+                    </div>
+                    <div class="p-8 pt-0">
+                        <a href="#" class="btn-secondary-outline w-full justify-center">
+                            <i class="fas fa-external-link-alt mr-2"></i>
+                            Usar herramienta
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Analizador de Cabeceras -->
+            <div class="group">
+                <div class="bg-white rounded-xl shadow-lg h-full flex flex-col transition-all duration-300 hover:-translate-y-2 hover:shadow-2xl border border-gray-100">
+                    <div class="flex-grow p-8">
+                        <div class="inline-block bg-gradient-to-br from-green-100 to-emerald-100 text-green-600 p-4 rounded-xl mb-4 group-hover:scale-110 transition-transform duration-300">
+                            <i class="fas fa-code text-2xl"></i>
+                        </div>
+                        <h3 class="text-xl font-semibold text-gray-900 mb-3">Analizador de Cabeceras</h3>
+                        <p class="text-gray-600 mb-4">Revisa las cabeceras de seguridad de cualquier sitio web para identificar vulnerabilidades potenciales.</p>
+                        <div class="flex items-center text-sm text-orange-600 mb-2">
+                            <i class="fas fa-clock mr-2"></i>
+                            <span>Próximamente disponible</span>
+                        </div>
+                    </div>
+                    <div class="p-8 pt-0">
+                        <button class="btn-secondary-outline w-full justify-center opacity-60 cursor-not-allowed" disabled>
+                            <i class="fas fa-bell mr-2"></i>
+                            Notificarme
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Blog de Seguridad -->
+            <div class="group">
+                <div class="bg-white rounded-xl shadow-lg h-full flex flex-col transition-all duration-300 hover:-translate-y-2 hover:shadow-2xl border border-gray-100">
+                    <div class="flex-grow p-8">
+                        <div class="inline-block bg-gradient-to-br from-purple-100 to-pink-100 text-purple-600 p-4 rounded-xl mb-4 group-hover:scale-110 transition-transform duration-300">
+                             <i class="fas fa-newspaper text-2xl"></i>
+                        </div>
+                        <h3 class="text-xl font-semibold text-gray-900 mb-3">Blog de Seguridad</h3>
+                        <p class="text-gray-600 mb-4">Artículos, guías y noticias para mantenerte actualizado sobre las últimas amenazas y mejores prácticas.</p>
+                        <div class="flex items-center text-sm text-blue-600 mb-2">
+                            <i class="fas fa-rss mr-2"></i>
+                            <span>Actualizaciones semanales</span>
+                        </div>
+                    </div>
+                    <div class="p-8 pt-0">
+                        <a href="{% url 'core:blog_list' %}" class="btn-secondary-outline w-full justify-center group-hover:bg-purple-600 group-hover:text-white transition-all duration-300">
+                            <i class="fas fa-arrow-right mr-2"></i>
+                            Leer artículos
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<style>
+.btn-secondary-outline {
+  @apply inline-flex items-center px-6 py-3 text-base font-semibold text-blue-600 border-2 border-blue-600 rounded-lg transition-all duration-300 hover:bg-blue-600 hover:text-white hover:shadow-lg;
 }
 </style>
+
 {% endblock %}

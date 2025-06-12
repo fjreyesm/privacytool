@@ -6,15 +6,38 @@ from dotenv import load_dotenv
 # Cargar variables de entorno desde .env
 load_dotenv()
 
+# Intentar obtener la clave secreta desde las variables de entorno
+try:
+    SECRET_KEY = os.environ['SECRET_KEY']
+except KeyError:
+    # Este error se lanzará si la variable no existe en el entorno
+    raise ValueError("Error: La variable de entorno SECRET_KEY no está definida. Por favor, añádela a tu archivo .env")
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = os.environ.get('SECRET_KEY', 'django-insecure-default-key-for-development')
+#SECRET_KEY = os.environ.get('SECRET_KEY', 'django-insecure-default-key-for-development')
+
+
+
+DEBUG = bool(os.environ.get('DJANGO_DEBUG', True))
+
+SECURE_BROWSER_XSS_FILTER = True
+SECURE_CONTENT_TYPE_NOSNIFF = True
+X_FRAME_OPTIONS = 'DENY'
+SECURE_HSTS_SECONDS = 0 # Cambia a True en producción a => 31536000 if not DEBUG else 0    --1 año
+SECURE_HSTS_INCLUDE_SUBDOMAINS = True
+SECURE_HSTS_INCLUDE_SUBDOMAINS = True
+SECURE_HSTS_PRELOAD = True
+SECURE_SSL_REDIRECT = False # Cambia a True en producción si usas HTTPS
+SESSION_COOKIE_SECURE = not DEBUG
+CSRF_COOKIE_SECURE = not DEBUG
+SECURE_REFERRER_POLICY = 'strict-origin-when-cross-origin'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-#DEBUG = os.environ.get('DEBUG', 'True') == 'True'
-DEBUG = True  # <-- Forzamos el modo DEBUG para poder depurar
+DEBUG = os.environ.get('DEBUG', 'True') == 'True'
+#DEBUG = True  # <-- Forzamos el modo DEBUG para poder depurar
 ALLOWED_HOSTS = os.environ.get('ALLOWED_HOSTS', 'localhost,127.0.0.1').split(',')
 
 # Application definition
@@ -25,7 +48,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-     'django.contrib.humanize',
+    'django.contrib.humanize',
     
     # Apps de terceros
     'django_htmx',
@@ -43,6 +66,7 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'django_htmx.middleware.HtmxMiddleware',
+     'django.middleware.security.SecurityMiddleware',
 ]
 
 ROOT_URLCONF = 'securecheck.urls'
