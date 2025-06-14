@@ -31,8 +31,8 @@ SECURE_HSTS_INCLUDE_SUBDOMAINS = True
 SECURE_HSTS_INCLUDE_SUBDOMAINS = True
 SECURE_HSTS_PRELOAD = True
 SECURE_SSL_REDIRECT = False # Cambia a True en producción si usas HTTPS
-SESSION_COOKIE_SECURE = not DEBUG
-CSRF_COOKIE_SECURE = not DEBUG
+SESSION_COOKIE_SECURE = True
+CSRF_COOKIE_SECURE = True
 SECURE_REFERRER_POLICY = 'strict-origin-when-cross-origin'
 
 # SECURITY WARNING: don't run with debug turned on in production!
