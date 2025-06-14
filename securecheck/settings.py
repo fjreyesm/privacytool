@@ -149,3 +149,9 @@ MEDIA_ROOT = BASE_DIR / 'media'
 STATIC_URL = '/static/'
 STATIC_ROOT = BASE_DIR / 'staticfiles'
 STATICFILES_DIRS = [BASE_DIR / 'static']
+
+# --- CONFIGURACIÓN DE DJANGO-RATELIMIT ---
+RATELIMIT_KEY = 'ip'  # Limita por dirección IP del usuario.
+RATELIMIT_RATE = '5/m' # 5 peticiones por minuto. Puedes ajustarlo a '10/h' (10 por hora), etc.
+RATELIMIT_BLOCK = True # Si se supera el límite, bloquea la petición (genera un error).
+RATELIMIT_METHOD = 'all' # Aplica el límite a todos los métodos (GET, POST, etc.)

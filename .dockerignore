@@ -1,0 +1,29 @@
+# .dockerignore
+
+# Entorno virtual de Python
+venv/
+.venv/
+
+# Dependencias de Node
+node_modules/
+
+# Archivos de caché de Python
+__pycache__/
+*.pyc
+*.pyo
+
+# Archivos de configuración del editor
+.vscode/
+.idea/
+
+# Base de datos local de desarrollo
+db.sqlite3
+db.sqlite3-journal
+
+# Archivo de entorno (no debe estar en la imagen final)
+.env
+
+# Archivos de Docker
+Dockerfile
+compose.yml
+docker-compose.yml

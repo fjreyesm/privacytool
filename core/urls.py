@@ -1,4 +1,4 @@
-from core.views.verification_views import verification_home, check_email_view, breach_detail
+from core.views.verification_views import verification_home, check_email_view, BreachDetailView
 from core.views.dashboard_views import index
 from core.views import verification_views, dashboard_views, tools_views, blog_views
 from core.views.views import terms_of_use_view,faq_view,privacy_policy_view  # Importación específica
@@ -13,7 +13,7 @@ urlpatterns = [
     # Verificación
     path('verification/', verification_home, name='verification_home'),
     path('verification/check/', check_email_view, name='check_email'),
-    path('breach/detail/<uuid:breach_id>/', breach_detail, name='breach_detail'),
+    path('breach/detail/<uuid:pk>/', BreachDetailView.as_view(), name='breach_detail'),
     
     # Herramientas
     path('tools/', tools_views.tools_list, name='tools_list'),
