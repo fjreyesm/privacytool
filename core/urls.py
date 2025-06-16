@@ -1,7 +1,7 @@
 from core.views.verification_views import verification_home, check_email_view, BreachDetailView
 from core.views.dashboard_views import index
 from core.views import verification_views, dashboard_views, tools_views, blog_views
-from core.views.views import terms_of_use_view,faq_view,privacy_policy_view  # Importación específica
+from core.views.views import terms_of_use_view,faq_view,privacy_policy_view, PoliticaCookiesView  # Importación específica
 from django.urls import path
 
 app_name = 'core'
@@ -26,5 +26,6 @@ urlpatterns = [
     path('terminos/', terms_of_use_view, name='terms_of_use'),
     path('faq/', faq_view, name='faq'),
     path('privacidad/', privacy_policy_view, name='privacy_policy'),
+    path('politica-cookies/', PoliticaCookiesView.as_view(), name='politica_cookies'),
 
 ]

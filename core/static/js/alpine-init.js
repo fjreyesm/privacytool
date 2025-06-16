@@ -1,79 +1,70 @@
-// Inicialización de Alpine.js para SecureCheck
-
+// static/js/alpine-init.js
 document.addEventListener('alpine:init', () => {
-  // Componente para el formulario de verificación
-  Alpine.data('verificationForm', () => ({
-    email: '',
-    isLoading: false,
-    
-    submitForm() {
-      this.isLoading = true;
-      // El resto lo maneja HTMX
-    }
-  }));
-  
-  // Componente para el sistema de notificaciones toast
-  Alpine.data('toastSystem', () => ({
-    toasts: [],
-    
-    showToast(message, type = 'info', duration = 5000) {
-      const id = Date.now();
-      this.toasts.push({ id, message, type });
-      
-      setTimeout(() => {
-        this.removeToast(id);
-      }, duration);
-    },
-    
-    removeToast(id) {
-      this.toasts = this.toasts.filter(toast => toast.id !== id);
-    }
-  }));
-  
-  // Componente para el modal de detalles
-  Alpine.data('breachModal', () => ({
-    isOpen: false,
-    content: '',
-    
-    open(content) {
-      this.content = content;
-      this.isOpen = true;
-    },
-    
-    close() {
-      this.isOpen = false;
-    }
-  }));
-});
+    Alpine.data('secureCookies', () => ({
+        accepted: localStorage.getItem('cookie-consent') !== null,
+        showSettings: false,
+        analyticsEnabled: localStorage.getItem('cookie-analytics') === 'true',
 
-// Configuración de HTMX para CSRF
-document.addEventListener('DOMContentLoaded', function() {
-  // Configurar HTMX para incluir el token CSRF en todas las peticiones POST
-  document.body.addEventListener('htmx:configRequest', function(evt) {
-    if (evt.detail.verb === 'post') {
-      const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
-      evt.detail.headers['X-CSRFToken'] = csrfToken;
-    }
-  });
-  
-  // Manejar eventos de HTMX
-  document.body.addEventListener('htmx:afterSwap', function(evt) {
-    // Reinicializar componentes Alpine después de actualizaciones HTMX si es necesario
-    if (window.Alpine) {
-      window.Alpine.initTree(evt.detail.target);
-    }
-  });
-  
-  // Manejar respuestas con errores
-  document.body.addEventListener('htmx:responseError', function(evt) {
-    console.error('Error en respuesta HTMX:', evt.detail);
-    // Mostrar notificación de error
-    const toastEvent = new CustomEvent('showToast', {
-      detail: {
-        message: 'Error en la solicitud: ' + (evt.detail.error || 'Error desconocido'),
-        type: 'error'
-      }
-    });
-    window.dispatchEvent(toastEvent);
-  });
+        init() {
+            if (this.accepted) {
+                console.log('🍪 Cookies ya configuradas previamente');
+            } else {
+                console.log('🍪 Primera visita - mostrando banner de cookies');
+            }
+        },
+
+        acceptAll() {
+            this.analyticsEnabled = true;
+            this.save('all');
+            console.log('✅ Usuario aceptó todas las cookies');
+        },
+
+        acceptEssential() {
+            this.analyticsEnabled = false;
+            this.save('essential');
+            console.log('✅ Usuario aceptó solo cookies esenciales');
+        },
+
+        saveSettings() {
+            this.save('custom');
+            this.showSettings = false;
+            console.log('⚙️ Usuario configuró cookies manualmente');
+        },
+
+        save(type) {
+            // Guardar preferencias
+            localStorage.setItem('cookie-consent', type);
+            localStorage.setItem('cookie-analytics', this.analyticsEnabled ? 'true' : 'false');
+            localStorage.setItem('cookie-consent-date', new Date().toISOString());
+            
+            // Actualizar estado
+            this.accepted = true;
+            
+            // Log para debugging
+            console.log('💾 Cookies guardadas:', {
+                tipo: type,
+                analytics: this.analyticsEnabled,
+                fecha: new Date().toISOString()
+            });
+            
+            // Cargar analytics si está habilitado
+            if (this.analyticsEnabled) {
+                this.loadAnalytics();
+            }
+        },
+
+        loadAnalytics() {
+            // Aquí cargarías Google Analytics u otro servicio
+            console.log('📊 Cargando analytics anónimos...');
+            
+            // Ejemplo para Google Analytics 4
+            /*
+            gtag('config', 'GA_MEASUREMENT_ID', {
+                anonymize_ip: true,
+                allow_google_signals: false,
+                allow_ad_personalization_signals: false
+            });
+            */
+        }
+    }));
 });

@@ -1,0 +1,223 @@
+<!-- templates/legal/politica-cookies.html -->
+{% extends 'base.html' %}
+
+{% block title %}{{ title }}{% endblock %}
+
+{% block content %}
+<div class="min-h-screen bg-gray-50 py-12">
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="bg-white rounded-lg shadow-sm p-8 lg:p-12">
+            <header class="mb-8">
+                <h1 class="text-3xl lg:text-4xl font-bold text-gray-900 mb-4">
+                    🍪 Política de Cookies
+                </h1>
+                <p class="text-lg text-gray-600">
+                    Información sobre las cookies que utilizamos en Yoursecurescan y cómo gestionarlas.
+                </p>
+                <p class="text-sm text-gray-500 mt-2">
+                    <strong>Última actualización:</strong> {{ last_updated }}
+                </p>
+            </header>
+            
+            <div class="prose prose-lg max-w-none">
+                <h2>¿Qué son las cookies?</h2>
+                <p>Las cookies son pequeños archivos de texto que se almacenan en tu dispositivo cuando visitas nuestro sitio web. Nos ayudan a hacer que el sitio funcione, sea más seguro y proporcione una mejor experiencia de usuario.</p>
+                
+                <h2>🍪 ¿Qué cookies utilizamos?</h2>
+                
+                <h3>🔧 Cookies Esenciales (Siempre activas)</h3>
+                <p>Estas cookies son necesarias para que nuestro sitio web funcione correctamente y no se pueden desactivar:</p>
+                
+                <div class="bg-blue-50 border-l-4 border-blue-400 p-4 my-6">
+                    <table class="min-w-full table-auto">
+                        <thead>
+                            <tr class="bg-blue-100">
+                                <th class="px-4 py-2 text-left">Cookie</th>
+                                <th class="px-4 py-2 text-left">Propósito</th>
+                                <th class="px-4 py-2 text-left">Duración</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td class="px-4 py-2 font-mono text-sm">sessionid</td>
+                                <td class="px-4 py-2">Mantiene tu sesión activa mientras navegas</td>
+                                <td class="px-4 py-2">Sesión</td>
+                            </tr>
+                            <tr class="bg-blue-25">
+                                <td class="px-4 py-2 font-mono text-sm">csrftoken</td>
+                                <td class="px-4 py-2">Protege contra ataques de seguridad (CSRF)</td>
+                                <td class="px-4 py-2">1 año</td>
+                            </tr>
+                            <tr>
+                                <td class="px-4 py-2 font-mono text-sm">cookie-consent</td>
+                                <td class="px-4 py-2">Recuerda tus preferencias de cookies</td>
+                                <td class="px-4 py-2">1 año</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                
+                <h3>📊 Cookies de Analytics (Opcionales)</h3>
+                <p>Estas cookies nos ayudan a entender cómo usas nuestro sitio para mejorarlo. Son completamente opcionales:</p>
+                
+                <div class="bg-green-50 border-l-4 border-green-400 p-4 my-6">
+                    <table class="min-w-full table-auto">
+                        <thead>
+                            <tr class="bg-green-100">
+                                <th class="px-4 py-2 text-left">Cookie</th>
+                                <th class="px-4 py-2 text-left">Propósito</th>
+                                <th class="px-4 py-2 text-left">Duración</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td class="px-4 py-2 font-mono text-sm">_ga</td>
+                                <td class="px-4 py-2">Distingue usuarios únicos (Google Analytics)</td>
+                                <td class="px-4 py-2">2 años</td>
+                            </tr>
+                            <tr class="bg-green-25">
+                                <td class="px-4 py-2 font-mono text-sm">_gid</td>
+                                <td class="px-4 py-2">Distingue usuarios únicos (24h)</td>
+                                <td class="px-4 py-2">24 horas</td>
+                            </tr>
+                            <tr>
+                                <td class="px-4 py-2 font-mono text-sm">_gat</td>
+                                <td class="px-4 py-2">Limita la tasa de solicitudes</td>
+                                <td class="px-4 py-2">1 minuto</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                
+                <div class="bg-yellow-50 border border-yellow-200 rounded-lg p-4 my-6">
+                    <h4 class="font-semibold text-yellow-800 mb-2">🔒 Privacidad en Analytics</h4>
+                    <ul class="text-sm text-yellow-700 space-y-1">
+                        <li>• Tu dirección IP se anonimiza (se truncan los últimos dígitos)</li>
+                        <li>• No recopilamos información personal identificable</li>
+                        <li>• Los datos se usan solo para estadísticas agregadas</li>
+                        <li>• No compartimos información con terceros para marketing</li>
+                    </ul>
+                </div>
+                
+                <h2>⚙️ ¿Cómo gestionar cookies?</h2>
+                <p>Tienes total control sobre las cookies que aceptas. Puedes gestionar tus preferencias de las siguientes formas:</p>
+                
+                <h3>🎛️ En nuestro sitio</h3>
+                <ul>
+                    <li><strong>Banner de cookies:</strong> Al visitar por primera vez, puedes elegir qué cookies aceptar</li>
+                    <li><strong>Botón flotante:</strong> Haz clic en el icono <i class="fas fa-cookie-bite text-blue-600"></i> en la esquina inferior derecha</li>
+                    <li><strong>Esta página:</strong> Botón "Configurar Cookies" al final de esta página</li>
+                </ul>
+                
+                <h3>🌐 En tu navegador</h3>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 my-6">
+                    <div class="border border-gray-200 rounded-lg p-4">
+                        <h4 class="font-semibold text-gray-900 mb-2">Chrome</h4>
+                        <p class="text-sm text-gray-600">Configuración → Privacidad y seguridad → Cookies y otros datos de sitios</p>
+                    </div>
+                    <div class="border border-gray-200 rounded-lg p-4">
+                        <h4 class="font-semibold text-gray-900 mb-2">Firefox</h4>
+                        <p class="text-sm text-gray-600">Opciones → Privacidad y seguridad → Cookies y datos del sitio</p>
+                    </div>
+                    <div class="border border-gray-200 rounded-lg p-4">
+                        <h4 class="font-semibold text-gray-900 mb-2">Safari</h4>
+                        <p class="text-sm text-gray-600">Preferencias → Privacidad → Gestionar datos de sitios web</p>
+                    </div>
+                    <div class="border border-gray-200 rounded-lg p-4">
+                        <h4 class="font-semibold text-gray-900 mb-2">Edge</h4>
+                        <p class="text-sm text-gray-600">Configuración → Cookies y permisos de sitio → Cookies</p>
+                    </div>
+                </div>
+                
+                <div class="bg-blue-50 border border-blue-200 rounded-lg p-4 my-6">
+                    <h4 class="font-semibold text-blue-800 mb-2">⚠️ Importante</h4>
+                    <p class="text-sm text-blue-700">
+                        Si desactivas las cookies esenciales, es posible que nuestro sitio no funcione correctamente. 
+                        Las funciones de verificación de email, rate limiting y seguridad dependen de estas cookies.
+                    </p>
+                </div>
+                
+                <h2>🔄 Cambios en esta política</h2>
+                <p>Podemos actualizar esta política de cookies ocasionalmente para reflejar cambios en nuestro sitio web o en la normativa legal. Te notificaremos de cambios importantes a través de:</p>
+                <ul>
+                    <li>Banner de cookies actualizado</li>
+                    <li>Aviso en esta página</li>
+                    <li>Email (si tienes cuenta premium)</li>
+                </ul>
+                
+                <h2>📞 Contacto</h2>
+                <p>Si tienes preguntas sobre esta política de cookies o sobre cómo gestionamos tus datos, puedes contactarnos:</p>
+                
+                <div class="bg-gray-50 border border-gray-200 rounded-lg p-6 my-6">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div>
+                            <h4 class="font-semibold text-gray-900 mb-2">📧 Email</h4>
+                            <p class="text-gray-600">{{ contact_email }}</p>
+                        </div>
+                        <div>
+                            <h4 class="font-semibold text-gray-900 mb-2">⏰ Respuesta</h4>
+                            <p class="text-gray-600">Máximo 48 horas laborables</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <h2>📋 Resumen de tus derechos</h2>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 my-6">
+                    <div class="bg-green-50 border border-green-200 rounded-lg p-4">
+                        <h4 class="font-semibold text-green-800 mb-2">✅ Puedes</h4>
+                        <ul class="text-sm text-green-700 space-y-1">
+                            <li>• Aceptar solo cookies esenciales</li>
+                            <li>• Cambiar preferencias en cualquier momento</li>
+                            <li>• Eliminar cookies desde tu navegador</li>
+                            <li>• Solicitar información sobre cookies guardadas</li>
+                        </ul>
+                    </div>
+                    <div class="bg-red-50 border border-red-200 rounded-lg p-4">
+                        <h4 class="font-semibold text-red-800 mb-2">❌ No podemos</h4>
+                        <ul class="text-sm text-red-700 space-y-1">
+                            <li>• Desactivar cookies esenciales</li>
+                            <li>• Garantizar funcionamiento sin cookies</li>
+                            <li>• Recuperar datos tras eliminar cookies</li>
+                            <li>• Identificarte sin tu consentimiento</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Configurar Cookies Button -->
+            <div class="mt-12 pt-8 border-t border-gray-200 text-center">
+                <button @click="$dispatch('open-cookie-settings')" class="btn-primary"" 
+                        class="inline-flex items-center px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors text-lg font-medium">
+                    <i class="fas fa-cog mr-2"></i>
+                    Configurar Mis Cookies
+                </button>
+                <p class="text-sm text-gray-500 mt-2">
+                    Gestiona tus preferencias de cookies fácilmente
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+// Funcionalidad específica para la página de política de cookies
+document.addEventListener('DOMContentLoaded', function() {
+    // Mostrar estado actual de cookies
+    const consent = localStorage.getItem('cookie-consent');
+    const preferences = JSON.parse(localStorage.getItem('cookie-preferences') || '{}');
+    
+    if (consent) {
+        const statusEl = document.createElement('div');
+        statusEl.className = 'fixed bottom-4 left-4 bg-green-100 border border-green-400 text-green-700 px-4 py-2 rounded-lg text-sm';
+        statusEl.innerHTML = `
+            <strong>Estado actual:</strong> 
+            Esenciales: ✅ | 
+            Analytics: ${preferences.analytics ? '✅' : '❌'}
+        `;
+        document.body.appendChild(statusEl);
+    }
+});
+</script>
+{% endblock %}
