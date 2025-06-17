@@ -15,7 +15,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 # Establece el directorio de trabajo dentro del contenedor
 WORKDIR /app
 
-# --- LÓGICA DE INSTALACIÓN SIMPLIFICADA ---
+# --- LÓGICA DE INSTALACIÓN SÚPER SIMPLE ---
 # Copia nuestro requirements.txt verificado
 COPY requirements.txt .
 # Instala las librerías desde ese archivo
