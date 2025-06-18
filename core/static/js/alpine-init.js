@@ -1,70 +1,66 @@
 // static/js/alpine-init.js
+
 document.addEventListener('alpine:init', () => {
+
     Alpine.data('secureCookies', () => ({
         accepted: localStorage.getItem('cookie-consent') !== null,
         showSettings: false,
         analyticsEnabled: localStorage.getItem('cookie-analytics') === 'true',
 
         init() {
-            if (this.accepted) {
-                console.log('🍪 Cookies ya configuradas previamente');
-            } else {
-                console.log('🍪 Primera visita - mostrando banner de cookies');
+            // Evitar que el panel se abra automáticamente al inicio
+            this.showSettings = false;
+            
+            // Si las cookies de analytics ya fueron aceptadas, carga los scripts
+            if (this.analyticsEnabled) {
+                this.loadAnalytics();
             }
+        },
+
+        // Método para abrir configuración desde eventos externos
+        openSettings() {
+            this.showSettings = true;
         },
 
         acceptAll() {
             this.analyticsEnabled = true;
             this.save('all');
-            console.log('✅ Usuario aceptó todas las cookies');
         },
 
         acceptEssential() {
             this.analyticsEnabled = false;
             this.save('essential');
-            console.log('✅ Usuario aceptó solo cookies esenciales');
         },
 
         saveSettings() {
             this.save('custom');
             this.showSettings = false;
-            console.log('⚙️ Usuario configuró cookies manualmente');
         },
 
         save(type) {
-            // Guardar preferencias
             localStorage.setItem('cookie-consent', type);
-            localStorage.setItem('cookie-analytics', this.analyticsEnabled ? 'true' : 'false');
+            localStorage.setItem('cookie-analytics', this.analyticsEnabled);
             localStorage.setItem('cookie-consent-date', new Date().toISOString());
             
-            // Actualizar estado
             this.accepted = true;
             
-            // Log para debugging
-            console.log('💾 Cookies guardadas:', {
-                tipo: type,
-                analytics: this.analyticsEnabled,
-                fecha: new Date().toISOString()
-            });
-            
-            // Cargar analytics si está habilitado
             if (this.analyticsEnabled) {
                 this.loadAnalytics();
             }
         },
 
         loadAnalytics() {
-            // Aquí cargarías Google Analytics u otro servicio
-            console.log('📊 Cargando analytics anónimos...');
-            
-            // Ejemplo para Google Analytics 4
-            /*
-            gtag('config', 'GA_MEASUREMENT_ID', {
-                anonymize_ip: true,
-                allow_google_signals: false,
-                allow_ad_personalization_signals: false
-            });
-            */
+            console.log('📊 Cargando scripts de analytics...');
+            // Aquí iría el código real para cargar Google Analytics, etc.
         }
     }));
+
+    // Listener global para abrir configuración de cookies
+    window.addEventListener('open-cookie-settings', () => {
+        // Buscar la instancia de Alpine y abrir configuración
+        const cookieComponent = document.querySelector('[x-data*="secureCookies"]');
+        if (cookieComponent && cookieComponent._x_dataStack) {
+            cookieComponent._x_dataStack[0].openSettings();
+        }
+    });
 });

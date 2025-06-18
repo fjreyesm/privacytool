@@ -1,5 +1,5 @@
 {% extends 'base.html' %}
-{% block title %}Verificar Email - SecureCheck{% endblock %}
+{% block title %}Verificar Email - Yoursecurescan{% endblock %}
 
 {% block content %}
 <div class="max-w-7xl mx-auto py-8 px-4 sm:px-6 lg:px-8">
@@ -62,11 +62,13 @@
                                 </div>
                                 <div class="ml-3 text-sm">
                                     <label for="data-processing" class="font-medium text-gray-700 cursor-pointer">
-                                        <span class="text-red-600">*</span> Acepto el tratamiento de mis datos
+                                        <span class="text-red-600">*</span> He leído y acepto las condiciones para la consulta.
                                     </label>
                                     <p class="text-gray-600 mt-1">
-                                        Consiento que mi dirección de email sea procesada únicamente para realizar la consulta con Have I Been Pwned. 
-                                        <a href="{% url 'core:privacy_policy' %}" class="text-blue-600 hover:underline" target="_blank">Ver política de privacidad</a>
+                                        Al marcar esta casilla, confirmas tener la edad mínima requerida (16 años) y aceptas nuestra 
+                                        <a href="{% url 'core:privacy_policy' %}" class="text-blue-600 hover:underline" target="_blank"> política de privacidad</a>
+                                        <a href="{% url 'core:terms_of_use' %}" class="text-blue-600 hover:underline" target="_blank"> y terminos y condiciones</a>
+                                        Usaremos tu email únicamente para realizar esta consulta.
                                     </p>
                                 </div>
                             </div>

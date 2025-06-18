@@ -1,58 +1,228 @@
-{% extends "base.html" %}
+<!-- templates/legal/privacy-policy.html -->
+{% extends 'base.html' %}
+
+{% block title %}Privacy Policy - Yoursecurescan{% endblock %}
 
 {% block content %}
 <div class="max-w-7xl mx-auto py-8 px-4 sm:px-6 lg:px-8">
-  <h1 class="text-3xl font-bold text-gray-800 mb-6">¿Te han robado el email? Averígualo en 3 minutos (sin complicaciones)</h1>
+    <div class=" rounded-lg shadow-sm p-8 lg:p-12">
+        
+        <div class="text-center mb-10">
+            <h1 class="text-3xl sm:text-4xl font-extrabold text-gray-900 tracking-tight">
+                PRIVACY POLICY
+            </h1>
+            <p class="mt-4 text-lg text-gray-600">
+                Yoursecurescan LLC
+            </p>
+            <p class="mt-1 text-sm text-gray-500">
+                <strong>Last Updated:</strong> {{ last_updated|default:"[Date]" }}
+            </p>
+        </div>
 
-  <p class="text-gray-700 mb-4">
-    Imagina que tu email, ese que usas para todo, aparece en una lista filtrada tras un ataque a una empresa. ¿Qué significa eso? ¿Qué deberías hacer? La buena noticia es que puedes comprobarlo tú mismo en minutos.
-  </p>
+        <div class="prose prose-lg max-w-none">
+            
+            <!-- Quick Summary -->
+            <div class="bg-white border-l-4 border-blue-400 p-4 my-6">
+                <h4 class="font-semibold text-blue-800 mb-2">📋 Privacy Summary</h4>
+                <p class="text-sm text-blue-700 mb-2">
+                    We provide security breach consultation services and compromised data analysis using public databases like Have I Been Pwned (HIBP).
+                </p>
+                <ul class="text-sm text-blue-700 space-y-1">
+                    <li>• <strong>What we collect:</strong> Email for account registration, billing information for premium services</li>
+                    <li>• <strong>Free queries:</strong> We do NOT store the email addresses you check</li>
+                    <li>• <strong>We never sell your data</strong> - we only share with essential service providers</li>
+                    <li>• <strong>Your rights:</strong> Access, correct, or delete your data anytime</li>
+                </ul>
+            </div>
 
-  <h2 class="text-2xl font-semibold text-gray-800 mt-8 mb-2">¿Qué es una filtración de datos?</h2>
-  <p class="text-gray-700 mb-4">
-    Una filtración ocurre cuando alguien accede sin permiso a los datos de una empresa. Muchas veces, esos datos acaban en internet (o en la dark web).<br>
-    👉 Tu email, contraseña, número de teléfono o dirección pueden estar entre ellos.
-  </p>
+            <h2 id="company-info">1. COMPANY INFORMATION</h2>
+            <p>This Privacy Policy describes how Yoursecurescan LLC ("we", "our", "the company") collects, uses, and protects your personal information when you use our services.</p>
+            
+            <div class="bg-gray-50 border border-gray-200 rounded-lg p-4 my-4">
+                <p><strong>Yoursecurescan LLC</strong><br>
+                30N Gould St Ste N<br>
+                82801 Sheridan, WY USA<br>
+                Email: contact@yoursecurescan.com</p>
+            </div>
 
-  <h2 class="text-2xl font-semibold text-gray-800 mt-8 mb-2">¿Cómo saber si tu correo fue filtrado?</h2>
-  <p class="text-gray-700 mb-4">
-    Puedes usar herramientas públicas y gratuitas como:
-  </p>
-  <ul class="list-disc list-inside text-gray-700 mb-4">
-    <li><a href="https://haveibeenpwned.com" target="_blank" class="text-blue-600 hover:underline">HaveIBeenPwned.com</a></li>
-    <li><a href="https://monitor.firefox.com" target="_blank" class="text-blue-600 hover:underline">Firefox Monitor</a></li>
-  </ul>
-  <p class="text-gray-700 mb-4">
-    Solo tienes que ingresar tu email. No te pedirá contraseña ni acceso a tu cuenta.
-  </p>
+            <h2 id="services">2. OUR SERVICES</h2>
+            <p>We provide security breach consultation and compromised data analysis services, including:</p>
+            <ul>
+                <li>Free basic breach verification queries</li>
+                <li>Detailed paid security reports</li>
+                <li>Educational security tools and resources</li>
+                <li>Educational content through our blog</li>
+            </ul>
+            <p>Our primary data source is the publicly recognized Have I Been Pwned (HIBP) database, and we may incorporate other third-party data sources in the future.</p>
 
-  <h2 class="text-2xl font-semibold text-gray-800 mt-8 mb-2">¿Y si aparece en una filtración?</h2>
-  <p class="text-gray-700 mb-4">
-    No entres en pánico. Haz esto:
-  </p>
-  <ul class="list-disc list-inside text-gray-700 mb-4">
-    <li>Cambia la contraseña de ese servicio (¡y de otros donde uses la misma!).</li>
-    <li>Activa el doble factor de autenticación (2FA).</li>
-    <li>Evita volver a usar esa contraseña.</li>
-  </ul>
+            <h2 id="information-collected">3. INFORMATION WE COLLECT</h2>
+            
+            <h3>3.1 Free Query Services</h3>
+            <p>For free breach verification queries, we <strong>do NOT store</strong> the email addresses you search. These queries are processed in real-time without retention.</p>
 
-  <div class="bg-yellow-100 border-l-4 border-yellow-500 text-yellow-800 p-4 mt-6 rounded-lg shadow-sm">
-    <p class="font-medium">🧠 Recomendación final:</p>
-    <p>Revisa tu email cada pocos meses. Las filtraciones no paran. Si te interesa, pronto ofreceremos una forma sencilla de recibir alertas personalizadas sin complicaciones.</p>
-  </div>
+            <h3>3.2 Registered Users</h3>
+            <p>For premium services, we collect and store:</p>
+            <ul>
+                <li>Name and email address provided during registration (with your explicit authorization)</li>
+                <li>Account credentials (passwords are encrypted)</li>
+                <li>Billing information necessary for payment processing</li>
+                <li>Service usage data to provide and improve our services</li>
+            </ul>
 
-  <!-- Call to Action -->
-  <div class="mt-12 bg-gray-100 rounded-lg p-6 text-center shadow-md">
-    <h3 class="text-xl font-semibold text-gray-800 mb-2">¿Te gustó este artículo?</h3>
-    <p class="text-gray-700 mb-4">Suscríbete para más consejos sencillos sobre seguridad y privacidad digital.</p>
-    <form action="/suscribirse" method="POST" class="flex flex-col sm:flex-row justify-center gap-2">
-      <input type="email" name="email" placeholder="Tu correo electrónico" required
-             class="px-4 py-2 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500 w-full sm:w-64">
-      <button type="submit"
-              class="px-6 py-2 bg-blue-600 text-white font-medium rounded-lg hover:bg-blue-700 transition">
-        Suscribirme
-      </button>
-    </form>
-  </div>
+            <h3>3.3 Automatically Collected Information</h3>
+            <p>We may automatically collect:</p>
+            <ul>
+                <li>IP address and browser information</li>
+                <li>Usage analytics (anonymized)</li>
+                <li>Technical data for security and performance</li>
+                <li>Cookies (see Cookie Policy for details)</li>
+            </ul>
+
+            <h2 id="data-use">4. HOW WE USE YOUR INFORMATION</h2>
+            <p>We use collected data exclusively to:</p>
+            <ul>
+                <li>Provide, maintain, and improve the requested services</li>
+                <li>Process transactions and send service-related communications (confirmations, technical notices, etc.)</li>
+                <li>Comply with our legal and tax obligations</li>
+                <li>Ensure security and prevent fraud</li>
+            </ul>
+
+            <h2 id="data-sharing">5. DATA SHARING WITH THIRD PARTIES</h2>
+            <p>We do not sell or rent personal information. We only share information with third parties in limited circumstances:</p>
+            
+            <h3>5.1 Service Providers</h3>
+            <ul>
+                <li>Payment processing through certified payment service providers (like Stripe)</li>
+                <li>Cloud hosting services (AWS) with appropriate security measures</li>
+                <li>Email services for transactional communications</li>
+            </ul>
+
+            <h3>5.2 Legal Requirements</h3>
+            <ul>
+                <li>To comply with a legal obligation or valid court order</li>
+                <li>To protect our rights, property, or safety, or that of users or others</li>
+                <li>With your explicit consent</li>
+            </ul>
+
+            <h2 id="data-security">6. DATA SECURITY</h2>
+            <p>We implement appropriate technical and organizational security measures to protect your data, including:</p>
+            <ul>
+                <li>Database encryption</li>
+                <li>Restricted access to personal information</li>
+                <li>Regular system monitoring to detect vulnerabilities</li>
+                <li>Secure data transmission (SSL/TLS)</li>
+            </ul>
+
+            <h2 id="data-retention">7. DATA RETENTION</h2>
+            <p>We retain your personal information for as long as necessary to provide services and comply with legal obligations:</p>
+            <ul>
+                <li><strong>Active accounts:</strong> While you use our services</li>
+                <li><strong>Inactive accounts:</strong> 24 months, then deleted</li>
+                <li><strong>Billing records:</strong> 7 years (legal requirement)</li>
+                <li><strong>Free query data:</strong> Not stored</li>
+            </ul>
+
+            <h2 id="user-rights">8. YOUR RIGHTS</h2>
+            <p>Depending on your jurisdiction, you have the right to:</p>
+            <ul>
+                <li>Access your stored personal data</li>
+                <li>Request correction of inaccurate data</li>
+                <li>Request deletion of your data ("right to be forgotten")</li>
+                <li>Revoke consent for data processing</li>
+                <li>Export your data in a portable format</li>
+            </ul>
+            <p>To exercise these rights, please contact us using the information provided in Section 12.</p>
+
+            <h2 id="children">9. CHILDREN'S PRIVACY</h2>
+            <div class="bg-blue-200 border border-blue-600 rounded-lg p-4 my-4">
+                <h4 class="font-semibold text-red-800 mb-2">⚠️ Age Restriction</h4>
+                <p class="text-sm ">
+                    Our services are not intended for individuals under 16 years of age. We do not knowingly collect personal information from children under 16. If you are under 16, please do not use our services or provide any personal information. If we discover we have collected information from a child under 16, we will delete it immediately.
+                </p>
+            </div>
+
+            <h2 id="cookies">10. COOKIES AND TRACKING</h2>
+            <p>We use cookies and similar technologies to enhance your experience. For detailed information about our cookie practices, please see our <a href="{% url 'core:politica_cookies' %}" class="text-blue-600 hover:underline">Cookie Policy</a>. You can control cookie preferences through your browser settings or our cookie management tool.</p>
+
+            <h2 id="international-users">11. INTERNATIONAL DATA TRANSFERS</h2>
+            <p>Our services are operated from the United States. If you are located outside the United States, please be aware that information we collect will be transferred to and processed in the United States. By using our services, you consent to the transfer of your information to the United States.</p>
+
+            <h2 id="third-party-links">12. THIRD-PARTY LINKS</h2>
+            <p>Our service may contain links to third-party websites or services. This Privacy Policy does not apply to those external sites. We encourage you to read the privacy policies of any third-party sites you visit.</p>
+
+            <h2 id="business-transfers">13. BUSINESS TRANSFERS</h2>
+            <p>If Yoursecurescan LLC is involved in a merger, acquisition, or sale of assets, your personal information may be transferred. We will provide notice of any such change and ensure your privacy rights are protected.</p>
+
+            <h2 id="policy-changes">14. CHANGES TO THIS POLICY</h2>
+            <p>We may update this Privacy Policy from time to time. We will notify registered users of any material changes at least 30 days in advance. Continued use of the service after the effective date of changes constitutes acceptance of the new terms.</p>
+
+            <h2 id="legal-basis">15. LEGAL BASIS FOR PROCESSING</h2>
+            <p>We process your personal information based on:</p>
+            <ul>
+                <li><strong>Contract performance:</strong> To provide the services you requested</li>
+                <li><strong>Legitimate interests:</strong> To improve our services and ensure security</li>
+                <li><strong>Legal compliance:</strong> To meet our legal and regulatory obligations</li>
+                <li><strong>Consent:</strong> Where you have provided explicit consent</li>
+            </ul>
+
+            <h2 id="contact">16. CONTACT INFORMATION</h2>
+            <p>For any questions about this Privacy Policy or to exercise your privacy rights, please contact us:</p>
+            
+            <div class="bg-gray-50 border border-gray-200 rounded-lg p-4 my-4">
+                <address class="not-italic">
+                    <strong>Yoursecurescan LLC</strong><br>
+                    30N Gould St Ste N<br>
+                    82801 Sheridan, WY USA<br>
+                    Email: <a href="mailto:contact@yoursecurescan.com" class="text-blue-600 hover:underline">contact@yoursecurescan.com</a><br>
+                    Response time: Usually within 48 hours
+                </address>
+            </div>
+
+            <h2 id="applicable-law">17. APPLICABLE LAW</h2>
+            <p>This Privacy Policy is governed by the laws of the State of Wyoming, United States. We comply with applicable U.S. federal and state privacy laws, including:</p>
+            <ul>
+                <li>Children's Online Privacy Protection Act (COPPA)</li>
+                <li>California Consumer Privacy Act (CCPA) where applicable</li>
+                <li>Other applicable state privacy laws</li>
+                <li>Federal Trade Commission (FTC) regulations</li>
+            </ul>
+
+            <div class="mt-8 p-4 bg-white border-l-4 border-blue-500 rounded-r-lg">
+                <p class="font-bold text-gray-800">IMPORTANT</p>
+                <p class="text-gray-700">This Privacy Policy is part of our Terms of Use and constitutes a legal agreement between you and Yoursecurescan LLC. By using our services, you confirm that you have read, understood, and agree to be bound by this Privacy Policy.</p>
+            </div>
+        </div>
+        
+        <!-- Action Button -->
+        <div class="mt-12 pt-8 border-t border-gray-200 text-center">
+            <button onclick="window.dispatchEvent(new CustomEvent('open-cookie-settings'))" class="inline-flex items-center px-6 py-3 border border-transparent text-base font-medium rounded-md shadow-sm text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
+                <i class="fas fa-cog mr-2"></i>
+                Configure Cookie Settings
+            </button>
+            <p class="text-sm text-gray-500 mt-2">
+                Manage your privacy preferences
+            </p>
+        </div>
+    </div>
 </div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+// Privacy Policy functionality
+document.addEventListener('DOMContentLoaded', function() {
+    // Show user status if logged in
+    const userEmail = '{{ user.email|default:"" }}';
+    if (userEmail) {
+        const statusEl = document.createElement('div');
+        statusEl.className = 'fixed bottom-4 left-4 bg-green-100 border border-green-400 text-green-700 px-4 py-2 rounded-lg text-sm';
+        statusEl.innerHTML = `
+            <strong>Registered user:</strong><br>
+            ${userEmail}<br>
+            <a href="mailto:contact@yoursecurescan.com?subject=Privacy Request" class="underline text-green-800">Privacy request</a>
+        `;
+        document.body.appendChild(statusEl);
+    }
+});
+</script>
 {% endblock %}

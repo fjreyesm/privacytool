@@ -37,7 +37,7 @@ SECURE_REFERRER_POLICY = 'strict-origin-when-cross-origin'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = os.environ.get('DEBUG', 'True') == 'True'
 #DEBUG = True  # <-- Forzamos el modo DEBUG para poder depurar
-ALLOWED_HOSTS = os.environ.get('ALLOWED_HOSTS', 'localhost,127.0.0.1').split(',')
+ALLOWED_HOSTS = os.environ.get('ALLOWED_HOSTS', 'localhost,127.0.0.1, 192.168.0.16').split(',')
 
 # Application definition
 INSTALLED_APPS = [
@@ -134,7 +134,7 @@ CACHES = {
 
 # Configuración de correo
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'  # Para desarrollo
-DEFAULT_FROM_EMAIL = 'noreply@securecheck.com'
+DEFAULT_FROM_EMAIL = 'noreply@yoursecurescan.com'
 
 # Configuración de API Keys
 HIBP_API_KEY = os.environ.get("HIBP_API_KEY", "")

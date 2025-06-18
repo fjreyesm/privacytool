@@ -1,6 +1,38 @@
 {% extends 'base.html' %}
 
-{% block title %}{{ post.title }} - SecureCheck Blog{% endblock %}
+{% block title %}{{ post.title }} - Yoursecurescan Blog{% endblock %}
+
+{# --- Bloque para el SEO y Structured Data --- #}
+{# --- Bloque para el SEO y Structured Data --- #}
+{% block extra_head %}
+    <meta name="description" content="{{ post.excerpt|truncatewords:25 }}">
+    <link rel="canonical" href="{{ request.build_absolute_uri }}">
+
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "BlogPosting",
+      "headline": "{{ post.title }}",
+      "description": "{{ post.excerpt|truncatewords:30 }}",
+      "image": "{{ request.scheme }}://{{ request.get_host }}{{ post.featured_image.url }}",
+      "author": {
+        "@type": "Organization",
+        "name": "Yoursecurescan",
+        "url": "https://yoursecurescan.com"
+      },
+      "publisher": {
+        "@type": "Organization",
+        "name": "Yoursecurescan",
+        "logo": {
+          "@type": "ImageObject",
+          "url": "https://yoursecurescan.com/static/images/logo.png"
+        }
+      },
+      "datePublished": "{{ post.published_at|date:'Y-m-d' }}",
+      "dateModified": "{{ post.updated_at|date:'Y-m-d' }}"
+    }
+    </script>
+{% endblock %}
 
 {% block content %}
 <div class="max-w-7xl mx-auto py-8 px-4 sm:px-6 lg:px-8">
@@ -12,7 +44,8 @@
                 <span>{{ post.published_at|date:"d F, Y" }}</span>
                 {% if post.category %}
                     <span class="mx-2">•</span>
-                    <a href="{% url 'core:blog_list' %}?category={{ post.category.slug }}" class="text-primary hover:underline font-semibold">{{ post.category.name }}</a>
+                    <a href="{% url  'core:blog_list' %}?category={{ post.category.slug }}" class="text-primary hover:underline font-semibold">{{ post.category.name }}</a>
+                    
                 {% endif %}
             </div>
         </header>

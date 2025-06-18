@@ -2,13 +2,14 @@
     <div class="container mx-auto px-4">
         <div class="flex flex-col md:flex-row justify-between items-center">
             <div class="mb-4 md:mb-0">
-                <p class="text-sm">&copy; 2025 SecureCheck. Todos los derechos reservados.</p>
+                <p class="text-sm">&copy; 2025 Yoursecurescan. Todos los derechos reservados.</p>
             </div>
             <div class="flex space-x-4">
                 <a href="{% url 'core:privacy_policy' %}" class="text-sm hover:text-gray-200">Política de Privacidad</a>
                 <a href="{% url 'core:terms_of_use' %}" class="text-sm hover:text-gray-200">Términos de Uso</a>
+                
+                <a href="{% url 'core:politica-cookies' %}" class="text-sm hover:text-gray-200>Política de Cookies</a> 
                 <a href="{% url 'core:faq' %}" class="text-sm hover:text-gray-200">Faq</a>
-                <a href="{% url 'core:politica_cookies' %}" class="hover:underline">Política de Cookies</a> 
             </div>
         </div>
     </div>

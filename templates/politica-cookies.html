@@ -4,8 +4,8 @@
 {% block title %}{{ title }}{% endblock %}
 
 {% block content %}
-<div class="min-h-screen bg-gray-50 py-12">
-    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+<div class="max-w-7xl mx-auto py-8 px-4 sm:px-6 lg:px-8">
+    
         <div class="bg-white rounded-lg shadow-sm p-8 lg:p-12">
             <header class="mb-8">
                 <h1 class="text-3xl lg:text-4xl font-bold text-gray-900 mb-4">
@@ -186,8 +186,7 @@
             
             <!-- Configurar Cookies Button -->
             <div class="mt-12 pt-8 border-t border-gray-200 text-center">
-                <button @click="$dispatch('open-cookie-settings')" class="btn-primary"" 
-                        class="inline-flex items-center px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors text-lg font-medium">
+                <button onclick="window.dispatchEvent(new CustomEvent('open-cookie-settings'))" class="btn-primary">
                     <i class="fas fa-cog mr-2"></i>
                     Configurar Mis Cookies
                 </button>
@@ -196,7 +195,7 @@
                 </p>
             </div>
         </div>
-    </div>
+    
 </div>
 {% endblock %}
 

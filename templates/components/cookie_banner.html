@@ -2,6 +2,7 @@
 
 <div x-data="secureCookies" x-init="init()">
 
+    <!-- Banner inicial (solo cuando no se ha aceptado nada) -->
     <div x-show="!accepted" 
          x-cloak
          class="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 shadow-lg"
@@ -19,7 +20,7 @@
                     <div>
                         <p class="text-sm text-gray-700 leading-relaxed">
                             <strong>Respetamos tu privacidad.</strong> Usamos cookies esenciales para el funcionamiento y, opcionalmente, analytics anónimos para mejorar el servicio.
-                            <a href="{% url 'core:politica_cookies' %}" target="_blank" class="text-primary hover:underline font-semibold ml-1">Más detalles</a>
+                            <a href="{% url 'core:politica-cookies' %}" target="_blank" class="text-primary hover:underline font-semibold ml-1">Más detalles</a>
                         </p>
                     </div>
                 </div>
@@ -36,19 +37,25 @@
         </div>
     </div>
 
+    <!-- Botón flotante (solo cuando ya se ha aceptado algo) -->
     <div x-show="accepted" x-cloak class="fixed bottom-6 right-6 z-40">
-        {# Este botón ahora abre el modal directamente #}
-        <button @click="showSettings = true" 
+        <button @click="openSettings()" 
                 class="bg-gray-800 text-white p-3 rounded-full shadow-lg hover:bg-gray-900 transition-all duration-200 hover:scale-105"
                 title="Configurar cookies">
             <i class="fas fa-cookie-bite text-lg"></i>
         </button>
     </div>
 
+    <!-- Modal de configuración -->
     <div x-show="showSettings" 
          x-cloak
          class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4"
-         x-transition:enter="transition ease-out duration-200" x-transition:enter-start="opacity-0" x-transition:enter-end="opacity-100">
+         x-transition:enter="transition ease-out duration-200" 
+         x-transition:enter-start="opacity-0" 
+         x-transition:enter-end="opacity-100"
+         x-transition:leave="transition ease-in duration-200"
+         x-transition:leave-start="opacity-100"
+         x-transition:leave-end="opacity-0">
         
         <div class="bg-white rounded-lg shadow-xl max-w-md w-full p-6" @click.away="showSettings = false">
             <div class="flex justify-between items-center mb-4">

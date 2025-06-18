@@ -26,6 +26,6 @@ urlpatterns = [
     path('terminos/', terms_of_use_view, name='terms_of_use'),
     path('faq/', faq_view, name='faq'),
     path('privacidad/', privacy_policy_view, name='privacy_policy'),
-    path('politica-cookies/', PoliticaCookiesView.as_view(), name='politica_cookies'),
+    path('politica-cookies/', PoliticaCookiesView.as_view(), name='politica-cookies'),
 
 ]
