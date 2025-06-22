@@ -2,7 +2,9 @@
 <div class="card group flex flex-col h-full">
     {% if post.featured_image %}
     <a href="{{ post.get_absolute_url }}" class="block h-48 overflow-hidden">
-        <img src="{{ post.featured_image.url }}" alt="{{ post.title }}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300 ease-in-out">
+        <img src="{{ post.featured_image.url }}" 
+             alt="{{ post.get_image_alt_text }}" 
+             class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300 ease-in-out">
     </a>
     {% endif %}
 

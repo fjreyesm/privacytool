@@ -16,7 +16,10 @@ except KeyError:
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
+<<<<<<< HEAD
 # SECURITY WARNING: keep the secret key used in production secret!
+=======
+>>>>>>> main
 DEBUG = bool(os.environ.get('DJANGO_DEBUG', True))
 
 SECURE_BROWSER_XSS_FILTER = True
@@ -36,6 +39,10 @@ DEBUG = os.environ.get('DEBUG', 'True') == 'True'
 #DEBUG = True  # <-- Forzamos el modo DEBUG para poder depurar
 ALLOWED_HOSTS = os.environ.get('ALLOWED_HOSTS', 'localhost,127.0.0.1, 192.168.0.16').split(',')
 
+# Configuración de URL del sitio para diferentes entornos
+SITE_URL = os.environ.get('SITE_URL', 'http://127.0.0.1:8000')
+SITE_DOMAIN = os.environ.get('SITE_DOMAIN', '127.0.0.1:8000')
+
 # Application definition
 INSTALLED_APPS = [
     'django.contrib.admin',
@@ -45,6 +52,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'django.contrib.humanize',
+    'django.contrib.sitemaps',  # Añadido para sitemaps
     
     # Apps de terceros
     'django_htmx',
@@ -78,6 +86,7 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'core.context_processors.site_settings',  # Nuevo context processor
             ],
         },
     },
@@ -115,10 +124,6 @@ TIME_ZONE = 'Europe/Madrid'
 USE_I18N = True
 USE_TZ = True
 
-
-
-
-
 # Default primary key field type
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
@@ -151,3 +156,6 @@ RATELIMIT_KEY = 'ip'  # Limita por dirección IP del usuario.
 RATELIMIT_RATE = '5/m' # 5 peticiones por minuto. Puedes ajustarlo a '10/h' (10 por hora), etc.
 RATELIMIT_BLOCK = True # Si se supera el límite, bloquea la petición (genera un error).
 RATELIMIT_METHOD = 'all' # Aplica el límite a todos los métodos (GET, POST, etc.)
+
+# Configuración del sitio para sitemaps
+SITE_ID = 1
