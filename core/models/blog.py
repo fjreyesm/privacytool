@@ -2,8 +2,9 @@ from django.db import models
 import uuid
 from django.utils.text import slugify
 from django.urls import reverse
+from django.utils.html import strip_tags
 
-class BlogCategory(models.Model ):
+class BlogCategory(models.Model):
     """Modelo para categorías de blog."""
     
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
@@ -53,8 +54,38 @@ class BlogPost(models.Model):
         if not self.slug:
             self.slug = slugify(self.title)
         if not self.excerpt and self.content:
-            self.excerpt = self.content[:200] + '...' if len(self.content) > 200 else self.content
+            # Limpiar HTML del contenido antes de crear el extracto
+            clean_content = strip_tags(self.content)
+            self.excerpt = clean_content[:200] + '...' if len(clean_content) > 200 else clean_content
         super().save(*args, **kwargs)
     
     def get_absolute_url(self):
         return reverse('core:blog_post_detail', kwargs={'slug': self.slug})
+    
+    def get_image_alt_text(self):
+        """
+        Genera un texto alt optimizado para la imagen destacada.
+        Prioriza: extracto manual > extracto generado > título
+        """
+        if self.excerpt:
+            # Limpiar HTML si existe en el extracto
+            clean_excerpt = strip_tags(self.excerpt)
+            # Truncar a 125 caracteres (límite recomendado para alt)
+            if len(clean_excerpt) > 125:
+                return clean_excerpt[:125].rsplit(' ', 1)[0] + '...'
+            return clean_excerpt
+        
+        # Fallback al título si no hay extracto
+        return f"Imagen del artículo: {self.title}"
+    
+    def get_short_excerpt(self, words=25):
+        """
+        Obtiene un extracto corto para meta descriptions, etc.
+        """
+        if self.excerpt:
+            clean_excerpt = strip_tags(self.excerpt)
+            words_list = clean_excerpt.split()
+            if len(words_list) > words:
+                return ' '.join(words_list[:words]) + '...'
+            return clean_excerpt
+        return f"Artículo sobre {self.title}"
