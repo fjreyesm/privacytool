@@ -21,7 +21,7 @@ def verification_home(request):
     return render(request, "verification/check.html")
 
 
-@ratelimit(key='ip', rate='5/m', block=True)
+@ratelimit(key='ip', rate='15/m', block=True)
 @require_http_methods(["POST"])
 def check_email_view(request):
     """Vista para verificar un email usando HTMX, con límite de peticiones."""

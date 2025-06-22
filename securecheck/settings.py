@@ -16,10 +16,7 @@ except KeyError:
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-
-
-
-
+# SECURITY WARNING: keep the secret key used in production secret!
 DEBUG = bool(os.environ.get('DJANGO_DEBUG', True))
 
 SECURE_BROWSER_XSS_FILTER = True

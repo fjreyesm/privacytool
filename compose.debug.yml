@@ -1,0 +1,14 @@
+services:
+  web:
+    command: >
+      sh -c "pip install debugpy &&
+             npm run tailwind:build &
+             python -m debugpy --listen 0.0.0.0:5678 --wait-for-client manage.py runserver 0.0.0.0:8000"
+    ports:
+      - "8000:8000"
+      - "5678:5678" # Puerto para debugpy
+    environment:
+      - DEBUG=True
+      - DJANGO_SETTINGS_MODULE=securecheck.settings
+    stdin_open: true
+    tty: true
