@@ -1,0 +1,78 @@
+# robots.txt para PrivacyTool
+# Herramienta de verificación de privacidad y seguridad
+
+User-agent: *
+
+# Permitir páginas principales e importantes para SEO
+Allow: /
+Allow: /verification/
+Allow: /tools/
+Allow: /blog/
+Allow: /terminos/
+Allow: /faq/
+Allow: /privacidad/
+Allow: /politica-cookies/
+
+# Permitir archivos estáticos importantes para renderización
+Allow: /static/css/
+Allow: /static/js/
+Allow: /static/images/
+Allow: /static/favicon.ico
+
+# Bloquear áreas administrativas y sensibles
+Disallow: /admin/
+Disallow: /admin/*
+
+# Bloquear archivos y directorios técnicos
+Disallow: /media/private/
+Disallow: /*.json$
+Disallow: /*.txt$
+Disallow: /static/debug/
+
+# Bloquear parámetros de URL que no añaden valor SEO
+Disallow: /*?utm_*
+Disallow: /*?ref=*
+Disallow: /*?source=*
+Disallow: /*&utm_*
+Disallow: /*&ref=*
+Disallow: /*&source=*
+
+# Bloquear páginas de resultados dinámicos que podrían crear contenido duplicado
+Disallow: /verification/check/?*
+Disallow: /breach/detail/*?*
+
+# Evitar indexación de páginas de error
+Disallow: /404/
+Disallow: /500/
+
+# Crawl-delay para ser respetuoso con el servidor
+Crawl-delay: 1
+
+# Sitemap location
+Sitemap: https://tu-dominio.com/sitemap.xml
+
+# Instrucciones específicas para bots principales
+User-agent: Googlebot
+Allow: /static/css/
+Allow: /static/js/
+Allow: /static/images/
+Crawl-delay: 0
+
+User-agent: Bingbot
+Allow: /static/css/
+Allow: /static/js/
+Allow: /static/images/
+Crawl-delay: 1
+
+# Bloquear bots de scraping agresivo
+User-agent: SemrushBot
+Disallow: /
+
+User-agent: AhrefsBot
+Disallow: /
+
+User-agent: MJ12bot
+Disallow: /
+
+User-agent: DotBot
+Disallow: /
