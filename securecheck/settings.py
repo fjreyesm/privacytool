@@ -16,24 +16,22 @@ except KeyError:
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
+# SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = os.environ.get('DEBUG', 'True') == 'True'
 
+# Configuración de seguridad
 SECURE_BROWSER_XSS_FILTER = True
 SECURE_CONTENT_TYPE_NOSNIFF = True
 X_FRAME_OPTIONS = 'DENY'
-SECURE_HSTS_SECONDS = 0 # Cambia a True en producción a => 31536000 if not DEBUG else 0    --1 año
-SECURE_HSTS_INCLUDE_SUBDOMAINS = True
+SECURE_HSTS_SECONDS = 0 if DEBUG else 31536000  # 1 año en producción
 SECURE_HSTS_INCLUDE_SUBDOMAINS = True
 SECURE_HSTS_PRELOAD = True
-SECURE_SSL_REDIRECT = False # Cambia a True en producción si usas HTTPS
-SESSION_COOKIE_SECURE = True
-CSRF_COOKIE_SECURE = True
+SECURE_SSL_REDIRECT = False  # Cambia a True en producción si usas HTTPS
+SESSION_COOKIE_SECURE = not DEBUG  # True en producción
+CSRF_COOKIE_SECURE = not DEBUG     # True en producción
 SECURE_REFERRER_POLICY = 'strict-origin-when-cross-origin'
 
-# SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = os.environ.get('DEBUG', 'True') == 'True'
-#DEBUG = True  # <-- Forzamos el modo DEBUG para poder depurar
-ALLOWED_HOSTS = os.environ.get('ALLOWED_HOSTS', 'localhost,127.0.0.1, 192.168.0.16').split(',')
+ALLOWED_HOSTS = os.environ.get('ALLOWED_HOSTS', 'localhost,127.0.0.1,192.168.0.16').split(',')
 
 # Configuración de URL del sitio para diferentes entornos
 SITE_URL = os.environ.get('SITE_URL', 'http://127.0.0.1:8000')
@@ -66,7 +64,6 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'django_htmx.middleware.HtmxMiddleware',
-     'django.middleware.security.SecurityMiddleware',
 ]
 
 ROOT_URLCONF = 'securecheck.urls'
@@ -90,13 +87,27 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'securecheck.wsgi.application'
 
-# Database
+# Reemplaza solo la sección DATABASES en tu settings.py
+
+# Database - SQLite TEMPORAL (para recuperar datos)
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
         'NAME': BASE_DIR / 'db.sqlite3',
     }
 }
+
+# Database - PostgreSQL para Docker
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.postgresql',
+#         'NAME': os.environ.get('POSTGRES_DB', 'securecheck'),
+#         'USER': os.environ.get('POSTGRES_USER', 'securecheck'),
+#         'PASSWORD': os.environ.get('POSTGRES_PASSWORD', 'securecheck'),
+#         'HOST': os.environ.get('DB_HOST', 'db'),
+#         'PORT': os.environ.get('DB_PORT', '5432'),
+#     }
+# }
 
 # Password validation
 AUTH_PASSWORD_VALIDATORS = [
@@ -137,7 +148,6 @@ DEFAULT_FROM_EMAIL = 'noreply@yoursecurescan.com'
 # Configuración de API Keys
 HIBP_API_KEY = os.environ.get("HIBP_API_KEY", "")
 
-# Añade estas líneas al final del archivo
 # Media files
 MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / 'media'
