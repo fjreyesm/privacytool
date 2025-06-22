@@ -6,6 +6,18 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
+    <!-- URL Canónica - Usando la variable SITE_URL automáticamente -->
+    <link rel="canonical" href="{{ SITE_URL }}{{ request.get_full_path }}">
+    
+    <!-- Open Graph - URLs automáticas -->
+    <meta property="og:url" content="{{ SITE_URL }}{{ request.get_full_path }}">
+    <meta property="og:site_name" content="PrivacyTool">
+    <meta property="og:type" content="website">
+    
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:site" content="@yoursecurescan">
+
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
  
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
@@ -14,10 +26,25 @@
     
     <title>{% block title %}Yoursecurescan{% endblock %}</title>
     
+    <!-- SEO Meta Tags - Block para que cada página pueda sobrescribir -->
+    {% block meta_description %}
+    <meta name="description" content="Herramienta de verificación de privacidad y seguridad online. Protege tu información personal.">
+    {% endblock %}
+    
+    {% block meta_keywords %}
+    <meta name="keywords" content="privacidad, seguridad, verificación, protección datos, RGPD">
+    {% endblock %}
+    
+    <!-- Conditional meta tags para desarrollo vs producción -->
+    {% if not DEBUG %}
+    <meta name="robots" content="index, follow">
+    {% else %}
+    <meta name="robots" content="noindex, nofollow">
+    {% endif %}
+    
     <meta name="csrf-token" content="{{ csrf_token }}">
     
     <link href="{% static 'css/output.css' %}" rel="stylesheet">
-    
 
     <script src="https://unpkg.com/htmx.org@1.9.6"></script>
     
@@ -29,7 +56,6 @@
     {% include 'components/header.html' %}
     
     <main class="flex-grow">
-
         {% block content %}{% endblock %}
     </main>
     
