@@ -15,9 +15,8 @@ def robots_txt(request):
     try:
         with open(robots_path, 'r', encoding='utf-8') as f:
             content = f.read()
-        # Reemplazar el dominio placeholder en robots.txt
-        domain = request.get_host()
-        content = content.replace('https://tu-dominio.com', f'https://{domain}')
+        # Usar la variable SITE_URL de settings en lugar de construir dinámicamente
+        content = content.replace('https://tu-dominio.com', settings.SITE_URL)
         return HttpResponse(content, content_type='text/plain')
     except FileNotFoundError:
         return HttpResponse('User-agent: *\nDisallow:', content_type='text/plain')
