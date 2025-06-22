@@ -2,9 +2,10 @@ from django.contrib import admin
 from django.urls import path, include
 from django.conf import settings
 from django.conf.urls.static import static
-from django.views.generic import TemplateView
+from django.contrib.sitemaps.views import sitemap
 from django.http import HttpResponse
 from django.views.decorators.cache import cache_control
+from core.sitemaps import sitemaps
 import os
 
 # Vista para servir robots.txt
@@ -14,6 +15,9 @@ def robots_txt(request):
     try:
         with open(robots_path, 'r', encoding='utf-8') as f:
             content = f.read()
+        # Reemplazar el dominio placeholder en robots.txt
+        domain = request.get_host()
+        content = content.replace('https://tu-dominio.com', f'https://{domain}')
         return HttpResponse(content, content_type='text/plain')
     except FileNotFoundError:
         return HttpResponse('User-agent: *\nDisallow:', content_type='text/plain')
@@ -21,6 +25,7 @@ def robots_txt(request):
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('robots.txt', robots_txt, name='robots_txt'),
+    path('sitemap.xml', sitemap, {'sitemaps': sitemaps}, name='django.contrib.sitemaps.views.sitemap'),
     path('', include('core.urls')),
 ]
 
