@@ -3,33 +3,61 @@
 {% block title %}{{ post.title }} - Yoursecurescan Blog{% endblock %}
 
 {# --- Bloque para el SEO y Structured Data --- #}
-{# --- Bloque para el SEO y Structured Data --- #}
+{% block meta_description %}
+<meta name="description" content="{{ post.get_short_excerpt }}">
+{% endblock %}
+
 {% block extra_head %}
-    <meta name="description" content="{{ post.excerpt|truncatewords:25 }}">
-    <link rel="canonical" href="{{ request.build_absolute_uri }}">
+    <link rel="canonical" href="{{ SITE_URL }}{{ request.get_full_path }}">
+    
+    <!-- Open Graph mejorado -->
+    <meta property="og:title" content="{{ post.title }}">
+    <meta property="og:description" content="{{ post.get_short_excerpt }}">
+    <meta property="og:type" content="article">
+    <meta property="og:url" content="{{ SITE_URL }}{{ request.get_full_path }}">
+    {% if post.featured_image %}
+    <meta property="og:image" content="{{ SITE_URL }}{{ post.featured_image.url }}">
+    <meta property="og:image:alt" content="{{ post.get_image_alt_text }}">
+    {% endif %}
+    
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="{{ post.title }}">
+    <meta name="twitter:description" content="{{ post.get_short_excerpt }}">
+    {% if post.featured_image %}
+    <meta name="twitter:image" content="{{ SITE_URL }}{{ post.featured_image.url }}">
+    <meta name="twitter:image:alt" content="{{ post.get_image_alt_text }}">
+    {% endif %}
 
     <script type="application/ld+json">
     {
       "@context": "https://schema.org",
       "@type": "BlogPosting",
       "headline": "{{ post.title }}",
-      "description": "{{ post.excerpt|truncatewords:30 }}",
-      "image": "{{ request.scheme }}://{{ request.get_host }}{{ post.featured_image.url }}",
+      "description": "{{ post.get_short_excerpt }}",
+      {% if post.featured_image %}
+      "image": {
+        "@type": "ImageObject",
+        "url": "{{ SITE_URL }}{{ post.featured_image.url }}",
+        "description": "{{ post.get_image_alt_text }}"
+      },
+      {% endif %}
       "author": {
         "@type": "Organization",
         "name": "Yoursecurescan",
-        "url": "https://yoursecurescan.com"
+        "url": "{{ SITE_URL }}"
       },
       "publisher": {
         "@type": "Organization",
         "name": "Yoursecurescan",
         "logo": {
           "@type": "ImageObject",
-          "url": "https://yoursecurescan.com/static/images/logo.png"
+          "url": "{{ SITE_URL }}/static/images/logo.png"
         }
       },
-      "datePublished": "{{ post.published_at|date:'Y-m-d' }}",
-      "dateModified": "{{ post.updated_at|date:'Y-m-d' }}"
+      "datePublished": "{{ post.published_at|date:'c' }}",
+      "dateModified": "{{ post.updated_at|date:'c' }}",
+      "url": "{{ SITE_URL }}{{ request.get_full_path }}"
     }
     </script>
 {% endblock %}
@@ -44,16 +72,16 @@
                 <span>{{ post.published_at|date:"d F, Y" }}</span>
                 {% if post.category %}
                     <span class="mx-2">•</span>
-                    <a href="{% url  'core:blog_list' %}?category={{ post.category.slug }}" class="text-primary hover:underline font-semibold">{{ post.category.name }}</a>
-                    
+                    <a href="{% url 'core:blog_list' %}?category={{ post.category.slug }}" class="text-primary hover:underline font-semibold">{{ post.category.name }}</a>
                 {% endif %}
             </div>
         </header>
         
         {% if post.featured_image %}
-            <div class="featured-image-container" style="max-height: 450px !important;">
-                <img src="{{ post.featured_image.url }}" alt="{{ post.title }}" 
-                class="featured-image">
+            <div class="featured-image-container mb-8" style="max-height: 450px !important;">
+                <img src="{{ post.featured_image.url }}" 
+                     alt="{{ post.get_image_alt_text }}" 
+                     class="featured-image w-full h-auto object-cover rounded-lg">
             </div>
         {% endif %}
         
