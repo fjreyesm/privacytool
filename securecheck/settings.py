@@ -19,7 +19,6 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 
 
-
 DEBUG = bool(os.environ.get('DJANGO_DEBUG', True))
 
 SECURE_BROWSER_XSS_FILTER = True
@@ -48,6 +47,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'django.contrib.humanize',
+    'django.contrib.sitemaps',  # Añadido para sitemaps
     
     # Apps de terceros
     'django_htmx',
@@ -121,7 +121,6 @@ USE_TZ = True
 
 
 
-
 # Default primary key field type
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
@@ -154,3 +153,6 @@ RATELIMIT_KEY = 'ip'  # Limita por dirección IP del usuario.
 RATELIMIT_RATE = '5/m' # 5 peticiones por minuto. Puedes ajustarlo a '10/h' (10 por hora), etc.
 RATELIMIT_BLOCK = True # Si se supera el límite, bloquea la petición (genera un error).
 RATELIMIT_METHOD = 'all' # Aplica el límite a todos los métodos (GET, POST, etc.)
+
+# Configuración del sitio para sitemaps
+SITE_ID = 1
