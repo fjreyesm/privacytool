@@ -151,9 +151,32 @@ CACHES = {
     }
 }
 
-# Configuración de correo
-EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'  # Para desarrollo
-DEFAULT_FROM_EMAIL = 'noreply@yoursecurescan.com'
+# ===== CONFIGURACIÓN DE EMAIL MEJORADA =====
+# Email configuration for development/production
+
+# Para desarrollo: mostrar emails en consola
+if DEBUG:
+    EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+else:
+    # Para producción: usar SMTP real
+    EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+    EMAIL_HOST = os.environ.get('EMAIL_HOST', 'smtp.gmail.com')
+    EMAIL_PORT = int(os.environ.get('EMAIL_PORT', '587'))
+    EMAIL_USE_TLS = os.environ.get('EMAIL_USE_TLS', 'True') == 'True'
+    EMAIL_USE_SSL = os.environ.get('EMAIL_USE_SSL', 'False') == 'True'
+    EMAIL_HOST_USER = os.environ.get('EMAIL_HOST_USER', '')
+    EMAIL_HOST_PASSWORD = os.environ.get('EMAIL_HOST_PASSWORD', '')
+
+# Email settings
+DEFAULT_FROM_EMAIL = os.environ.get('DEFAULT_FROM_EMAIL', 'PrivacyTool <noreply@privacytool.com>')
+ADMIN_EMAIL = os.environ.get('ADMIN_EMAIL', 'admin@privacytool.com')
+
+# Newsletter specific settings
+NEWSLETTER_FROM_EMAIL = os.environ.get('NEWSLETTER_FROM_EMAIL', DEFAULT_FROM_EMAIL)
+NEWSLETTER_REPLY_TO = os.environ.get('NEWSLETTER_REPLY_TO', 'contact@privacytool.com')
+
+# Email timeout settings
+EMAIL_TIMEOUT = 30
 
 # Configuración de API Keys
 HIBP_API_KEY = os.environ.get("HIBP_API_KEY", "")
@@ -242,3 +265,22 @@ LOGGING = {
 
 # Create logs directory if it doesn't exist
 os.makedirs(BASE_DIR / 'logs', exist_ok=True)
+
+# ===== NEWSLETTER SPECIFIC SETTINGS =====
+# Configuración específica para el newsletter
+NEWSLETTER_SETTINGS = {
+    'SITE_NAME': 'PrivacyTool',
+    'SITE_DESCRIPTION': 'Tu herramienta de privacidad y seguridad',
+    'CONTACT_EMAIL': 'contact@privacytool.com',
+    'SOCIAL_MEDIA': {
+        'twitter': 'https://twitter.com/privacytool',
+        'linkedin': 'https://linkedin.com/company/privacytool',
+    },
+    'UNSUBSCRIBE_REASONS': [
+        'No me interesa el contenido',
+        'Recibo demasiados emails',
+        'No solicitéeeste newsletter',
+        'Problemas técnicos',
+        'Otro'
+    ]
+}
