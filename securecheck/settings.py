@@ -52,6 +52,7 @@ INSTALLED_APPS = [
     
     # Apps de terceros
     'django_htmx',
+    'csp',  # Content Security Policy
     
     # Apps propias
     'core.apps.CoreConfig',
@@ -59,6 +60,7 @@ INSTALLED_APPS = [
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
+    'csp.middleware.CSPMiddleware',  # CSP debe ir temprano en el middleware stack
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -66,7 +68,6 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'django_htmx.middleware.HtmxMiddleware',
-     'django.middleware.security.SecurityMiddleware',
 ]
 
 ROOT_URLCONF = 'securecheck.urls'
@@ -155,3 +156,21 @@ RATELIMIT_METHOD = 'all' # Aplica el límite a todos los métodos (GET, POST, et
 
 # Configuración del sitio para sitemaps
 SITE_ID = 1
+
+# ===== CONTENT SECURITY POLICY (CSP) =====
+CSP_DEFAULT_SRC = ("'self'",)
+CSP_SCRIPT_SRC = ("'self'", "'unsafe-inline'", "https://cdn.tailwindcss.com", "https://unpkg.com")
+CSP_STYLE_SRC = ("'self'", "'unsafe-inline'", "https://cdn.tailwindcss.com", "https://fonts.googleapis.com")
+CSP_FONT_SRC = ("'self'", "https://fonts.gstatic.com")
+CSP_IMG_SRC = ("'self'", "data:", "https:")
+CSP_CONNECT_SRC = ("'self'",)
+CSP_FRAME_SRC = ("'none'",)
+CSP_OBJECT_SRC = ("'none'",)
+CSP_BASE_URI = ("'self'",)
+CSP_FORM_ACTION = ("'self'",)
+CSP_FRAME_ANCESTORS = ("'none'",)
+
+# Configuración adicional para desarrollo
+if DEBUG:
+    CSP_SCRIPT_SRC += ("'unsafe-eval'",)  # Solo para desarrollo
+    CSP_CONNECT_SRC += ("ws:", "wss:")    # Para desarrollo con hot reload
