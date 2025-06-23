@@ -1,0 +1,195 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Newsletter - Mantente informado{% endblock %}
+
+{% block meta_description %}Suscríbete a nuestro newsletter y recibe las últimas noticias sobre privacidad, seguridad digital y protección de datos.{% endblock %}
+
+{% block content %}
+<div class="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 py-12">
+    <div class="max-w-2xl mx-auto px-4 sm:px-6 lg:px-8">
+        
+        <!-- Header -->
+        <div class="text-center mb-8">
+            <div class="inline-flex items-center justify-center w-16 h-16 bg-primary rounded-full mb-4">
+                <i class="fas fa-envelope text-white text-2xl"></i>
+            </div>
+            <h1 class="text-3xl font-bold text-gray-900 mb-2">
+                Newsletter PrivacyTool
+            </h1>
+            <p class="text-lg text-gray-600 mb-4">
+                Mantente al día con las últimas noticias sobre privacidad digital y seguridad
+            </p>
+            
+            <!-- Stats -->
+            <div class="inline-flex items-center bg-white rounded-full px-4 py-2 shadow-sm">
+                <i class="fas fa-users text-primary mr-2"></i>
+                <span class="text-sm font-medium text-gray-700">
+                    {{ subscriber_count }} personas ya suscritas
+                </span>
+            </div>
+        </div>
+
+        <!-- Main Form Card -->
+        <div class="bg-white rounded-2xl shadow-xl p-8 mb-8">
+            {% if messages %}
+                {% for message in messages %}
+                    <div class="mb-6 p-4 rounded-lg {% if message.level == 25 %}bg-green-50 border border-green-200 text-green-800{% elif message.level == 30 %}bg-yellow-50 border border-yellow-200 text-yellow-800{% else %}bg-red-50 border border-red-200 text-red-800{% endif %}">
+                        <div class="flex items-center">
+                            <i class="fas {% if message.level == 25 %}fa-check-circle{% elif message.level == 30 %}fa-exclamation-triangle{% else %}fa-times-circle{% endif %} mr-2"></i>
+                            {{ message }}
+                        </div>
+                    </div>
+                {% endfor %}
+            {% endif %}
+
+            <form method="post" class="space-y-6" x-data="subscribeForm()">
+                {% csrf_token %}
+                
+                <!-- Email Field -->
+                <div>
+                    <label for="{{ form.email.id_for_label }}" class="block text-sm font-medium text-gray-700 mb-2">
+                        <i class="fas fa-envelope mr-1"></i>
+                        Email *
+                    </label>
+                    {{ form.email }}
+                    {% if form.email.errors %}
+                        <div class="mt-1 text-sm text-red-600">
+                            {% for error in form.email.errors %}
+                                <p><i class="fas fa-exclamation-circle mr-1"></i>{{ error }}</p>
+                            {% endfor %}
+                        </div>
+                    {% endif %}
+                    <p class="mt-1 text-sm text-gray-500">{{ form.email.help_text }}</p>
+                </div>
+
+                <!-- Name Field -->
+                <div>
+                    <label for="{{ form.first_name.id_for_label }}" class="block text-sm font-medium text-gray-700 mb-2">
+                        <i class="fas fa-user mr-1"></i>
+                        Nombre
+                    </label>
+                    {{ form.first_name }}
+                    {% if form.first_name.errors %}
+                        <div class="mt-1 text-sm text-red-600">
+                            {% for error in form.first_name.errors %}
+                                <p><i class="fas fa-exclamation-circle mr-1"></i>{{ error }}</p>
+                            {% endfor %}
+                        </div>
+                    {% endif %}
+                </div>
+
+                <!-- Interests -->
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-3">
+                        <i class="fas fa-heart mr-1"></i>
+                        Tus intereses
+                    </label>
+                    <div class="space-y-3">
+                        {% for choice in form.interests %}
+                            <label class="flex items-center">
+                                {{ choice.tag }}
+                                <span class="ml-3 text-sm text-gray-700">{{ choice.choice_label }}</span>
+                            </label>
+                        {% endfor %}
+                    </div>
+                    <p class="mt-2 text-sm text-gray-500">{{ form.interests.help_text }}</p>
+                </div>
+
+                <!-- Honeypot (hidden) -->
+                {{ form.website }}
+
+                <!-- Privacy Consent -->
+                <div class="bg-gray-50 rounded-lg p-4">
+                    <label class="flex items-start">
+                        {{ form.privacy_consent }}
+                        <span class="ml-3 text-sm text-gray-700">
+                            {{ form.privacy_consent.label }}
+                            <a href="{% url 'core:privacy_policy' %}" class="text-primary hover:underline">
+                                Política de Privacidad
+                            </a>
+                        </span>
+                    </label>
+                    {% if form.privacy_consent.errors %}
+                        <div class="mt-2 text-sm text-red-600">
+                            {% for error in form.privacy_consent.errors %}
+                                <p><i class="fas fa-exclamation-circle mr-1"></i>{{ error }}</p>
+                            {% endfor %}
+                        </div>
+                    {% endif %}
+                </div>
+
+                <!-- Submit Button -->
+                <button 
+                    type="submit" 
+                    class="w-full bg-primary hover:bg-primary-dark text-white font-medium py-3 px-6 rounded-lg transition-colors duration-200 flex items-center justify-center"
+                    :disabled="loading"
+                >
+                    <span x-show="!loading" class="flex items-center">
+                        <i class="fas fa-paper-plane mr-2"></i>
+                        Suscribirse al Newsletter
+                    </span>
+                    <span x-show="loading" class="flex items-center">
+                        <i class="fas fa-spinner fa-spin mr-2"></i>
+                        Enviando...
+                    </span>
+                </button>
+            </form>
+        </div>
+
+        <!-- Benefits Section -->
+        <div class="grid md:grid-cols-3 gap-6 mb-8">
+            <div class="bg-white rounded-lg p-6 shadow-sm text-center">
+                <div class="w-12 h-12 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-3">
+                    <i class="fas fa-shield-alt text-green-600"></i>
+                </div>
+                <h3 class="font-semibold text-gray-900 mb-2">Contenido de calidad</h3>
+                <p class="text-sm text-gray-600">Tips exclusivos sobre privacidad y seguridad digital</p>
+            </div>
+            
+            <div class="bg-white rounded-lg p-6 shadow-sm text-center">
+                <div class="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-3">
+                    <i class="fas fa-clock text-blue-600"></i>
+                </div>
+                <h3 class="font-semibold text-gray-900 mb-2">Sin spam</h3>
+                <p class="text-sm text-gray-600">Solo contenido relevante, máximo 1 email por semana</p>
+            </div>
+            
+            <div class="bg-white rounded-lg p-6 shadow-sm text-center">
+                <div class="w-12 h-12 bg-purple-100 rounded-full flex items-center justify-center mx-auto mb-3">
+                    <i class="fas fa-times-circle text-purple-600"></i>
+                </div>
+                <h3 class="font-semibold text-gray-900 mb-2">Cancela cuando quieras</h3>
+                <p class="text-sm text-gray-600">Dar de baja con un solo clic, sin complicaciones</p>
+            </div>
+        </div>
+
+        <!-- Trust Indicators -->
+        <div class="text-center text-sm text-gray-500">
+            <div class="flex items-center justify-center space-x-4 mb-2">
+                <span class="flex items-center">
+                    <i class="fas fa-lock mr-1"></i>
+                    100% seguro
+                </span>
+                <span class="flex items-center">
+                    <i class="fas fa-shield-alt mr-1"></i>
+                    RGPD compliant
+                </span>
+                <span class="flex items-center">
+                    <i class="fas fa-user-secret mr-1"></i>
+                    Sin datos compartidos
+                </span>
+            </div>
+            <p>Nunca compartiremos tu información con terceros.</p>
+        </div>
+    </div>
+</div>
+
+<script>
+function subscribeForm() {
+    return {
+        loading: false
+    }
+}
+</script>
+{% endblock %}
