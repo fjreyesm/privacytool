@@ -11,6 +11,15 @@ Usage:
 
 """
 
+import os
+import sys
+import django
+from django.conf import settings
+
+# Configure Django settings
+os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'securecheck.settings')
+django.setup()
+
 def check_system_health():
     """Quick system health check"""
     print("🔍 QUICK REGRESSION ANALYSIS")
@@ -132,6 +141,16 @@ def check_system_health():
             print(f"   ❌ Form test failed: {e}")
             issues_found.append(f"Form test: {e}")
         
+        # Check 7: HIBP Service
+        print("\n7. Testing HIBP service...")
+        try:
+            from core.services.hibp_service import HIBPService
+            service = HIBPService()
+            print("   ✅ HIBP service imports correctly")
+        except Exception as e:
+            print(f"   ❌ HIBP service error: {e}")
+            issues_found.append(f"HIBP service: {e}")
+        
         # Summary
         print("\n" + "=" * 40)
         print("📊 ANALYSIS SUMMARY")
@@ -147,16 +166,23 @@ def check_system_health():
                 print(f"   {i}. {issue}")
             
             print("\n🔧 RECOMMENDED FIXES:")
-            print("1. Run: python manage.py migrate")
-            print("2. Check URLs in urls.py files")
-            print("3. Verify template files exist")
-            print("4. Check admin.py registrations")
-            print("5. Review form definitions")
+            if any("URL error" in issue for issue in issues_found):
+                print("   • Check urls.py files for missing patterns")
+            if any("Template" in issue for issue in issues_found):
+                print("   • Create missing template files")
+            if any("admin" in issue for issue in issues_found):
+                print("   • Check admin.py registrations")
+            if any("Form validation" in issue for issue in issues_found):
+                print("   • Review form field definitions")
+            if any("Database" in issue for issue in issues_found):
+                print("   • Run: python manage.py migrate")
             
             return False
             
     except Exception as e:
         print(f"\n💥 CRITICAL ERROR: {e}")
+        import traceback
+        traceback.print_exc()
         return False
 
 def run_basic_tests():
@@ -165,33 +191,44 @@ def run_basic_tests():
     print("=" * 40)
     
     try:
-        import subprocess
-        import sys
-        
         # Test 1: System check
         print("\n1. Django system check...")
-        result = subprocess.run([
-            sys.executable, 'manage.py', 'check'
-        ], capture_output=True, text=True)
+        from django.core.management import call_command
+        from io import StringIO
+        import sys
         
-        if result.returncode == 0:
+        # Capture output
+        old_stdout = sys.stdout
+        sys.stdout = mystdout = StringIO()
+        
+        try:
+            call_command('check')
+            sys.stdout = old_stdout
             print("   ✅ System check passed")
-        else:
-            print(f"   ❌ System check failed:")
-            print(f"   {result.stderr}")
+        except Exception as e:
+            sys.stdout = old_stdout
+            print(f"   ❌ System check failed: {e}")
             return False
         
         # Test 2: Migration check
         print("\n2. Migration check...")
-        result = subprocess.run([
-            sys.executable, 'manage.py', 'showmigrations', '--plan'
-        ], capture_output=True, text=True)
+        old_stdout = sys.stdout
+        sys.stdout = mystdout = StringIO()
         
-        if '[ ]' not in result.stdout:
-            print("   ✅ All migrations applied")
-        else:
-            print("   ❌ Unapplied migrations found")
-            print("   Run: python manage.py migrate")
+        try:
+            call_command('showmigrations', '--plan')
+            output = mystdout.getvalue()
+            sys.stdout = old_stdout
+            
+            if '[ ]' not in output:
+                print("   ✅ All migrations applied")
+            else:
+                print("   ❌ Unapplied migrations found")
+                print("   Run: python manage.py migrate")
+                return False
+        except Exception as e:
+            sys.stdout = old_stdout
+            print(f"   ❌ Migration check failed: {e}")
             return False
         
         # Test 3: Basic model test
@@ -226,6 +263,62 @@ def run_basic_tests():
         print(f"   ❌ Test execution failed: {e}")
         return False
 
+def run_simple_functional_tests():
+    """Run simple functional tests"""
+    print("\n🎯 RUNNING FUNCTIONAL TESTS")
+    print("=" * 40)
+    
+    try:
+        from django.test import Client
+        from django.contrib.auth.models import User
+        
+        client = Client()
+        
+        # Test 1: Home page
+        print("\n1. Testing home page...")
+        try:
+            response = client.get('/')
+            if response.status_code in [200, 302]:
+                print(f"   ✅ Home page accessible (status: {response.status_code})")
+            else:
+                print(f"   ❌ Home page error (status: {response.status_code})")
+                return False
+        except Exception as e:
+            print(f"   ❌ Home page test failed: {e}")
+            return False
+        
+        # Test 2: Newsletter page
+        print("\n2. Testing newsletter page...")
+        try:
+            response = client.get('/newsletter/')
+            if response.status_code in [200, 302]:
+                print(f"   ✅ Newsletter page accessible (status: {response.status_code})")
+            else:
+                print(f"   ❌ Newsletter page error (status: {response.status_code})")
+                return False
+        except Exception as e:
+            print(f"   ❌ Newsletter page test failed: {e}")
+            return False
+        
+        # Test 3: Verification page
+        print("\n3. Testing verification page...")
+        try:
+            response = client.get('/verification/')
+            if response.status_code in [200, 302]:
+                print(f"   ✅ Verification page accessible (status: {response.status_code})")
+            else:
+                print(f"   ❌ Verification page error (status: {response.status_code})")
+                return False
+        except Exception as e:
+            print(f"   ❌ Verification page test failed: {e}")
+            return False
+        
+        return True
+        
+    except Exception as e:
+        print(f"   ❌ Functional tests failed: {e}")
+        return False
+
 if __name__ == "__main__":
     print("🚀 STARTING QUICK REGRESSION CHECK")
     print("=" * 50)
@@ -236,20 +329,24 @@ if __name__ == "__main__":
     # Run basic tests
     tests_ok = run_basic_tests()
     
+    # Run functional tests
+    functional_ok = run_simple_functional_tests()
+    
     print("\n" + "=" * 50)
     print("🏁 QUICK CHECK COMPLETE")
     print("=" * 50)
     
-    if health_ok and tests_ok:
+    if health_ok and tests_ok and functional_ok:
         print("✅ SYSTEM HEALTHY - Ready for full regression tests")
         print("\nNext steps:")
-        print("1. Run full test suite: python manage.py test")
-        print("2. Run regression tests: python manage.py test core.tests.test_regression")
+        print("1. Run PowerShell suite: .\\test_regression.ps1")
+        print("2. Run specific tests: docker compose exec web python manage.py test")
+        print("3. Safe to implement new features")
         exit(0)
     else:
         print("❌ ISSUES FOUND - Fix before proceeding")
         print("\nImmediate actions:")
         print("1. Fix issues listed above")
-        print("2. Re-run this check: python quick_regression_check.py")
+        print("2. Re-run this check: docker compose exec web python quick_regression_check.py")
         print("3. Only proceed when this check passes")
         exit(1)
