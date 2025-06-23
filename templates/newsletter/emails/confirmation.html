@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Confirma tu suscripción - PrivacyTool</title>
+    <style>
+        /* Reset styles */
+        body, table, td, p, a, li, blockquote {
+            -webkit-text-size-adjust: 100%;
+            -ms-text-size-adjust: 100%;
+            margin: 0;
+            padding: 0;
+        }
+        
+        /* Base styles */
+        body {
+            width: 100% !important;
+            min-width: 100%;
+            background-color: #f8fafc;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            line-height: 1.6;
+            color: #374151;
+        }
+        
+        /* Container */
+        .email-container {
+            max-width: 600px;
+            margin: 0 auto;
+            background-color: #ffffff;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        
+        /* Header */
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 40px 30px;
+            text-align: center;
+        }
+        
+        .logo {
+            color: #ffffff;
+            font-size: 28px;
+            font-weight: 700;
+            text-decoration: none;
+            margin-bottom: 10px;
+            display: inline-block;
+        }
+        
+        .header-subtitle {
+            color: #e2e8f0;
+            font-size: 16px;
+            margin: 0;
+        }
+        
+        /* Content */
+        .content {
+            padding: 40px 30px;
+        }
+        
+        .greeting {
+            font-size: 20px;
+            color: #1f2937;
+            margin-bottom: 20px;
+            font-weight: 600;
+        }
+        
+        .message {
+            font-size: 16px;
+            line-height: 1.7;
+            margin-bottom: 30px;
+            color: #4b5563;
+        }
+        
+        /* CTA Button */
+        .cta-container {
+            text-align: center;
+            margin: 40px 0;
+        }
+        
+        .cta-button {
+            display: inline-block;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: #ffffff !important;
+            text-decoration: none;
+            padding: 16px 32px;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 16px;
+            transition: transform 0.2s;
+        }
+        
+        .cta-button:hover {
+            transform: translateY(-2px);
+        }
+        
+        /* Info box */
+        .info-box {
+            background-color: #f3f4f6;
+            border-left: 4px solid #6366f1;
+            padding: 20px;
+            margin: 30px 0;
+            border-radius: 0 8px 8px 0;
+        }
+        
+        .info-title {
+            font-weight: 600;
+            color: #1f2937;
+            margin-bottom: 8px;
+        }
+        
+        .info-text {
+            font-size: 14px;
+            color: #6b7280;
+            margin: 0;
+        }
+        
+        /* Footer */
+        .footer {
+            background-color: #f9fafb;
+            padding: 30px;
+            text-align: center;
+            border-top: 1px solid #e5e7eb;
+        }
+        
+        .footer-text {
+            font-size: 14px;
+            color: #6b7280;
+            margin-bottom: 15px;
+        }
+        
+        .social-links {
+            margin: 20px 0;
+        }
+        
+        .social-link {
+            display: inline-block;
+            margin: 0 10px;
+            color: #6b7280;
+            text-decoration: none;
+            font-size: 14px;
+        }
+        
+        .unsubscribe {
+            font-size: 12px;
+            color: #9ca3af;
+        }
+        
+        .unsubscribe a {
+            color: #6366f1;
+            text-decoration: none;
+        }
+        
+        /* Mobile responsive */
+        @media only screen and (max-width: 600px) {
+            .email-container {
+                margin: 0 !important;
+                border-radius: 0 !important;
+            }
+            
+            .header,
+            .content,
+            .footer {
+                padding: 20px !important;
+            }
+            
+            .logo {
+                font-size: 24px;
+            }
+            
+            .greeting {
+                font-size: 18px;
+            }
+            
+            .cta-button {
+                padding: 14px 24px;
+                font-size: 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div style="padding: 20px 10px;">
+        <div class="email-container">
+            <!-- Header -->
+            <div class="header">
+                <a href="{{ site_url }}" class="logo">🔒 PrivacyTool</a>
+                <p class="header-subtitle">Tu aliado en privacidad y seguridad digital</p>
+            </div>
+            
+            <!-- Content -->
+            <div class="content">
+                <h1 class="greeting">
+                    ¡Hola{% if subscriber.first_name %} {{ subscriber.first_name }}{% endif %}! 👋
+                </h1>
+                
+                <div class="message">
+                    <p>¡Gracias por suscribirte a <strong>PrivacyTool Newsletter</strong>!</p>
+                    
+                    <p>Estás a un solo paso de recibir contenido exclusivo sobre:</p>
+                    <ul style="margin: 15px 0; padding-left: 20px; color: #4b5563;">
+                        <li>🛡️ Técnicas avanzadas de privacidad digital</li>
+                        <li>🔐 Herramientas de ciberseguridad</li>
+                        <li>📊 Análisis de brechas de datos</li>
+                        <li>⚖️ Cumplimiento RGPD y normativas</li>
+                        <li>🚨 Alertas de seguridad urgentes</li>
+                    </ul>
+                    
+                    <p><strong>Solo necesitas confirmar tu email haciendo clic en el botón de abajo:</strong></p>
+                </div>
+                
+                <!-- CTA Button -->
+                <div class="cta-container">
+                    <a href="{{ confirmation_url }}" class="cta-button">
+                        ✅ Confirmar mi suscripción
+                    </a>
+                </div>
+                
+                <!-- Info Box -->
+                <div class="info-box">
+                    <div class="info-title">🔐 Tu privacidad es nuestra prioridad</div>
+                    <p class="info-text">
+                        Nunca compartiremos tu email. Puedes darte de baja en cualquier momento 
+                        con un solo clic. Sin spam, solo contenido de valor.
+                    </p>
+                </div>
+                
+                <div class="message">
+                    <p><strong>¿No funciona el botón?</strong> Copia y pega este enlace en tu navegador:</p>
+                    <p style="background-color: #f3f4f6; padding: 10px; border-radius: 4px; font-family: monospace; font-size: 14px; word-break: break-all;">
+                        {{ confirmation_url }}
+                    </p>
+                </div>
+                
+                <div class="info-box">
+                    <div class="info-title">⏰ Enlace válido por 7 días</div>
+                    <p class="info-text">
+                        Este enlace de confirmación expirará en 7 días por seguridad. 
+                        Si no confirmas a tiempo, simplemente suscríbete de nuevo.
+                    </p>
+                </div>
+            </div>
+            
+            <!-- Footer -->
+            <div class="footer">
+                <p class="footer-text">
+                    <strong>PrivacyTool</strong> - Tu herramienta de privacidad y seguridad
+                </p>
+                
+                <div class="social-links">
+                    <a href="https://twitter.com/privacytool" class="social-link">Twitter</a>
+                    <a href="https://linkedin.com/company/privacytool" class="social-link">LinkedIn</a>
+                    <a href="{{ site_url }}" class="social-link">Sitio Web</a>
+                </div>
+                
+                <p class="unsubscribe">
+                    ¿Recibiste este email por error? 
+                    <a href="mailto:contact@privacytool.com">Contáctanos</a>
+                </p>
+                
+                <p class="unsubscribe">
+                    PrivacyTool Newsletter<br>
+                    Email: contact@privacytool.com
+                </p>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
