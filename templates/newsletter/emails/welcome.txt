@@ -1,0 +1,48 @@
+¡Bienvenido{% if subscriber.first_name %} {{ subscriber.first_name }}{% endif %}! 🎉
+
+¡Perfecto! Tu suscripción a PrivacyTool Newsletter está confirmada.
+
+Ya formas parte de una comunidad que se preocupa por la PRIVACIDAD y SEGURIDAD DIGITAL. Cada semana recibirás contenido exclusivo y herramientas que te ayudarán a proteger tu información personal.
+
+🎯 LO QUE PUEDES ESPERAR:
+
+🛡️ ANÁLISIS DE PRIVACIDAD
+Técnicas avanzadas para proteger tu información personal en línea
+
+🔐 HERRAMIENTAS DE SEGURIDAD  
+Las mejores herramientas gratuitas y de pago para tu ciberseguridad
+
+🚨 ALERTAS DE BRECHAS
+Notificaciones inmediatas sobre brechas de datos que te afecten
+
+⚖️ CUMPLIMIENTO RGPD
+Guías prácticas para empresas y profesionales
+
+📊 FRECUENCIA: 1 newsletter semanal
+📊 SPAM: 0 garantizado
+
+Contenido de calidad, directo al grano, sin relleno.
+
+💡 CONSEJO INICIAL:
+Comienza ahora: Visita nuestra herramienta de verificación para comprobar si tus datos han aparecido en alguna brecha de seguridad reciente.
+
+🏠 Visitar PrivacyTool: {{ site_url }}
+🔍 Verificar mis datos: {{ site_url }}/verification/
+
+¿Tienes alguna pregunta? Simplemente responde a este email y te ayudaremos encantados.
+
+¡Gracias por confiar en PrivacyTool para proteger tu privacidad digital!
+
+Saludos,
+El equipo de PrivacyTool 🔒
+
+---
+
+¿Ya no quieres recibir estos emails? {{ unsubscribe_url }}
+
+PrivacyTool Newsletter
+Email: contact@privacytool.com
+{{ site_url }}
+
+Twitter: https://twitter.com/privacytool
+LinkedIn: https://linkedin.com/company/privacytool
