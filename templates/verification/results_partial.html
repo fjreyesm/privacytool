@@ -7,7 +7,27 @@
                 <div class="alert-content">
                     <h3 class="alert-title">¡Buenas noticias!</h3>
                     <p>Tu email no aparece en ninguna filtración de datos conocida.</p>
+                    {% if is_cached %}
+                        <div class="mt-2 flex items-center text-sm text-gray-600">
+                            <i class="fas fa-clock mr-1"></i>
+                            <span>Resultado desde caché</span>
+                        </div>
+                    {% endif %}
                 </div>
+            </div>
+
+            {# Botón para recheck incluso cuando no hay breaches #}
+            <div class="mt-4 text-center">
+                <button 
+                    hx-post="{% url 'core:recheck_email' %}"
+                    hx-vals='{"email": "{{ email }}", "verification_id": "{{ verification_id }}"}'
+                    hx-target="#results"
+                    hx-indicator="#loading"
+                    class="btn-secondary text-sm">
+                    <i class="fas fa-sync-alt mr-2"></i>
+                    Verificar de nuevo
+                </button>
+                <p class="text-xs text-gray-500 mt-1">Forzar nueva verificación sin caché</p>
             </div>
 
         {% else %}
@@ -15,23 +35,66 @@
                 <div class="alert-icon"><i class="fas fa-exclamation-triangle"></i></div>
                 <div class="alert-content">
                     <h3 class="alert-title">¡Alerta de seguridad!</h3>
-                    <p>Tu email aparece en <strong>{{ count }}</strong> filtraciones de datos.</p>
+                    <p>Tu email aparece en <strong>{{ count }}</strong> filtración{% if count > 1 %}es{% endif %} de datos.</p>
+                    {% if rechecked %}
+                        <div class="mt-2 flex items-center text-sm text-blue-600">
+                            <i class="fas fa-sync-alt mr-1"></i>
+                            <span>Resultado actualizado</span>
+                        </div>
+                    {% elif is_cached %}
+                        <div class="mt-2 flex items-center text-sm text-gray-600">
+                            <i class="fas fa-clock mr-1"></i>
+                            <span>Resultado desde caché</span>
+                            <button 
+                                hx-post="{% url 'core:recheck_email' %}"
+                                hx-vals='{"email": "{{ email }}", "verification_id": "{{ verification_id }}"}'
+                                hx-target="#results"
+                                hx-indicator="#loading"
+                                class="ml-2 text-blue-600 hover:text-blue-800 underline text-sm">
+                                Actualizar
+                            </button>
+                        </div>
+                    {% endif %}
                 </div>
             </div>
 
-            {# USA card-table en lugar de card para evitar overflow-hidden #}
-            <div class="card-table w-full">
+            {# Recomendaciones de seguridad #}
+            <div class="mt-4 p-4 bg-yellow-50 border-l-4 border-yellow-400">
+                <div class="flex">
+                    <div class="flex-shrink-0">
+                        <i class="fas fa-shield-alt text-yellow-400"></i>
+                    </div>
+                    <div class="ml-3">
+                        <h4 class="text-sm font-medium text-yellow-800">Acciones recomendadas:</h4>
+                        <ul class="mt-2 text-sm text-yellow-700 list-disc list-inside">
+                            <li>Cambia inmediatamente tu contraseña en los servicios afectados</li>
+                            <li>Activa la autenticación de dos factores (2FA) donde sea posible</li>
+                            <li>Revisa tus cuentas bancarias y tarjetas de crédito</li>
+                            <li>Considera usar un gestor de contraseñas</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            {# Tabla de filtraciones #}
+            <div class="card-table w-full mt-6">
                 <div class="card-header">
                     <i class="fas fa-database mr-3 text-gray-600"></i>
                     Filtraciones detectadas
+                    {% if not is_cached %}
+                        <span class="ml-2 inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-green-100 text-green-800">
+                            <i class="fas fa-wifi mr-1"></i>
+                            En vivo
+                        </span>
+                    {% endif %}
                 </div>
-                {# Contenedor con overflow-x-auto solo para la tabla #}
                 <div class="overflow-x-auto">
                     <table class="w-full text-sm text-left text-gray-500">
                         <thead class="text-xs text-gray-700 uppercase bg-gray-100">
                             <tr>
                                 <th scope="col" class="px-6 py-3">Servicio</th>
                                 <th scope="col" class="px-6 py-3">Fecha</th>
+                                <th scope="col" class="px-6 py-3">Datos comprometidos</th>
                                 <th scope="col" class="px-6 py-3">Severidad</th>
                                 <th scope="col" class="px-6 py-3">Acciones</th>
                             </tr>
@@ -39,15 +102,61 @@
                         <tbody class="bg-white divide-y divide-gray-200">
                             {% for breach in breaches %}
                             <tr class="hover:bg-gray-50">
-                                <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap">{{ breach.name }}</td>
-                                <td class="px-6 py-4">{{ breach.breach_date }}</td>
+                                <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap">
+                                    <div class="flex items-center">
+                                        {% if breach.is_verified %}
+                                            <i class="fas fa-check-circle text-green-500 mr-2" title="Verificado"></i>
+                                        {% else %}
+                                            <i class="fas fa-question-circle text-yellow-500 mr-2" title="No verificado"></i>
+                                        {% endif %}
+                                        {{ breach.name }}
+                                        {% if breach.is_sensitive %}
+                                            <i class="fas fa-eye-slash text-red-500 ml-2" title="Datos sensibles"></i>
+                                        {% endif %}
+                                    </div>
+                                </td>
+                                <td class="px-6 py-4">
+                                    {{ breach.breach_date|date:"d/m/Y" }}
+                                    {% if breach.pwn_count %}
+                                        <div class="text-xs text-gray-500">
+                                            {{ breach.pwn_count|floatformat:0 }} cuentas afectadas
+                                        </div>
+                                    {% endif %}
+                                </td>
+                                <td class="px-6 py-4">
+                                    {% if breach.data_classes %}
+                                        <div class="flex flex-wrap gap-1">
+                                            {% for data_class in breach.data_classes|slice:":3" %}
+                                                <span class="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-gray-100 text-gray-800">
+                                                    {{ data_class }}
+                                                </span>
+                                            {% endfor %}
+                                            {% if breach.data_classes|length > 3 %}
+                                                <span class="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-gray-200 text-gray-600">
+                                                    +{{ breach.data_classes|length|add:"-3" }} más
+                                                </span>
+                                            {% endif %}
+                                        </div>
+                                    {% else %}
+                                        <span class="text-gray-400">No especificado</span>
+                                    {% endif %}
+                                </td>
                                 <td class="px-6 py-4">
                                     {% if 'Passwords' in breach.data_classes or 'Credit cards' in breach.data_classes %}
-                                        <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-red-100 text-red-800">Alto</span>
+                                        <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-red-100 text-red-800">
+                                            <i class="fas fa-exclamation-triangle mr-1"></i>
+                                            Crítico
+                                        </span>
                                     {% elif 'Physical addresses' in breach.data_classes or 'Phone numbers' in breach.data_classes %}
-                                        <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-yellow-100 text-yellow-800">Medio</span>
+                                        <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-yellow-100 text-yellow-800">
+                                            <i class="fas fa-exclamation-circle mr-1"></i>
+                                            Alto
+                                        </span>
                                     {% else %}
-                                        <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">Bajo</span>
+                                        <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800">
+                                            <i class="fas fa-info-circle mr-1"></i>
+                                            Medio
+                                        </span>
                                     {% endif %}
                                 </td>
                                 <td class="px-6 py-4">
@@ -56,7 +165,8 @@
                                         hx-target="#modal-content"
                                         hx-trigger="click"
                                         x-on:click="isModalOpen = true"
-                                        class="font-medium text-primary hover:underline">
+                                        class="font-medium text-primary hover:underline flex items-center">
+                                        <i class="fas fa-eye mr-1"></i>
                                         Ver detalles
                                     </button>
                                 </td>
@@ -67,12 +177,31 @@
                 </div>
             </div>
 
+            {# Acciones adicionales #}
+            <div class="mt-6 flex flex-wrap gap-3">
+                <button 
+                    hx-post="{% url 'core:recheck_email' %}"
+                    hx-vals='{"email": "{{ email }}", "verification_id": "{{ verification_id }}"}'
+                    hx-target="#results"
+                    hx-indicator="#loading"
+                    class="btn-secondary">
+                    <i class="fas fa-sync-alt mr-2"></i>
+                    Verificar de nuevo
+                </button>
+                
+                <a href="{% url 'core:verification_home' %}" class="btn-outline">
+                    <i class="fas fa-search mr-2"></i>
+                    Verificar otro email
+                </a>
+            </div>
+
+            {# Modal para detalles de filtración #}
             <div id="breach-modal" 
                 x-show="isModalOpen" 
                 x-on:keydown.escape.window="isModalOpen = false"
                 class="fixed inset-0 bg-black bg-opacity-60 flex items-center justify-center z-50"
                 style="display: none;">
-                <div class="bg-white rounded-lg shadow-xl max-w-2xl w-full max-h-[90vh] flex flex-col" x-on:click.away="isModalOpen = false">
+                <div class="bg-white rounded-lg shadow-xl max-w-2xl w-full max-h-[90vh] flex flex-col mx-4" x-on:click.away="isModalOpen = false">
                     <div id="modal-content" class="overflow-y-auto">
                         <div class="p-8 text-center">
                             <i class="fas fa-circle-notch fa-spin text-primary text-3xl"></i>
@@ -81,9 +210,22 @@
                     </div>
                     <div class="bg-gray-100 px-6 py-4 flex justify-end rounded-b-lg border-t">
                         <button type="button" x-on:click="isModalOpen = false" class="btn-primary">
+                            <i class="fas fa-times mr-2"></i>
                             Cerrar
                         </button>
                     </div>
+                </div>
+            </div>
+        {% endif %}
+
+        {# Status indicator para debugging #}
+        {% if status %}
+            <div class="mt-4 text-xs text-gray-500 border-t pt-4">
+                <div class="flex items-center justify-between">
+                    <span>Estado: {{ status }}</span>
+                    {% if verification_id %}
+                        <span>ID: {{ verification_id|slice:":8" }}...</span>
+                    {% endif %}
                 </div>
             </div>
         {% endif %}
