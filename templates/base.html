@@ -62,8 +62,6 @@
 
     <script src="https://unpkg.com/htmx.org@1.9.6"></script>
     
-    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
-    
     {% block extra_head %}{% endblock %}
 </head>
 <body class="bg-gray-100 font-sans text-gray-800 min-h-screen flex flex-col">
@@ -86,9 +84,13 @@
         });
     </script>
     
+    <!-- ORDEN CORRECTO: Primero nuestro script, después Alpine.js -->
     <script src="{% static 'js/alpine-init.js' %}"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
     
     {% block extra_scripts %}{% endblock %}
+    
+    <!-- Cookie banner al final del body -->
     {% include 'components/cookie_banner.html' %}
 </body>
 </html>
