@@ -1,70 +1,8 @@
 {# templates/components/cookie_banner.html #}
 
-<div x-data="{
-    accepted: false,
-    showSettings: false,
-    analyticsEnabled: false,
-    
-    init() {
-        console.log('🍪 Cookie banner iniciado');
-        this.showSettings = false;
-        this.checkConsent();
-    },
-    
-    checkConsent() {
-        const consent = this.getCookie('cookie-consent');
-        this.accepted = consent !== null && consent !== '';
-        this.analyticsEnabled = this.getCookie('cookie-analytics') === 'true';
-        console.log('Estado cookies:', this.accepted, this.analyticsEnabled);
-    },
-    
-    getCookie(name) {
-        const value = '; ' + document.cookie;
-        const parts = value.split('; ' + name + '=');
-        if (parts.length === 2) return parts.pop().split(';').shift();
-        return null;
-    },
-    
-    setCookie(name, value, days = 365) {
-        const expires = new Date();
-        expires.setTime(expires.getTime() + (days * 24 * 60 * 60 * 1000));
-        document.cookie = name + '=' + value + ';expires=' + expires.toUTCString() + ';path=/;SameSite=Lax';
-    },
-    
-    acceptAll() {
-        console.log('Aceptar todas');
-        this.analyticsEnabled = true;
-        this.save('all');
-    },
-    
-    acceptEssential() {
-        console.log('Solo esenciales');
-        this.analyticsEnabled = false;
-        this.save('essential');
-    },
-    
-    save(type) {
-        this.setCookie('cookie-consent', type);
-        this.setCookie('cookie-analytics', this.analyticsEnabled);
-        this.accepted = true;
-        console.log('Preferencias guardadas:', type);
-    },
-    
-    openSettings() {
-        this.showSettings = true;
-    },
-    
-    closeSettings() {
-        this.showSettings = false;
-    },
-    
-    saveSettings() {
-        this.save('custom');
-        this.showSettings = false;
-    }
-}" x-init="init()">
+<div x-data="secureCookies" x-init="init()">
 
-    <!-- Banner inicial (solo cuando NO se ha aceptado nada) -->
+    <!-- Banner inicial (solo cuando no se ha aceptado nada) -->
     <div x-show="!accepted" 
          x-cloak
          class="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 shadow-lg z-50"
