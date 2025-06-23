@@ -157,20 +157,24 @@ RATELIMIT_METHOD = 'all' # Aplica el límite a todos los métodos (GET, POST, et
 # Configuración del sitio para sitemaps
 SITE_ID = 1
 
-# ===== CONTENT SECURITY POLICY (CSP) =====
-CSP_DEFAULT_SRC = ("'self'",)
-CSP_SCRIPT_SRC = ("'self'", "'unsafe-inline'", "https://cdn.tailwindcss.com", "https://unpkg.com")
-CSP_STYLE_SRC = ("'self'", "'unsafe-inline'", "https://cdn.tailwindcss.com", "https://fonts.googleapis.com")
-CSP_FONT_SRC = ("'self'", "https://fonts.gstatic.com")
-CSP_IMG_SRC = ("'self'", "data:", "https:")
-CSP_CONNECT_SRC = ("'self'",)
-CSP_FRAME_SRC = ("'none'",)
-CSP_OBJECT_SRC = ("'none'",)
-CSP_BASE_URI = ("'self'",)
-CSP_FORM_ACTION = ("'self'",)
-CSP_FRAME_ANCESTORS = ("'none'",)
+# ===== CONTENT SECURITY POLICY (CSP) - NUEVO FORMATO =====
+CONTENT_SECURITY_POLICY = {
+    'DIRECTIVES': {
+        'default-src': ("'self'",),
+        'script-src': ("'self'", "'unsafe-inline'", "https://cdn.tailwindcss.com", "https://unpkg.com"),
+        'style-src': ("'self'", "'unsafe-inline'", "https://cdn.tailwindcss.com", "https://fonts.googleapis.com"),
+        'font-src': ("'self'", "https://fonts.gstatic.com"),
+        'img-src': ("'self'", "data:", "https:"),
+        'connect-src': ("'self'",),
+        'frame-src': ("'none'",),
+        'object-src': ("'none'",),
+        'base-uri': ("'self'",),
+        'form-action': ("'self'",),
+        'frame-ancestors': ("'none'",),
+    }
+}
 
 # Configuración adicional para desarrollo
 if DEBUG:
-    CSP_SCRIPT_SRC += ("'unsafe-eval'",)  # Solo para desarrollo
-    CSP_CONNECT_SRC += ("ws:", "wss:")    # Para desarrollo con hot reload
+    CONTENT_SECURITY_POLICY['DIRECTIVES']['script-src'] += ("'unsafe-eval'",)
+    CONTENT_SECURITY_POLICY['DIRECTIVES']['connect-src'] += ("ws:", "wss:")
