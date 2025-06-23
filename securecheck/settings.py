@@ -91,32 +91,25 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'securecheck.wsgi.application'
 
-# Database - POSTGRESQL CONFIGURATION FIXED
+# Database - TEMPORAL: Volver a SQLite hasta resolver PostgreSQL mañana
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': os.environ.get('POSTGRES_DB', 'privacytool'),
-        'USER': os.environ.get('POSTGRES_USER', 'privacyuser'),
-        'PASSWORD': os.environ.get('POSTGRES_PASSWORD', 'secure_password_2024'),
-        'HOST': os.environ.get('POSTGRES_HOST', 'db'),
-        'PORT': os.environ.get('POSTGRES_PORT', '5432'),
-        'OPTIONS': {
-            'init_command': "SET sql_mode='STRICT_TRANS_TABLES'",
-        },
-        'TEST': {
-            'NAME': 'test_privacytool',
-        }
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': BASE_DIR / 'db.sqlite3',
     }
 }
 
-# Fallback a SQLite en desarrollo si PostgreSQL no está disponible
-if DEBUG and os.environ.get('USE_SQLITE', 'False') == 'True':
-    DATABASES = {
-        'default': {
-            'ENGINE': 'django.db.backends.sqlite3',
-            'NAME': BASE_DIR / 'db.sqlite3',
-        }
-    }
+# PostgreSQL configuration (preparado para mañana)
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.postgresql',
+#         'NAME': os.environ.get('POSTGRES_DB', 'privacytool'),
+#         'USER': os.environ.get('POSTGRES_USER', 'privacyuser'),
+#         'PASSWORD': os.environ.get('POSTGRES_PASSWORD', 'secure_password_2024'),
+#         'HOST': os.environ.get('POSTGRES_HOST', 'db'),
+#         'PORT': os.environ.get('POSTGRES_PORT', '5432'),
+#     }
+# }
 
 # Password validation
 AUTH_PASSWORD_VALIDATORS = [
