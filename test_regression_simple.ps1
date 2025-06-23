@@ -131,7 +131,8 @@ if ($CriticalFailures -eq 0) {
     Write-Host "🚀 Safe to implement new features" -ForegroundColor Green
     
     $timestamp = Get-Date -Format "yyyy-MM-dd HH:mm:ss"
-    "$timestamp`: Regression tests passed" | Out-File -Append ".regression_test_log"
+    $logMessage = "$timestamp" + ": Regression tests passed"
+    $logMessage | Out-File -Append ".regression_test_log"
     
     exit 0
 } else {
@@ -140,7 +141,8 @@ if ($CriticalFailures -eq 0) {
     Write-Host "Fix issues before proceeding" -ForegroundColor Red
     
     $timestamp = Get-Date -Format "yyyy-MM-dd HH:mm:ss"
-    "$timestamp`: Regression tests failed ($CriticalFailures failures)" | Out-File -Append ".regression_test_log"
+    $logMessage = "$timestamp" + ": Regression tests failed (" + $CriticalFailures + " failures)"
+    $logMessage | Out-File -Append ".regression_test_log"
     
     exit 1
 }
