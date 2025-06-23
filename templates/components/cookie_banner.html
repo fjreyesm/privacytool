@@ -20,16 +20,16 @@
                     <div>
                         <p class="text-sm text-gray-700 leading-relaxed">
                             <strong>Respetamos tu privacidad.</strong> Usamos cookies esenciales para el funcionamiento y, opcionalmente, analytics anónimos para mejorar el servicio.
-                            <button @click="openSettings()" class="text-primary hover:underline font-semibold ml-1">Más detalles</button>
+                            <button @click="openSettings()" type="button" class="text-primary hover:underline font-semibold ml-1">Más detalles</button>
                         </p>
                     </div>
                 </div>
                 
                 <div class="flex gap-3 flex-shrink-0 w-full sm:w-auto">
-                    <button @click="acceptEssential()" class="btn bg-gray-100 text-gray-700 hover:bg-gray-200 border border-gray-300 flex-1 sm:flex-none">
+                    <button @click="acceptEssential()" type="button" class="btn bg-gray-100 text-gray-700 hover:bg-gray-200 border border-gray-300 flex-1 sm:flex-none">
                         Rechazar
                     </button>
-                    <button @click="acceptAll()" class="btn-primary flex-1 sm:flex-none">
+                    <button @click="acceptAll()" type="button" class="btn-primary flex-1 sm:flex-none">
                         <i class="fas fa-check mr-1"></i> Aceptar
                     </button>
                 </div>
@@ -40,13 +40,14 @@
     <!-- Botón flotante (cuando ya se aceptó algo) -->
     <div x-show="accepted" x-cloak class="fixed bottom-6 right-6 z-40">
         <button @click="openSettings()" 
+                type="button"
                 class="bg-gray-800 text-white p-3 rounded-full shadow-lg hover:bg-gray-900 transition-all duration-200 hover:scale-105"
                 title="Configurar cookies">
             <i class="fas fa-cookie-bite text-lg"></i>
         </button>
     </div>
 
-    <!-- Modal de configuración (SOLO se abre cuando se clickea "Más detalles") -->
+    <!-- Modal de configuración -->
     <div x-show="showSettings" 
          x-cloak
          class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4"
@@ -56,15 +57,20 @@
          x-transition:leave="transition ease-in duration-200"
          x-transition:leave-start="opacity-100"
          x-transition:leave-end="opacity-0"
-         @click.self="closeSettings()">
+         @click.outside="closeSettings()"
+         @keydown.escape.window="closeSettings()">
         
-        <div class="bg-white rounded-lg shadow-xl max-w-md w-full p-6">
+        <div class="bg-white rounded-lg shadow-xl max-w-md w-full p-6"
+             @click.stop>
+            
             <div class="flex justify-between items-center mb-4">
                 <h3 class="text-lg font-semibold text-gray-900">
                     <i class="fas fa-shield-alt text-primary mr-2"></i>
                     Configuración de Cookies
                 </h3>
-                <button @click="closeSettings()" class="text-gray-400 hover:text-gray-600 transition-colors">
+                <button @click="closeSettings()" 
+                        type="button"
+                        class="text-gray-400 hover:text-gray-600 transition-colors">
                     <i class="fas fa-times"></i>
                 </button>
             </div>
@@ -81,7 +87,9 @@
                             <div class="text-sm text-gray-500">Nos ayudan a mejorar el servicio</div>
                         </div>
                         <label class="relative inline-flex items-center cursor-pointer ml-4">
-                            <input type="checkbox" x-model="analyticsEnabled" class="sr-only peer">
+                            <input type="checkbox" 
+                                   x-model="analyticsEnabled" 
+                                   class="sr-only peer">
                             <div class="relative w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-primary"></div>
                         </label>
                     </div>
@@ -89,7 +97,9 @@
             </div>
             
             <div class="flex gap-3">
-                <button @click="saveSettings()" class="btn-primary flex-1">
+                <button @click="saveSettings()" 
+                        type="button"
+                        class="btn-primary flex-1">
                     <i class="fas fa-save mr-2"></i>
                     Guardar Preferencias
                 </button>
