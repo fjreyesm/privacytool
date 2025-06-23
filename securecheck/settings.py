@@ -91,7 +91,7 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'securecheck.wsgi.application'
 
-# Database - MIGRACIÓN A POSTGRESQL
+# Database - POSTGRESQL CONFIGURATION FIXED
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
@@ -101,8 +101,11 @@ DATABASES = {
         'HOST': os.environ.get('POSTGRES_HOST', 'db'),
         'PORT': os.environ.get('POSTGRES_PORT', '5432'),
         'OPTIONS': {
-            'charset': 'utf8',
+            'init_command': "SET sql_mode='STRICT_TRANS_TABLES'",
         },
+        'TEST': {
+            'NAME': 'test_privacytool',
+        }
     }
 }
 
