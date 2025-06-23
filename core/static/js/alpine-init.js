@@ -8,9 +8,9 @@ document.addEventListener('alpine:init', () => {
         analyticsEnabled: false,
 
         init() {
-            console.log('🍪 Iniciando sistema de cookies...');
+            console.log('🍪 Cookie system initialized');
             
-            // FORZAR estado inicial
+            // CRÍTICO: Forzar que NO se abra el modal automáticamente
             this.showSettings = false;
             
             // Verificar estado de cookies
@@ -25,22 +25,15 @@ document.addEventListener('alpine:init', () => {
 
         checkCookieConsent() {
             try {
-                // Método 1: Verificar cookies del navegador
+                // Verificar cookies del navegador
                 const consent = this.getCookie('cookie-consent');
+                this.accepted = consent !== null && consent !== '';
                 
-                // Método 2: Verificar localStorage como fallback
-                const consentLS = localStorage.getItem('cookie-consent');
-                
-                this.accepted = (consent !== null && consent !== '') || 
-                               (consentLS !== null && consentLS !== '');
-                
-                const analytics = this.getCookie('cookie-analytics') || 
-                                localStorage.getItem('cookie-analytics');
-                
+                const analytics = this.getCookie('cookie-analytics');
                 this.analyticsEnabled = analytics === 'true';
                 
                 console.log('Verificación cookies:', {
-                    consent, consentLS, 
+                    consent,
                     accepted: this.accepted,
                     analytics: this.analyticsEnabled
                 });
@@ -111,11 +104,6 @@ document.addEventListener('alpine:init', () => {
                 this.setCookie('cookie-analytics', this.analyticsEnabled);
                 this.setCookie('cookie-consent-date', new Date().toISOString());
                 
-                // Fallback en localStorage
-                localStorage.setItem('cookie-consent', type);
-                localStorage.setItem('cookie-analytics', this.analyticsEnabled);
-                localStorage.setItem('cookie-consent-date', new Date().toISOString());
-                
                 this.accepted = true;
                 
                 if (this.analyticsEnabled) {
@@ -135,14 +123,5 @@ document.addEventListener('alpine:init', () => {
         }
     }));
 
-    // Listener global
-    window.addEventListener('open-cookie-settings', (e) => {
-        console.log('Evento global: abrir configuración cookies');
-        const cookieComponent = document.querySelector('[x-data*="secureCookies"]');
-        if (cookieComponent && cookieComponent._x_dataStack && cookieComponent._x_dataStack[0]) {
-            cookieComponent._x_dataStack[0].openSettings();
-        }
-    });
-    
-    console.log('🍪 Alpine cookies system initialized');
+    console.log('🍪 Alpine cookies system loaded');
 });
