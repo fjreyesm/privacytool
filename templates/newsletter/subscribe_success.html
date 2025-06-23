@@ -1,0 +1,127 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}¡Suscripción exitosa! - Newsletter{% endblock %}
+
+{% block content %}
+<div class="min-h-screen bg-gradient-to-br from-green-50 to-emerald-100 py-12">
+    <div class="max-w-2xl mx-auto px-4 sm:px-6 lg:px-8">
+        
+        <!-- Success Animation Container -->
+        <div class="text-center mb-8">
+            <div class="inline-flex items-center justify-center w-20 h-20 bg-green-500 rounded-full mb-6 animate-bounce">
+                <i class="fas fa-check text-white text-3xl"></i>
+            </div>
+            
+            <h1 class="text-3xl font-bold text-gray-900 mb-4">
+                ¡Gracias por suscribirte!
+            </h1>
+            
+            <div class="bg-white rounded-2xl shadow-xl p-8">
+                <div class="mb-6">
+                    <i class="fas fa-envelope-open-text text-5xl text-green-500 mb-4"></i>
+                    <h2 class="text-xl font-semibold text-gray-900 mb-3">
+                        Revisa tu email
+                    </h2>
+                    <p class="text-gray-600 leading-relaxed">
+                        Te hemos enviado un email de confirmación. Haz clic en el enlace 
+                        para activar tu suscripción y empezar a recibir nuestro newsletter.
+                    </p>
+                </div>
+                
+                <!-- Instructions -->
+                <div class="bg-blue-50 rounded-lg p-4 mb-6">
+                    <div class="flex items-start">
+                        <i class="fas fa-info-circle text-blue-500 mr-3 mt-0.5"></i>
+                        <div class="text-sm text-blue-800">
+                            <p class="font-medium mb-1">¿No ves el email?</p>
+                            <ul class="space-y-1 text-blue-700">
+                                <li>• Revisa tu carpeta de spam o correo no deseado</li>
+                                <li>• Puede tardar unos minutos en llegar</li>
+                                <li>• Verifica que la dirección sea correcta</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- What to expect -->
+                <div class="grid md:grid-cols-2 gap-4 mb-6">
+                    <div class="bg-gray-50 rounded-lg p-4 text-center">
+                        <i class="fas fa-clock text-gray-500 text-2xl mb-2"></i>
+                        <h3 class="font-medium text-gray-900 mb-1">Frecuencia</h3>
+                        <p class="text-sm text-gray-600">Máximo 1 email por semana</p>
+                    </div>
+                    
+                    <div class="bg-gray-50 rounded-lg p-4 text-center">
+                        <i class="fas fa-star text-yellow-500 text-2xl mb-2"></i>
+                        <h3 class="font-medium text-gray-900 mb-1">Contenido</h3>
+                        <p class="text-sm text-gray-600">Tips de privacidad y seguridad</p>
+                    </div>
+                </div>
+
+                <!-- Action Buttons -->
+                <div class="flex flex-col sm:flex-row gap-3">
+                    <a href="{% url 'core:home' %}" 
+                       class="flex-1 bg-primary hover:bg-primary-dark text-white text-center py-3 px-6 rounded-lg transition-colors duration-200 flex items-center justify-center">
+                        <i class="fas fa-home mr-2"></i>
+                        Volver al inicio
+                    </a>
+                    
+                    <a href="{% url 'core:privacy_tools' %}" 
+                       class="flex-1 bg-gray-100 hover:bg-gray-200 text-gray-700 text-center py-3 px-6 rounded-lg transition-colors duration-200 flex items-center justify-center">
+                        <i class="fas fa-tools mr-2"></i>
+                        Explorar herramientas
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Additional Info -->
+        <div class="text-center text-sm text-gray-500">
+            <div class="flex items-center justify-center space-x-4 mb-2">
+                <span class="flex items-center">
+                    <i class="fas fa-shield-alt mr-1"></i>
+                    Datos protegidos
+                </span>
+                <span class="flex items-center">
+                    <i class="fas fa-times-circle mr-1"></i>
+                    Cancelación fácil
+                </span>
+                <span class="flex items-center">
+                    <i class="fas fa-heart mr-1"></i>
+                    Sin spam
+                </span>
+            </div>
+            <p>¿Problemas? <a href="mailto:support@privacytool.com" class="text-primary hover:underline">Contacta con nosotros</a></p>
+        </div>
+    </div>
+</div>
+
+<style>
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.animate-fadeInUp {
+    animation: fadeInUp 0.6s ease-out;
+}
+</style>
+
+<script>
+// Add fade-in animation to elements
+document.addEventListener('DOMContentLoaded', function() {
+    const elements = document.querySelectorAll('.bg-white');
+    elements.forEach((el, index) => {
+        el.style.animationDelay = `${index * 0.1}s`;
+        el.classList.add('animate-fadeInUp');
+    });
+});
+</script>
+{% endblock %}
