@@ -1,195 +1,516 @@
-{% extends 'base.html' %}
+{% extends "base.html" %}
 {% load static %}
 
-{% block title %}Newsletter - Mantente informado{% endblock %}
+{% block title %}Newsletter - Mantente informado sobre privacidad y seguridad{% endblock %}
 
-{% block meta_description %}Suscríbete a nuestro newsletter y recibe las últimas noticias sobre privacidad, seguridad digital y protección de datos.{% endblock %}
+{% block meta_description %}Suscríbete a nuestro newsletter y recibe las últimas noticias sobre privacidad digital, ciberseguridad y protección de datos. Contenido exclusivo y herramientas gratuitas.{% endblock %}
+
+{% block extra_head %}
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+<style>
+    body {
+        font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    }
+    
+    .hero-gradient {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    }
+    
+    .newsletter-card {
+        backdrop-filter: blur(10px);
+        background: rgba(255, 255, 255, 0.95);
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+    }
+    
+    .feature-icon {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        background-clip: text;
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+    }
+    
+    .btn-primary {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        border: none;
+        transition: all 0.3s ease;
+    }
+    
+    .btn-primary:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 10px 25px rgba(102, 126, 234, 0.3);
+    }
+    
+    .stats-card {
+        background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+        border: 1px solid #e2e8f0;
+    }
+    
+    .form-floating > .form-control:focus ~ label,
+    .form-floating > .form-control:not(:placeholder-shown) ~ label {
+        color: #667eea;
+    }
+    
+    .form-control:focus {
+        border-color: #667eea;
+        box-shadow: 0 0 0 0.2rem rgba(102, 126, 234, 0.25);
+    }
+    
+    .interests-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 1rem;
+    }
+    
+    .interest-option {
+        position: relative;
+    }
+    
+    .interest-option input[type="checkbox"] {
+        position: absolute;
+        opacity: 0;
+    }
+    
+    .interest-option label {
+        display: block;
+        padding: 1rem;
+        border: 2px solid #e2e8f0;
+        border-radius: 0.5rem;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        text-align: center;
+    }
+    
+    .interest-option input[type="checkbox"]:checked + label {
+        border-color: #667eea;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+    }
+    
+    .floating-elements {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        overflow: hidden;
+        pointer-events: none;
+    }
+    
+    .floating-element {
+        position: absolute;
+        opacity: 0.1;
+        animation: float 20s infinite ease-in-out;
+    }
+    
+    @keyframes float {
+        0%, 100% { transform: translateY(0px) rotate(0deg); }
+        33% { transform: translateY(-30px) rotate(120deg); }
+        66% { transform: translateY(-60px) rotate(240deg); }
+    }
+    
+    .testimonial-card {
+        border-left: 4px solid;
+        border-image: linear-gradient(135deg, #667eea 0%, #764ba2 100%) 1;
+        background: rgba(255, 255, 255, 0.8);
+    }
+</style>
+{% endblock %}
 
 {% block content %}
-<div class="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 py-12">
-    <div class="max-w-2xl mx-auto px-4 sm:px-6 lg:px-8">
-        
-        <!-- Header -->
-        <div class="text-center mb-8">
-            <div class="inline-flex items-center justify-center w-16 h-16 bg-primary rounded-full mb-4">
-                <i class="fas fa-envelope text-white text-2xl"></i>
-            </div>
-            <h1 class="text-3xl font-bold text-gray-900 mb-2">
-                Newsletter PrivacyTool
-            </h1>
-            <p class="text-lg text-gray-600 mb-4">
-                Mantente al día con las últimas noticias sobre privacidad digital y seguridad
-            </p>
-            
-            <!-- Stats -->
-            <div class="inline-flex items-center bg-white rounded-full px-4 py-2 shadow-sm">
-                <i class="fas fa-users text-primary mr-2"></i>
-                <span class="text-sm font-medium text-gray-700">
-                    {{ subscriber_count }} personas ya suscritas
-                </span>
-            </div>
-        </div>
-
-        <!-- Main Form Card -->
-        <div class="bg-white rounded-2xl shadow-xl p-8 mb-8">
-            {% if messages %}
-                {% for message in messages %}
-                    <div class="mb-6 p-4 rounded-lg {% if message.level == 25 %}bg-green-50 border border-green-200 text-green-800{% elif message.level == 30 %}bg-yellow-50 border border-yellow-200 text-yellow-800{% else %}bg-red-50 border border-red-200 text-red-800{% endif %}">
-                        <div class="flex items-center">
-                            <i class="fas {% if message.level == 25 %}fa-check-circle{% elif message.level == 30 %}fa-exclamation-triangle{% else %}fa-times-circle{% endif %} mr-2"></i>
-                            {{ message }}
-                        </div>
-                    </div>
-                {% endfor %}
-            {% endif %}
-
-            <form method="post" class="space-y-6" x-data="subscribeForm()">
-                {% csrf_token %}
+<!-- Hero Section -->
+<section class="hero-gradient text-white position-relative overflow-hidden">
+    <div class="floating-elements">
+        <div class="floating-element" style="top: 10%; left: 10%; font-size: 2rem;">🔒</div>
+        <div class="floating-element" style="top: 20%; right: 15%; font-size: 1.5rem;">🛡️</div>
+        <div class="floating-element" style="top: 60%; left: 5%; font-size: 2.5rem;">🔐</div>
+        <div class="floating-element" style="top: 70%; right: 10%; font-size: 1.8rem;">🔍</div>
+        <div class="floating-element" style="top: 30%; left: 70%; font-size: 2rem;">⚡</div>
+    </div>
+    
+    <div class="container py-5">
+        <div class="row align-items-center min-vh-75">
+            <div class="col-lg-6 py-5">
+                <div class="mb-4">
+                    <span class="badge bg-white text-primary px-3 py-2 rounded-pill">
+                        <i class="fas fa-envelope me-2"></i>Newsletter Gratuito
+                    </span>
+                </div>
                 
-                <!-- Email Field -->
-                <div>
-                    <label for="{{ form.email.id_for_label }}" class="block text-sm font-medium text-gray-700 mb-2">
-                        <i class="fas fa-envelope mr-1"></i>
-                        Email *
-                    </label>
-                    {{ form.email }}
-                    {% if form.email.errors %}
-                        <div class="mt-1 text-sm text-red-600">
-                            {% for error in form.email.errors %}
-                                <p><i class="fas fa-exclamation-circle mr-1"></i>{{ error }}</p>
-                            {% endfor %}
+                <h1 class="display-4 fw-bold mb-4">
+                    Mantente <span class="text-warning">Seguro</span> en el Mundo Digital
+                </h1>
+                
+                <p class="lead mb-4 opacity-90">
+                    Recibe contenido exclusivo sobre privacidad digital, ciberseguridad y protección de datos. 
+                    <strong>Sin spam, solo valor.</strong>
+                </p>
+                
+                <div class="row g-3 mb-4">
+                    <div class="col-md-6">
+                        <div class="d-flex align-items-center">
+                            <i class="fas fa-check-circle text-warning me-2"></i>
+                            <small>Newsletter semanal</small>
                         </div>
-                    {% endif %}
-                    <p class="mt-1 text-sm text-gray-500">{{ form.email.help_text }}</p>
-                </div>
-
-                <!-- Name Field -->
-                <div>
-                    <label for="{{ form.first_name.id_for_label }}" class="block text-sm font-medium text-gray-700 mb-2">
-                        <i class="fas fa-user mr-1"></i>
-                        Nombre
-                    </label>
-                    {{ form.first_name }}
-                    {% if form.first_name.errors %}
-                        <div class="mt-1 text-sm text-red-600">
-                            {% for error in form.first_name.errors %}
-                                <p><i class="fas fa-exclamation-circle mr-1"></i>{{ error }}</p>
-                            {% endfor %}
-                        </div>
-                    {% endif %}
-                </div>
-
-                <!-- Interests -->
-                <div>
-                    <label class="block text-sm font-medium text-gray-700 mb-3">
-                        <i class="fas fa-heart mr-1"></i>
-                        Tus intereses
-                    </label>
-                    <div class="space-y-3">
-                        {% for choice in form.interests %}
-                            <label class="flex items-center">
-                                {{ choice.tag }}
-                                <span class="ml-3 text-sm text-gray-700">{{ choice.choice_label }}</span>
-                            </label>
-                        {% endfor %}
                     </div>
-                    <p class="mt-2 text-sm text-gray-500">{{ form.interests.help_text }}</p>
+                    <div class="col-md-6">
+                        <div class="d-flex align-items-center">
+                            <i class="fas fa-check-circle text-warning me-2"></i>
+                            <small>Alertas de seguridad</small>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="d-flex align-items-center">
+                            <i class="fas fa-check-circle text-warning me-2"></i>
+                            <small>Herramientas gratuitas</small>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="d-flex align-items-center">
+                            <i class="fas fa-check-circle text-warning me-2"></i>
+                            <small>Guías RGPD</small>
+                        </div>
+                    </div>
                 </div>
-
-                <!-- Honeypot (hidden) -->
-                {{ form.website }}
-
-                <!-- Privacy Consent -->
-                <div class="bg-gray-50 rounded-lg p-4">
-                    <label class="flex items-start">
-                        {{ form.privacy_consent }}
-                        <span class="ml-3 text-sm text-gray-700">
-                            {{ form.privacy_consent.label }}
-                            <a href="{% url 'core:privacy_policy' %}" class="text-primary hover:underline">
-                                Política de Privacidad
-                            </a>
-                        </span>
-                    </label>
-                    {% if form.privacy_consent.errors %}
-                        <div class="mt-2 text-sm text-red-600">
-                            {% for error in form.privacy_consent.errors %}
-                                <p><i class="fas fa-exclamation-circle mr-1"></i>{{ error }}</p>
+                
+                {% if subscriber_count %}
+                <div class="d-flex align-items-center mb-4">
+                    <div class="me-3">
+                        <div class="d-flex">
+                            {% for i in "12345" %}
+                            <img src="https://picsum.photos/32/32?random={{ i }}" 
+                                 class="rounded-circle border border-2 border-white me-n2" 
+                                 style="width: 32px; height: 32px;">
                             {% endfor %}
                         </div>
+                    </div>
+                    <small class="opacity-90">
+                        <strong>{{ subscriber_count }}+</strong> profesionales ya reciben nuestro newsletter
+                    </small>
+                </div>
+                {% endif %}
+            </div>
+            
+            <div class="col-lg-6">
+                <div class="newsletter-card rounded-3 p-4 p-lg-5 mx-auto" style="max-width: 500px;">
+                    <div class="text-center mb-4">
+                        <h2 class="h4 text-dark fw-bold">🔒 Suscripción Gratuita</h2>
+                        <p class="text-muted small mb-0">Únete a la comunidad de profesionales que protegen su privacidad</p>
+                    </div>
+                    
+                    {% if messages %}
+                        {% for message in messages %}
+                            <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+                                {{ message }}
+                                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                            </div>
+                        {% endfor %}
                     {% endif %}
+                    
+                    <form method="post" hx-post="{% url 'newsletter:subscribe' %}" hx-target="#newsletter-form" hx-swap="outerHTML">
+                        <div id="newsletter-form">
+                            {% csrf_token %}
+                            
+                            <div class="row g-3">
+                                <div class="col-md-6">
+                                    <div class="form-floating">
+                                        {{ form.first_name }}
+                                        <label for="{{ form.first_name.id_for_label }}">
+                                            <i class="fas fa-user me-2"></i>Nombre
+                                        </label>
+                                    </div>
+                                    {% if form.first_name.errors %}
+                                        <div class="text-danger small mt-1">{{ form.first_name.errors.0 }}</div>
+                                    {% endif %}
+                                </div>
+                                
+                                <div class="col-md-6">
+                                    <div class="form-floating">
+                                        {{ form.email }}
+                                        <label for="{{ form.email.id_for_label }}">
+                                            <i class="fas fa-envelope me-2"></i>Email *
+                                        </label>
+                                    </div>
+                                    {% if form.email.errors %}
+                                        <div class="text-danger small mt-1">{{ form.email.errors.0 }}</div>
+                                    {% endif %}
+                                </div>
+                            </div>
+                            
+                            <div class="mt-4">
+                                <label class="form-label fw-semibold">
+                                    <i class="fas fa-heart me-2"></i>¿Qué te interesa más?
+                                </label>
+                                <div class="interests-grid mt-2">
+                                    {% for value, label in form.interests.field.choices %}
+                                        <div class="interest-option">
+                                            <input type="checkbox" 
+                                                   id="interest_{{ value }}" 
+                                                   name="interests" 
+                                                   value="{{ value }}"
+                                                   {% if value in form.interests.value %}checked{% endif %}>
+                                            <label for="interest_{{ value }}">
+                                                {% if value == 'privacy' %}🛡️{% elif value == 'tech' %}💻{% elif value == 'security' %}🔐{% else %}⚖️{% endif %}
+                                                <br><small>{{ label }}</small>
+                                            </label>
+                                        </div>
+                                    {% endfor %}
+                                </div>
+                                {% if form.interests.errors %}
+                                    <div class="text-danger small mt-2">{{ form.interests.errors.0 }}</div>
+                                {% endif %}
+                            </div>
+                            
+                            <div class="form-check mt-4">
+                                {{ form.privacy_consent }}
+                                <label class="form-check-label small" for="{{ form.privacy_consent.id_for_label }}">
+                                    Acepto la <a href="#" class="text-decoration-none">política de privacidad</a> y 
+                                    el procesamiento de mis datos personales. *
+                                </label>
+                                {% if form.privacy_consent.errors %}
+                                    <div class="text-danger small mt-1">{{ form.privacy_consent.errors.0 }}</div>
+                                {% endif %}
+                            </div>
+                            
+                            <button type="submit" class="btn btn-primary btn-lg w-100 mt-4">
+                                <i class="fas fa-paper-plane me-2"></i>
+                                Suscribirme Gratis
+                            </button>
+                            
+                            <p class="text-muted small text-center mt-3 mb-0">
+                                <i class="fas fa-shield-alt me-1"></i>
+                                100% libre de spam. Cancela cuando quieras.
+                            </p>
+                        </div>
+                    </form>
                 </div>
-
-                <!-- Submit Button -->
-                <button 
-                    type="submit" 
-                    class="w-full bg-primary hover:bg-primary-dark text-white font-medium py-3 px-6 rounded-lg transition-colors duration-200 flex items-center justify-center"
-                    :disabled="loading"
-                >
-                    <span x-show="!loading" class="flex items-center">
-                        <i class="fas fa-paper-plane mr-2"></i>
-                        Suscribirse al Newsletter
-                    </span>
-                    <span x-show="loading" class="flex items-center">
-                        <i class="fas fa-spinner fa-spin mr-2"></i>
-                        Enviando...
-                    </span>
-                </button>
-            </form>
-        </div>
-
-        <!-- Benefits Section -->
-        <div class="grid md:grid-cols-3 gap-6 mb-8">
-            <div class="bg-white rounded-lg p-6 shadow-sm text-center">
-                <div class="w-12 h-12 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-3">
-                    <i class="fas fa-shield-alt text-green-600"></i>
-                </div>
-                <h3 class="font-semibold text-gray-900 mb-2">Contenido de calidad</h3>
-                <p class="text-sm text-gray-600">Tips exclusivos sobre privacidad y seguridad digital</p>
             </div>
-            
-            <div class="bg-white rounded-lg p-6 shadow-sm text-center">
-                <div class="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-3">
-                    <i class="fas fa-clock text-blue-600"></i>
-                </div>
-                <h3 class="font-semibold text-gray-900 mb-2">Sin spam</h3>
-                <p class="text-sm text-gray-600">Solo contenido relevante, máximo 1 email por semana</p>
-            </div>
-            
-            <div class="bg-white rounded-lg p-6 shadow-sm text-center">
-                <div class="w-12 h-12 bg-purple-100 rounded-full flex items-center justify-center mx-auto mb-3">
-                    <i class="fas fa-times-circle text-purple-600"></i>
-                </div>
-                <h3 class="font-semibold text-gray-900 mb-2">Cancela cuando quieras</h3>
-                <p class="text-sm text-gray-600">Dar de baja con un solo clic, sin complicaciones</p>
-            </div>
-        </div>
-
-        <!-- Trust Indicators -->
-        <div class="text-center text-sm text-gray-500">
-            <div class="flex items-center justify-center space-x-4 mb-2">
-                <span class="flex items-center">
-                    <i class="fas fa-lock mr-1"></i>
-                    100% seguro
-                </span>
-                <span class="flex items-center">
-                    <i class="fas fa-shield-alt mr-1"></i>
-                    RGPD compliant
-                </span>
-                <span class="flex items-center">
-                    <i class="fas fa-user-secret mr-1"></i>
-                    Sin datos compartidos
-                </span>
-            </div>
-            <p>Nunca compartiremos tu información con terceros.</p>
         </div>
     </div>
-</div>
+</section>
 
+<!-- Features Section -->
+<section class="py-5 bg-light">
+    <div class="container">
+        <div class="row text-center mb-5">
+            <div class="col-lg-8 mx-auto">
+                <h2 class="display-5 fw-bold mb-4">¿Qué recibirás cada semana? 📬</h2>
+                <p class="lead text-muted">
+                    Contenido curado especialmente para profesionales que valoran su privacidad digital
+                </p>
+            </div>
+        </div>
+        
+        <div class="row g-4">
+            <div class="col-md-6 col-lg-3">
+                <div class="text-center h-100 p-4">
+                    <div class="feature-icon display-4 mb-3">🛡️</div>
+                    <h4 class="h5 fw-bold mb-3">Análisis de Privacidad</h4>
+                    <p class="text-muted small">
+                        Técnicas avanzadas para proteger tu información personal en línea. 
+                        Aprende a configurar tus cuentas de forma segura.
+                    </p>
+                </div>
+            </div>
+            
+            <div class="col-md-6 col-lg-3">
+                <div class="text-center h-100 p-4">
+                    <div class="feature-icon display-4 mb-3">🔐</div>
+                    <h4 class="h5 fw-bold mb-3">Herramientas de Seguridad</h4>
+                    <p class="text-muted small">
+                        Reseñas de las mejores herramientas gratuitas y de pago para 
+                        proteger tu vida digital.
+                    </p>
+                </div>
+            </div>
+            
+            <div class="col-md-6 col-lg-3">
+                <div class="text-center h-100 p-4">
+                    <div class="feature-icon display-4 mb-3">🚨</div>
+                    <h4 class="h5 fw-bold mb-3">Alertas de Brechas</h4>
+                    <p class="text-muted small">
+                        Notificaciones inmediatas sobre brechas de datos importantes 
+                        y cómo protegerte.
+                    </p>
+                </div>
+            </div>
+            
+            <div class="col-md-6 col-lg-3">
+                <div class="text-center h-100 p-4">
+                    <div class="feature-icon display-4 mb-3">⚖️</div>
+                    <h4 class="h5 fw-bold mb-3">Guías RGPD</h4>
+                    <p class="text-muted small">
+                        Información práctica sobre cumplimiento de normativas 
+                        para empresas y profesionales.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Stats Section -->
+<section class="py-5">
+    <div class="container">
+        <div class="row g-4">
+            <div class="col-md-3">
+                <div class="stats-card rounded-3 p-4 text-center h-100">
+                    <div class="display-4 fw-bold text-primary">{{ subscriber_count|default:"100" }}+</div>
+                    <div class="small text-muted">Suscriptores activos</div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="stats-card rounded-3 p-4 text-center h-100">
+                    <div class="display-4 fw-bold text-primary">0</div>
+                    <div class="small text-muted">Spam enviado</div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="stats-card rounded-3 p-4 text-center h-100">
+                    <div class="display-4 fw-bold text-primary">98%</div>
+                    <div class="small text-muted">Tasa de satisfacción</div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="stats-card rounded-3 p-4 text-center h-100">
+                    <div class="display-4 fw-bold text-primary">5min</div>
+                    <div class="small text-muted">Tiempo de lectura</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Testimonials Section -->
+<section class="py-5 bg-light">
+    <div class="container">
+        <div class="row text-center mb-5">
+            <div class="col-lg-8 mx-auto">
+                <h2 class="display-5 fw-bold mb-4">Lo que dicen nuestros lectores 💬</h2>
+            </div>
+        </div>
+        
+        <div class="row g-4">
+            <div class="col-md-6 col-lg-4">
+                <div class="testimonial-card rounded-3 p-4 h-100">
+                    <div class="mb-3">
+                        <i class="fas fa-quote-left text-primary fa-2x"></i>
+                    </div>
+                    <p class="mb-4">
+                        "El newsletter de PrivacyTool me ha ayudado a entender mejor cómo proteger 
+                        mis datos personales. Las herramientas recomendadas son excelentes."
+                    </p>
+                    <div class="d-flex align-items-center">
+                        <img src="https://picsum.photos/48/48?random=10" class="rounded-circle me-3">
+                        <div>
+                            <div class="fw-semibold">María González</div>
+                            <small class="text-muted">Consultora IT</small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-md-6 col-lg-4">
+                <div class="testimonial-card rounded-3 p-4 h-100">
+                    <div class="mb-3">
+                        <i class="fas fa-quote-left text-primary fa-2x"></i>
+                    </div>
+                    <p class="mb-4">
+                        "Contenido de calidad, directo al grano y muy útil para mi trabajo 
+                        como responsable de protección de datos."
+                    </p>
+                    <div class="d-flex align-items-center">
+                        <img src="https://picsum.photos/48/48?random=11" class="rounded-circle me-3">
+                        <div>
+                            <div class="fw-semibold">Carlos Ruiz</div>
+                            <small class="text-muted">DPO</small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-md-6 col-lg-4">
+                <div class="testimonial-card rounded-3 p-4 h-100">
+                    <div class="mb-3">
+                        <i class="fas fa-quote-left text-primary fa-2x"></i>
+                    </div>
+                    <p class="mb-4">
+                        "Las alertas de seguridad me han salvado más de una vez. 
+                        Información vital para cualquier empresa."
+                    </p>
+                    <div class="d-flex align-items-center">
+                        <img src="https://picsum.photos/48/48?random=12" class="rounded-circle me-3">
+                        <div>
+                            <div class="fw-semibold">Ana Martín</div>
+                            <small class="text-muted">CISO</small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Final CTA Section -->
+<section class="py-5 hero-gradient text-white">
+    <div class="container text-center">
+        <div class="row">
+            <div class="col-lg-8 mx-auto">
+                <h2 class="display-5 fw-bold mb-4">¿Listo para proteger tu privacidad? 🚀</h2>
+                <p class="lead mb-4 opacity-90">
+                    Únete a miles de profesionales que ya reciben nuestro newsletter gratuito
+                </p>
+                <a href="#newsletter-form" class="btn btn-light btn-lg px-5">
+                    <i class="fas fa-arrow-up me-2"></i>
+                    Suscribirme Ahora
+                </a>
+                <p class="small mt-3 opacity-75">
+                    <i class="fas fa-shield-alt me-1"></i>
+                    Sin compromiso. Cancela cuando quieras.
+                </p>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}
+
+{% block extra_js %}
 <script>
-function subscribeForm() {
-    return {
-        loading: false
+// Smooth scroll to form
+document.addEventListener('DOMContentLoaded', function() {
+    const scrollLinks = document.querySelectorAll('a[href="#newsletter-form"]');
+    scrollLinks.forEach(link => {
+        link.addEventListener('click', function(e) {
+            e.preventDefault();
+            const target = document.querySelector('#newsletter-form');
+            if (target) {
+                target.scrollIntoView({
+                    behavior: 'smooth',
+                    block: 'center'
+                });
+            }
+        });
+    });
+});
+
+// Add loading state to form submission
+document.addEventListener('htmx:beforeRequest', function(evt) {
+    const submitBtn = evt.target.querySelector('button[type="submit"]');
+    if (submitBtn) {
+        submitBtn.innerHTML = '<span class="spinner-border spinner-border-sm me-2"></span>Enviando...';
+        submitBtn.disabled = true;
     }
-}
+});
+
+document.addEventListener('htmx:afterRequest', function(evt) {
+    const submitBtn = evt.target.querySelector('button[type="submit"]');
+    if (submitBtn) {
+        submitBtn.innerHTML = '<i class="fas fa-paper-plane me-2"></i>Suscribirme Gratis';
+        submitBtn.disabled = false;
+    }
+});
 </script>
 {% endblock %}
