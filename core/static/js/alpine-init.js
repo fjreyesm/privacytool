@@ -8,111 +8,141 @@ document.addEventListener('alpine:init', () => {
         analyticsEnabled: false,
 
         init() {
-            // Evitar que el panel se abra automáticamente al inicio
+            console.log('🍪 Iniciando sistema de cookies...');
+            
+            // FORZAR estado inicial
             this.showSettings = false;
             
-            // Verificar si ya se dieron permisos usando cookies del servidor
+            // Verificar estado de cookies
             this.checkCookieConsent();
             
-            // Si las cookies de analytics ya fueron aceptadas, carga los scripts
-            if (this.analyticsEnabled) {
-                this.loadAnalytics();
-            }
+            console.log('Estado inicial:', {
+                accepted: this.accepted,
+                showSettings: this.showSettings,
+                analyticsEnabled: this.analyticsEnabled
+            });
         },
 
         checkCookieConsent() {
-            // Leer el estado desde cookies del documento
-            const consent = this.getCookie('cookie-consent');
-            const analytics = this.getCookie('cookie-analytics');
-            
-            this.accepted = consent !== null && consent !== '';
-            this.analyticsEnabled = analytics === 'true';
+            try {
+                // Método 1: Verificar cookies del navegador
+                const consent = this.getCookie('cookie-consent');
+                
+                // Método 2: Verificar localStorage como fallback
+                const consentLS = localStorage.getItem('cookie-consent');
+                
+                this.accepted = (consent !== null && consent !== '') || 
+                               (consentLS !== null && consentLS !== '');
+                
+                const analytics = this.getCookie('cookie-analytics') || 
+                                localStorage.getItem('cookie-analytics');
+                
+                this.analyticsEnabled = analytics === 'true';
+                
+                console.log('Verificación cookies:', {
+                    consent, consentLS, 
+                    accepted: this.accepted,
+                    analytics: this.analyticsEnabled
+                });
+                
+            } catch (error) {
+                console.log('Error verificando cookies:', error);
+                this.accepted = false;
+                this.analyticsEnabled = false;
+            }
         },
 
         getCookie(name) {
-            const value = `; ${document.cookie}`;
-            const parts = value.split(`; ${name}=`);
-            if (parts.length === 2) return parts.pop().split(';').shift();
+            try {
+                const value = `; ${document.cookie}`;
+                const parts = value.split(`; ${name}=`);
+                if (parts.length === 2) return parts.pop().split(';').shift();
+            } catch (error) {
+                console.log('Error leyendo cookie:', error);
+            }
             return null;
         },
 
         setCookie(name, value, days = 365) {
-            const expires = new Date();
-            expires.setTime(expires.getTime() + (days * 24 * 60 * 60 * 1000));
-            document.cookie = `${name}=${value};expires=${expires.toUTCString()};path=/;SameSite=Lax`;
+            try {
+                const expires = new Date();
+                expires.setTime(expires.getTime() + (days * 24 * 60 * 60 * 1000));
+                document.cookie = `${name}=${value};expires=${expires.toUTCString()};path=/;SameSite=Lax`;
+                console.log(`Cookie ${name} guardada:`, value);
+            } catch (error) {
+                console.log('Error guardando cookie:', error);
+            }
         },
 
-        // Método para abrir configuración desde eventos externos
         openSettings() {
+            console.log('Abriendo configuración cookies');
             this.showSettings = true;
         },
 
+        closeSettings() {
+            console.log('Cerrando configuración cookies');
+            this.showSettings = false;
+        },
+
         acceptAll() {
+            console.log('Aceptar todas las cookies');
             this.analyticsEnabled = true;
             this.save('all');
         },
 
         acceptEssential() {
+            console.log('Aceptar solo esenciales');
             this.analyticsEnabled = false;
             this.save('essential');
         },
 
         saveSettings() {
+            console.log('Guardando configuración personalizada');
             this.save('custom');
             this.showSettings = false;
         },
 
         save(type) {
-            // Guardar en cookies en lugar de localStorage
-            this.setCookie('cookie-consent', type);
-            this.setCookie('cookie-analytics', this.analyticsEnabled);
-            this.setCookie('cookie-consent-date', new Date().toISOString());
+            console.log('Guardando preferencias:', type);
             
-            this.accepted = true;
-            
-            if (this.analyticsEnabled) {
-                this.loadAnalytics();
+            try {
+                // Guardar en cookies
+                this.setCookie('cookie-consent', type);
+                this.setCookie('cookie-analytics', this.analyticsEnabled);
+                this.setCookie('cookie-consent-date', new Date().toISOString());
+                
+                // Fallback en localStorage
+                localStorage.setItem('cookie-consent', type);
+                localStorage.setItem('cookie-analytics', this.analyticsEnabled);
+                localStorage.setItem('cookie-consent-date', new Date().toISOString());
+                
+                this.accepted = true;
+                
+                if (this.analyticsEnabled) {
+                    this.loadAnalytics();
+                }
+                
+                console.log('Preferencias guardadas exitosamente');
+                
+            } catch (error) {
+                console.log('Error guardando preferencias:', error);
             }
-
-            // Opcional: enviar al servidor para persistencia
-            this.sendConsentToServer(type);
-        },
-
-        sendConsentToServer(type) {
-            // Enviar via HTMX o fetch al backend Django
-            fetch('/api/cookie-consent/', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'X-CSRFToken': document.querySelector('meta[name="csrf-token"]').content
-                },
-                body: JSON.stringify({
-                    consent_type: type,
-                    analytics_enabled: this.analyticsEnabled,
-                    timestamp: new Date().toISOString()
-                })
-            }).catch(err => console.log('Consent sync failed:', err));
         },
 
         loadAnalytics() {
             console.log('📊 Cargando scripts de analytics...');
-            // Aquí iría el código real para cargar Google Analytics, etc.
-            
-            // Ejemplo: Google Analytics 4
-            // if (typeof gtag === 'undefined') {
-            //     const script = document.createElement('script');
-            //     script.src = 'https://www.googletagmanager.com/gtag/js?id=GA_MEASUREMENT_ID';
-            //     document.head.appendChild(script);
-            // }
+            // Aquí iría Google Analytics, etc.
         }
     }));
 
-    // Listener global para abrir configuración de cookies
-    window.addEventListener('open-cookie-settings', () => {
-        // Buscar la instancia de Alpine y abrir configuración
+    // Listener global
+    window.addEventListener('open-cookie-settings', (e) => {
+        console.log('Evento global: abrir configuración cookies');
         const cookieComponent = document.querySelector('[x-data*="secureCookies"]');
-        if (cookieComponent && cookieComponent._x_dataStack) {
+        if (cookieComponent && cookieComponent._x_dataStack && cookieComponent._x_dataStack[0]) {
             cookieComponent._x_dataStack[0].openSettings();
         }
     });
+    
+    console.log('🍪 Alpine cookies system initialized');
 });
