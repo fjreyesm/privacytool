@@ -59,7 +59,8 @@ class SubscriberAdmin(admin.ModelAdmin):
         colors = {
             'pending': 'orange',
             'active': 'green',
-            'unsubscribed': 'red'
+            'unsubscribed': 'red',
+            'bounced': 'darkred'
         }
         color = colors.get(obj.status, 'gray')
         return format_html(
@@ -113,23 +114,30 @@ class SubscriberAdmin(admin.ModelAdmin):
 
 @admin.register(NewsletterTemplate)
 class NewsletterTemplateAdmin(admin.ModelAdmin):
-    list_display = ['name', 'subject', 'is_active', 'created_at', 'updated_at']
+    list_display = ['name', 'description_short', 'is_active', 'created_at']
     list_filter = ['is_active', 'created_at']
-    search_fields = ['name', 'subject']
-    readonly_fields = ['created_at', 'updated_at']
+    search_fields = ['name', 'description']
+    readonly_fields = ['created_at']
     
     fieldsets = (
         ('Información Básica', {
-            'fields': ('name', 'subject', 'is_active')
+            'fields': ('name', 'description', 'is_active')
         }),
-        ('Contenido', {
-            'fields': ('html_content', 'text_content')
+        ('Contenido HTML', {
+            'fields': ('html_content',)
         }),
         ('Metadatos', {
-            'fields': ('created_at', 'updated_at'),
+            'fields': ('created_at',),
             'classes': ('collapse',)
         }),
     )
+    
+    def description_short(self, obj):
+        """Display truncated description"""
+        if obj.description:
+            return obj.description[:50] + '...' if len(obj.description) > 50 else obj.description
+        return '-'
+    description_short.short_description = 'Descripción'
     
     def get_form(self, request, obj=None, **kwargs):
         form = super().get_form(request, obj, **kwargs)
@@ -138,10 +146,10 @@ class NewsletterTemplateAdmin(admin.ModelAdmin):
             'rows': 20,
             'style': 'font-family: monospace;'
         })
-        form.base_fields['text_content'].widget.attrs.update({
-            'rows': 15,
-            'style': 'font-family: monospace;'
-        })
+        if 'description' in form.base_fields:
+            form.base_fields['description'].widget.attrs.update({
+                'rows': 3,
+            })
         return form
 
 
@@ -149,36 +157,49 @@ class NewsletterTemplateAdmin(admin.ModelAdmin):
 class NewsletterCampaignAdmin(admin.ModelAdmin):
     list_display = [
         'name', 
-        'template', 
+        'subject_short', 
         'status_badge', 
         'recipients_count', 
         'sent_at', 
         'open_rate_display'
     ]
     list_filter = ['status', 'sent_at', 'created_at']
-    search_fields = ['name', 'template__name']
+    search_fields = ['name', 'subject']
     readonly_fields = [
         'created_at', 
-        'updated_at', 
         'sent_at', 
         'recipients_count',
+        'sent_count',
         'opened_count',
         'clicked_count'
     ]
     
     fieldsets = (
         ('Información de Campaña', {
-            'fields': ('name', 'template', 'status')
+            'fields': ('name', 'subject', 'status')
+        }),
+        ('Contenido', {
+            'fields': ('content_html', 'content_text')
+        }),
+        ('Programación', {
+            'fields': ('scheduled_at',)
         }),
         ('Estadísticas', {
-            'fields': ('recipients_count', 'opened_count', 'clicked_count'),
+            'fields': ('recipients_count', 'sent_count', 'opened_count', 'clicked_count'),
             'classes': ('collapse',)
         }),
         ('Fechas', {
-            'fields': ('created_at', 'updated_at', 'sent_at'),
+            'fields': ('created_at', 'sent_at'),
             'classes': ('collapse',)
         }),
     )
+    
+    def subject_short(self, obj):
+        """Display truncated subject"""
+        if obj.subject:
+            return obj.subject[:40] + '...' if len(obj.subject) > 40 else obj.subject
+        return '-'
+    subject_short.short_description = 'Asunto'
     
     def status_badge(self, obj):
         """Display status with color coding"""
@@ -187,7 +208,7 @@ class NewsletterCampaignAdmin(admin.ModelAdmin):
             'scheduled': 'orange',
             'sending': 'blue',
             'sent': 'green',
-            'failed': 'red'
+            'paused': 'red'
         }
         color = colors.get(obj.status, 'gray')
         return format_html(
@@ -224,11 +245,25 @@ class NewsletterCampaignAdmin(admin.ModelAdmin):
             campaign.status = 'draft'
             campaign.sent_at = None
             campaign.recipients_count = 0
+            campaign.sent_count = 0
             campaign.opened_count = 0
             campaign.clicked_count = 0
             campaign.save()
         self.message_user(request, f'{len(queryset)} campañas duplicadas.')
     duplicate_campaign.short_description = 'Duplicar campañas'
+
+    def get_form(self, request, obj=None, **kwargs):
+        form = super().get_form(request, obj, **kwargs)
+        # Add custom CSS for better editing experience
+        form.base_fields['content_html'].widget.attrs.update({
+            'rows': 20,
+            'style': 'font-family: monospace;'
+        })
+        form.base_fields['content_text'].widget.attrs.update({
+            'rows': 15,
+            'style': 'font-family: monospace;'
+        })
+        return form
 
 
 # Customize Admin Site
