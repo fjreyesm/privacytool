@@ -56,6 +56,7 @@ INSTALLED_APPS = [
     
     # Apps propias
     'core.apps.CoreConfig',
+    'newsletter.apps.NewsletterConfig',  # Newsletter app added
 ]
 
 MIDDLEWARE = [
@@ -190,3 +191,47 @@ CONTENT_SECURITY_POLICY = {
 if DEBUG:
     CONTENT_SECURITY_POLICY['DIRECTIVES']['script-src'] += ("'unsafe-eval'",)
     CONTENT_SECURITY_POLICY['DIRECTIVES']['connect-src'] += ("ws:", "wss:")
+
+# ===== LOGGING CONFIGURATION =====
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'formatters': {
+        'verbose': {
+            'format': '{levelname} {asctime} {module} {process:d} {thread:d} {message}',
+            'style': '{',
+        },
+        'simple': {
+            'format': '{levelname} {message}',
+            'style': '{',
+        },
+    },
+    'handlers': {
+        'console': {
+            'level': 'INFO',
+            'class': 'logging.StreamHandler',
+            'formatter': 'simple'
+        },
+        'file': {
+            'level': 'ERROR',
+            'class': 'logging.FileHandler',
+            'filename': BASE_DIR / 'logs' / 'django.log',
+            'formatter': 'verbose',
+        },
+    },
+    'loggers': {
+        'newsletter': {
+            'handlers': ['console', 'file'],
+            'level': 'INFO',
+            'propagate': True,
+        },
+        'django': {
+            'handlers': ['console'],
+            'level': 'INFO',
+            'propagate': True,
+        },
+    },
+}
+
+# Create logs directory if it doesn't exist
+os.makedirs(BASE_DIR / 'logs', exist_ok=True)
