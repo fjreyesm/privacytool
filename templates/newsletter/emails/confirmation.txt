@@ -1,0 +1,29 @@
+¡Hola{% if subscriber.first_name %} {{ subscriber.first_name }}{% endif %}!
+
+¡Gracias por suscribirte a PrivacyTool Newsletter!
+
+Estás a un solo paso de recibir contenido exclusivo sobre:
+
+🛡️ Técnicas avanzadas de privacidad digital
+🔐 Herramientas de ciberseguridad  
+📊 Análisis de brechas de datos
+⚖️ Cumplimiento RGPD y normativas
+🚨 Alertas de seguridad urgentes
+
+CONFIRMA TU SUSCRIPCIÓN:
+{{ confirmation_url }}
+
+🔐 Tu privacidad es nuestra prioridad
+Nunca compartiremos tu email. Puedes darte de baja en cualquier momento con un solo clic. Sin spam, solo contenido de valor.
+
+⏰ Este enlace expirará en 7 días por seguridad.
+
+¿Recibiste este email por error? Contáctanos: contact@privacytool.com
+
+---
+PrivacyTool Newsletter
+Tu herramienta de privacidad y seguridad
+{{ site_url }}
+
+Twitter: https://twitter.com/privacytool
+LinkedIn: https://linkedin.com/company/privacytool
