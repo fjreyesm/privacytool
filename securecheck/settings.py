@@ -35,6 +35,13 @@ DEBUG = os.environ.get('DEBUG', 'True') == 'True'
 #DEBUG = True  # <-- Forzamos el modo DEBUG para poder depurar
 ALLOWED_HOSTS = os.environ.get('ALLOWED_HOSTS', 'localhost,127.0.0.1, 192.168.0.16').split(',')
 
+# CSRF Configuration - FIX CRITICAL
+CSRF_TRUSTED_ORIGINS = [
+    'http://127.0.0.1:8000',
+    'http://localhost:8000',
+    'http://192.168.0.16:8000',  # Tu IP móvil
+]
+
 # Configuración de URL del sitio para diferentes entornos
 SITE_URL = os.environ.get('SITE_URL', 'http://127.0.0.1:8000')
 SITE_DOMAIN = os.environ.get('SITE_DOMAIN', '127.0.0.1:8000')
