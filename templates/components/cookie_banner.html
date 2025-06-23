@@ -1,11 +1,73 @@
 {# templates/components/cookie_banner.html #}
 
-<div x-data="secureCookies" x-init="init()">
+<div x-data="{
+    accepted: false,
+    showSettings: false,
+    analyticsEnabled: false,
+    
+    init() {
+        console.log('🍪 Cookie banner iniciado');
+        this.showSettings = false;
+        this.checkConsent();
+    },
+    
+    checkConsent() {
+        const consent = this.getCookie('cookie-consent');
+        this.accepted = consent !== null && consent !== '';
+        this.analyticsEnabled = this.getCookie('cookie-analytics') === 'true';
+        console.log('Estado cookies:', this.accepted, this.analyticsEnabled);
+    },
+    
+    getCookie(name) {
+        const value = '; ' + document.cookie;
+        const parts = value.split('; ' + name + '=');
+        if (parts.length === 2) return parts.pop().split(';').shift();
+        return null;
+    },
+    
+    setCookie(name, value, days = 365) {
+        const expires = new Date();
+        expires.setTime(expires.getTime() + (days * 24 * 60 * 60 * 1000));
+        document.cookie = name + '=' + value + ';expires=' + expires.toUTCString() + ';path=/;SameSite=Lax';
+    },
+    
+    acceptAll() {
+        console.log('Aceptar todas');
+        this.analyticsEnabled = true;
+        this.save('all');
+    },
+    
+    acceptEssential() {
+        console.log('Solo esenciales');
+        this.analyticsEnabled = false;
+        this.save('essential');
+    },
+    
+    save(type) {
+        this.setCookie('cookie-consent', type);
+        this.setCookie('cookie-analytics', this.analyticsEnabled);
+        this.accepted = true;
+        console.log('Preferencias guardadas:', type);
+    },
+    
+    openSettings() {
+        this.showSettings = true;
+    },
+    
+    closeSettings() {
+        this.showSettings = false;
+    },
+    
+    saveSettings() {
+        this.save('custom');
+        this.showSettings = false;
+    }
+}" x-init="init()">
 
-    <!-- Banner inicial (solo cuando no se ha aceptado nada) -->
+    <!-- Banner inicial (solo cuando NO se ha aceptado nada) -->
     <div x-show="!accepted" 
          x-cloak
-         class="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 shadow-lg"
+         class="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 shadow-lg z-50"
          x-transition:enter="transition ease-out duration-300"
          x-transition:enter-start="opacity-0 transform translate-y-full"
          x-transition:enter-end="opacity-100 transform translate-y-0">
@@ -20,7 +82,7 @@
                     <div>
                         <p class="text-sm text-gray-700 leading-relaxed">
                             <strong>Respetamos tu privacidad.</strong> Usamos cookies esenciales para el funcionamiento y, opcionalmente, analytics anónimos para mejorar el servicio.
-                            <a href="{% url 'core:politica-cookies' %}" target="_blank" rel="noopener noreferrer" class="text-primary hover:underline font-semibold ml-1">Más detalles</a>
+                            <button @click="openSettings()" class="text-primary hover:underline font-semibold ml-1">Más detalles</button>
                         </p>
                     </div>
                 </div>
@@ -37,7 +99,7 @@
         </div>
     </div>
 
-    <!-- Botón flotante (solo cuando ya se ha aceptado algo) -->
+    <!-- Botón flotante (cuando ya se aceptó algo) -->
     <div x-show="accepted" x-cloak class="fixed bottom-6 right-6 z-40">
         <button @click="openSettings()" 
                 class="bg-gray-800 text-white p-3 rounded-full shadow-lg hover:bg-gray-900 transition-all duration-200 hover:scale-105"
@@ -46,7 +108,7 @@
         </button>
     </div>
 
-    <!-- Modal de configuración -->
+    <!-- Modal de configuración (SOLO se abre cuando se clickea "Más detalles") -->
     <div x-show="showSettings" 
          x-cloak
          class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4"
@@ -55,15 +117,16 @@
          x-transition:enter-end="opacity-100"
          x-transition:leave="transition ease-in duration-200"
          x-transition:leave-start="opacity-100"
-         x-transition:leave-end="opacity-0">
+         x-transition:leave-end="opacity-0"
+         @click.self="closeSettings()">
         
-        <div class="bg-white rounded-lg shadow-xl max-w-md w-full p-6" @click.away="showSettings = false">
+        <div class="bg-white rounded-lg shadow-xl max-w-md w-full p-6">
             <div class="flex justify-between items-center mb-4">
                 <h3 class="text-lg font-semibold text-gray-900">
                     <i class="fas fa-shield-alt text-primary mr-2"></i>
                     Configuración de Cookies
                 </h3>
-                <button @click="showSettings = false" class="text-gray-400 hover:text-gray-600 transition-colors">
+                <button @click="closeSettings()" class="text-gray-400 hover:text-gray-600 transition-colors">
                     <i class="fas fa-times"></i>
                 </button>
             </div>
