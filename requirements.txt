@@ -1,16 +1,7 @@
-# requirements.txt
-
-asgiref==3.8.1
-django==5.0.14
+Django==4.2.16
 django-htmx==1.17.2
+django-csp==3.8
 django-ratelimit==4.1.0
-django-csp>=3.7
+python-dotenv==1.0.0
+requests==2.31.0
 psycopg2-binary==2.9.9
-python-dotenv==1.0.1
-sqlparse==0.5.0
-requests==2.32.4
-Pillow==10.4.0
-
-# Herramientas de Desarrollo
-pip-audit==2.7.3
-setuptools==78.1.1
