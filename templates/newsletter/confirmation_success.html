@@ -15,28 +15,6 @@
         backdrop-filter: blur(10px);
         background: rgba(255, 255, 255, 0.95);
         border: 1px solid rgba(255, 255, 255, 0.2);
-        box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
-    }
-    
-    .feature-card {
-        background: linear-gradient(135deg, #f0fdf4 0%, #dcfce7 100%);
-        border: 1px solid #bbf7d0;
-        transition: transform 0.3s ease;
-    }
-    
-    .feature-card:hover {
-        transform: translateY(-5px);
-    }
-    
-    .btn-primary {
-        background: linear-gradient(135deg, #10b981 0%, #059669 100%);
-        border: none;
-        transition: all 0.3s ease;
-    }
-    
-    .btn-primary:hover {
-        transform: translateY(-2px);
-        box-shadow: 0 10px 25px rgba(16, 185, 129, 0.3);
     }
     
     .floating-elements {
@@ -74,7 +52,7 @@
 
 {% block content %}
 <!-- Success Hero Section -->
-<section class="success-gradient text-white position-relative overflow-hidden">
+<section class="success-gradient text-white relative overflow-hidden min-h-screen">
     <div class="floating-elements">
         <div class="floating-element" style="top: 15%; left: 10%; font-size: 2rem;">✅</div>
         <div class="floating-element" style="top: 25%; right: 15%; font-size: 1.5rem;">🎉</div>
@@ -83,60 +61,58 @@
         <div class="floating-element" style="top: 35%; left: 75%; font-size: 2rem;">🛡️</div>
     </div>
     
-    <div class="container py-5">
-        <div class="row justify-content-center min-vh-75 align-items-center">
-            <div class="col-lg-8 text-center py-5">
-                <div class="success-card rounded-3 p-5 mx-auto" style="max-width: 600px;">
+    <div class="max-w-7xl mx-auto px-4 py-12 lg:px-8">
+        <div class="flex justify-center items-center min-h-screen">
+            <div class="text-center py-12 max-w-2xl">
+                <div class="success-card rounded-lg p-8 lg:p-12 mx-auto shadow-xl">
                     <!-- Success Icon -->
-                    <div class="mb-4">
-                        <div class="check-animation d-inline-block p-3 rounded-circle bg-success text-white" style="font-size: 3rem;">
+                    <div class="mb-6">
+                        <div class="check-animation inline-block p-4 rounded-full bg-green-500 text-white text-5xl">
                             ✅
                         </div>
                     </div>
                     
-                    <h1 class="display-5 fw-bold text-dark mb-4">
+                    <h1 class="text-4xl lg:text-5xl font-bold text-gray-900 mb-6">
                         ¡Confirmación exitosa! 🎉
                     </h1>
                     
                     {% if subscriber.first_name %}
-                    <p class="lead text-muted mb-4">
+                    <p class="text-xl text-gray-600 mb-6">
                         ¡Hola <strong>{{ subscriber.first_name }}</strong>! Tu suscripción al newsletter de PrivacyTool está confirmada.
                     </p>
                     {% else %}
-                    <p class="lead text-muted mb-4">
+                    <p class="text-xl text-gray-600 mb-6">
                         Tu suscripción al newsletter de PrivacyTool está confirmada.
                     </p>
                     {% endif %}
                     
-                    <div class="bg-light rounded-3 p-4 mb-4">
-                        <div class="d-flex align-items-center justify-content-center">
-                            <i class="fas fa-envelope-check text-success me-3 fa-2x"></i>
-                            <div class="text-start">
-                                <div class="fw-bold text-dark">{{ subscriber.email }}</div>
-                                <small class="text-muted">Email confirmado el {{ subscriber.confirmed_at|date:"d/m/Y H:i" }}</small>
+                    <div class="bg-gray-50 rounded-lg p-4 mb-6">
+                        <div class="flex items-center justify-center">
+                            <i class="fas fa-envelope-check text-green-500 mr-3 text-2xl"></i>
+                            <div class="text-left">
+                                <div class="font-bold text-gray-900">{{ subscriber.email }}</div>
+                                <div class="text-sm text-gray-600">Email confirmado el {{ subscriber.confirmed_at|date:"d/m/Y H:i" }}</div>
                             </div>
                         </div>
                     </div>
                     
-                    <p class="text-muted mb-4">
+                    <p class="text-gray-600 mb-8">
                         <strong>¡Bienvenido a la comunidad!</strong> Ya formas parte de miles de profesionales 
                         que protegen su privacidad digital.
                     </p>
                     
                     <!-- Quick Actions -->
-                    <div class="row g-3 mb-4">
-                        <div class="col-md-6">
-                            <a href="{% url 'core:verification_home' %}" class="btn btn-primary btn-lg w-100">
-                                <i class="fas fa-search me-2"></i>
-                                Verificar mis datos
-                            </a>
-                        </div>
-                        <div class="col-md-6">
-                            <a href="{% url 'core:home' %}" class="btn btn-outline-primary btn-lg w-100">
-                                <i class="fas fa-home me-2"></i>
-                                Ir al inicio
-                            </a>
-                        </div>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+                        <a href="{% url 'core:verification_home' %}" 
+                           class="bg-green-600 text-white px-6 py-3 rounded-lg font-semibold hover:bg-green-700 transition-all duration-300 hover:-translate-y-0.5 shadow-lg inline-flex items-center justify-center">
+                            <i class="fas fa-search mr-2"></i>
+                            Verificar mis datos
+                        </a>
+                        <a href="{% url 'core:home' %}" 
+                           class="border-2 border-green-600 text-green-600 px-6 py-3 rounded-lg font-semibold hover:bg-green-600 hover:text-white transition-all duration-300 inline-flex items-center justify-center">
+                            <i class="fas fa-home mr-2"></i>
+                            Ir al inicio
+                        </a>
                     </div>
                 </div>
             </div>
@@ -145,205 +121,178 @@
 </section>
 
 <!-- What's Next Section -->
-<section class="py-5 bg-light">
-    <div class="container">
-        <div class="row text-center mb-5">
-            <div class="col-lg-8 mx-auto">
-                <h2 class="display-5 fw-bold mb-4">¿Qué puedes hacer ahora? 🚀</h2>
-                <p class="lead text-muted">
-                    Aprovecha al máximo tu suscripción y empieza a proteger tu privacidad
-                </p>
-            </div>
+<section class="py-16 bg-gray-50">
+    <div class="max-w-7xl mx-auto px-4 lg:px-8">
+        <div class="text-center mb-12">
+            <h2 class="text-3xl lg:text-4xl font-bold text-gray-900 mb-4">¿Qué puedes hacer ahora? 🚀</h2>
+            <p class="text-xl text-gray-600 max-w-3xl mx-auto">
+                Aprovecha al máximo tu suscripción y empieza a proteger tu privacidad
+            </p>
         </div>
         
-        <div class="row g-4">
-            <div class="col-md-6 col-lg-4">
-                <div class="feature-card rounded-3 p-4 h-100 text-center">
-                    <div class="display-4 mb-3">🔍</div>
-                    <h4 class="h5 fw-bold mb-3">Verifica tus datos</h4>
-                    <p class="text-muted small mb-4">
-                        Usa nuestra herramienta gratuita para comprobar si tus datos 
-                        han aparecido en alguna brecha de seguridad.
-                    </p>
-                    <a href="{% url 'core:verification_home' %}" class="btn btn-outline-success btn-sm">
-                        Verificar ahora
-                    </a>
-                </div>
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            <div class="bg-white rounded-lg p-6 shadow-md hover:shadow-lg transition-all duration-300 hover:-translate-y-1 text-center">
+                <div class="text-5xl mb-4">🔍</div>
+                <h3 class="text-xl font-bold text-gray-900 mb-3">Verifica tus datos</h3>
+                <p class="text-gray-600 text-sm mb-4">
+                    Usa nuestra herramienta gratuita para comprobar si tus datos 
+                    han aparecido en alguna brecha de seguridad.
+                </p>
+                <a href="{% url 'core:verification_home' %}" 
+                   class="inline-flex items-center text-green-600 font-semibold hover:text-green-700">
+                    Verificar ahora
+                    <i class="fas fa-arrow-right ml-1"></i>
+                </a>
             </div>
             
-            <div class="col-md-6 col-lg-4">
-                <div class="feature-card rounded-3 p-4 h-100 text-center">
-                    <div class="display-4 mb-3">📧</div>
-                    <h4 class="h5 fw-bold mb-3">Revisa tu email</h4>
-                    <p class="text-muted small mb-4">
-                        Te enviamos un email de bienvenida con recursos adicionales 
-                        y consejos para empezar.
-                    </p>
-                    <a href="mailto:" class="btn btn-outline-success btn-sm">
-                        Abrir email
-                    </a>
-                </div>
+            <div class="bg-white rounded-lg p-6 shadow-md hover:shadow-lg transition-all duration-300 hover:-translate-y-1 text-center">
+                <div class="text-5xl mb-4">📧</div>
+                <h3 class="text-xl font-bold text-gray-900 mb-3">Revisa tu email</h3>
+                <p class="text-gray-600 text-sm mb-4">
+                    Te enviamos un email de bienvenida con recursos adicionales 
+                    y consejos para empezar.
+                </p>
+                <a href="mailto:" 
+                   class="inline-flex items-center text-green-600 font-semibold hover:text-green-700">
+                    Abrir email
+                    <i class="fas fa-arrow-right ml-1"></i>
+                </a>
             </div>
             
-            <div class="col-md-6 col-lg-4">
-                <div class="feature-card rounded-3 p-4 h-100 text-center">
-                    <div class="display-4 mb-3">🔗</div>
-                    <h4 class="h5 fw-bold mb-3">Comparte con colegas</h4>
-                    <p class="text-muted small mb-4">
-                        Ayuda a otros profesionales a proteger su privacidad 
-                        compartiendo PrivacyTool.
-                    </p>
-                    <a href="{% url 'newsletter:subscribe' %}" class="btn btn-outline-success btn-sm">
-                        Compartir
-                    </a>
-                </div>
+            <div class="bg-white rounded-lg p-6 shadow-md hover:shadow-lg transition-all duration-300 hover:-translate-y-1 text-center">
+                <div class="text-5xl mb-4">🔗</div>
+                <h3 class="text-xl font-bold text-gray-900 mb-3">Comparte con colegas</h3>
+                <p class="text-gray-600 text-sm mb-4">
+                    Ayuda a otros profesionales a proteger su privacidad 
+                    compartiendo PrivacyTool.
+                </p>
+                <a href="{% url 'newsletter:subscribe' %}" 
+                   class="inline-flex items-center text-green-600 font-semibold hover:text-green-700">
+                    Compartir
+                    <i class="fas fa-arrow-right ml-1"></i>
+                </a>
             </div>
         </div>
     </div>
 </section>
 
 <!-- Timeline Section -->
-<section class="py-5">
-    <div class="container">
-        <div class="row text-center mb-5">
-            <div class="col-lg-8 mx-auto">
-                <h2 class="display-5 fw-bold mb-4">¿Qué viene después? ⏰</h2>
-                <p class="lead text-muted">
-                    Tu hoja de ruta en la protección de la privacidad digital
-                </p>
-            </div>
+<section class="py-16 bg-white">
+    <div class="max-w-7xl mx-auto px-4 lg:px-8">
+        <div class="text-center mb-12">
+            <h2 class="text-3xl lg:text-4xl font-bold text-gray-900 mb-4">¿Qué viene después? ⏰</h2>
+            <p class="text-xl text-gray-600 max-w-3xl mx-auto">
+                Tu hoja de ruta en la protección de la privacidad digital
+            </p>
         </div>
         
-        <div class="row g-4">
-            <div class="col-md-6 col-lg-3">
-                <div class="text-center">
-                    <div class="bg-primary text-white rounded-circle d-inline-flex align-items-center justify-content-center mb-3" style="width: 60px; height: 60px;">
-                        <strong>1</strong>
-                    </div>
-                    <h5 class="fw-bold">Próximos días</h5>
-                    <p class="text-muted small">
-                        Recibirás tu primer newsletter con herramientas esenciales 
-                        de privacidad que puedes implementar inmediatamente.
-                    </p>
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+            <div class="text-center">
+                <div class="bg-blue-600 text-white rounded-full w-16 h-16 flex items-center justify-center text-xl font-bold mx-auto mb-4">
+                    1
                 </div>
+                <h3 class="text-lg font-bold text-gray-900 mb-2">Próximos días</h3>
+                <p class="text-gray-600 text-sm">
+                    Recibirás tu primer newsletter con herramientas esenciales 
+                    de privacidad que puedes implementar inmediatamente.
+                </p>
             </div>
             
-            <div class="col-md-6 col-lg-3">
-                <div class="text-center">
-                    <div class="bg-primary text-white rounded-circle d-inline-flex align-items-center justify-content-center mb-3" style="width: 60px; height: 60px;">
-                        <strong>2</strong>
-                    </div>
-                    <h5 class="fw-bold">Primera semana</h5>
-                    <p class="text-muted small">
-                        Guía completa sobre configuración de privacidad en 
-                        redes sociales y navegadores web.
-                    </p>
+            <div class="text-center">
+                <div class="bg-blue-600 text-white rounded-full w-16 h-16 flex items-center justify-center text-xl font-bold mx-auto mb-4">
+                    2
                 </div>
+                <h3 class="text-lg font-bold text-gray-900 mb-2">Primera semana</h3>
+                <p class="text-gray-600 text-sm">
+                    Guía completa sobre configuración de privacidad en 
+                    redes sociales y navegadores web.
+                </p>
             </div>
             
-            <div class="col-md-6 col-lg-3">
-                <div class="text-center">
-                    <div class="bg-primary text-white rounded-circle d-inline-flex align-items-center justify-content-center mb-3" style="width: 60px; height: 60px;">
-                        <strong>3</strong>
-                    </div>
-                    <h5 class="fw-bold">Primer mes</h5>
-                    <p class="text-muted small">
-                        Análisis profundo de gestores de contraseñas y 
-                        autenticación de dos factores.
-                    </p>
+            <div class="text-center">
+                <div class="bg-blue-600 text-white rounded-full w-16 h-16 flex items-center justify-center text-xl font-bold mx-auto mb-4">
+                    3
                 </div>
+                <h3 class="text-lg font-bold text-gray-900 mb-2">Primer mes</h3>
+                <p class="text-gray-600 text-sm">
+                    Análisis profundo de gestores de contraseñas y 
+                    autenticación de dos factores.
+                </p>
             </div>
             
-            <div class="col-md-6 col-lg-3">
-                <div class="text-center">
-                    <div class="bg-primary text-white rounded-circle d-inline-flex align-items-center justify-content-center mb-3" style="width: 60px; height: 60px;">
-                        <strong>∞</strong>
-                    </div>
-                    <h5 class="fw-bold">Cada semana</h5>
-                    <p class="text-muted small">
-                        Contenido actualizado, alertas de seguridad y 
-                        las mejores prácticas del sector.
-                    </p>
+            <div class="text-center">
+                <div class="bg-blue-600 text-white rounded-full w-16 h-16 flex items-center justify-center text-xl font-bold mx-auto mb-4">
+                    ∞
                 </div>
+                <h3 class="text-lg font-bold text-gray-900 mb-2">Cada semana</h3>
+                <p class="text-gray-600 text-sm">
+                    Contenido actualizado, alertas de seguridad y 
+                    las mejores prácticas del sector.
+                </p>
             </div>
         </div>
     </div>
 </section>
 
 <!-- Contact Section -->
-<section class="py-5 bg-light">
-    <div class="container">
-        <div class="row justify-content-center">
-            <div class="col-lg-8 text-center">
-                <h2 class="h3 fw-bold mb-4">¿Tienes alguna pregunta? 💬</h2>
-                
-                <p class="text-muted mb-4">
-                    Nuestro equipo está aquí para ayudarte. No dudes en contactarnos 
-                    si tienes alguna duda sobre privacidad digital o nuestro newsletter.
-                </p>
-                
-                <div class="row g-3 justify-content-center">
-                    <div class="col-md-4">
-                        <a href="mailto:contact@privacytool.com" class="text-decoration-none">
-                            <div class="border rounded-3 p-3 h-100 bg-white">
-                                <i class="fas fa-envelope text-primary mb-2 fa-lg"></i>
-                                <div class="fw-semibold">Email</div>
-                                <small class="text-muted">contact@privacytool.com</small>
-                            </div>
-                        </a>
-                    </div>
-                    
-                    <div class="col-md-4">
-                        <a href="https://twitter.com/privacytool" class="text-decoration-none" target="_blank">
-                            <div class="border rounded-3 p-3 h-100 bg-white">
-                                <i class="fab fa-twitter text-primary mb-2 fa-lg"></i>
-                                <div class="fw-semibold">Twitter</div>
-                                <small class="text-muted">@privacytool</small>
-                            </div>
-                        </a>
-                    </div>
-                    
-                    <div class="col-md-4">
-                        <a href="https://linkedin.com/company/privacytool" class="text-decoration-none" target="_blank">
-                            <div class="border rounded-3 p-3 h-100 bg-white">
-                                <i class="fab fa-linkedin text-primary mb-2 fa-lg"></i>
-                                <div class="fw-semibold">LinkedIn</div>
-                                <small class="text-muted">PrivacyTool</small>
-                            </div>
-                        </a>
-                    </div>
-                </div>
-                
-                <p class="text-muted small mt-4">
-                    También puedes simplemente responder a cualquiera de nuestros emails 
-                    y te responderemos personalmente.
-                </p>
-            </div>
+<section class="py-16 bg-gray-50">
+    <div class="max-w-4xl mx-auto px-4 lg:px-8">
+        <div class="text-center mb-12">
+            <h2 class="text-3xl font-bold text-gray-900 mb-4">¿Tienes alguna pregunta? 💬</h2>
+            <p class="text-gray-600 mb-8">
+                Nuestro equipo está aquí para ayudarte. No dudes en contactarnos 
+                si tienes alguna duda sobre privacidad digital o nuestro newsletter.
+            </p>
         </div>
+        
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <a href="mailto:contact@privacytool.com" 
+               class="bg-white border rounded-lg p-6 text-center hover:shadow-lg transition-all duration-300 hover:-translate-y-1">
+                <i class="fas fa-envelope text-blue-600 text-2xl mb-3"></i>
+                <div class="font-semibold text-gray-900">Email</div>
+                <div class="text-sm text-gray-600">contact@privacytool.com</div>
+            </a>
+            
+            <a href="https://twitter.com/privacytool" target="_blank"
+               class="bg-white border rounded-lg p-6 text-center hover:shadow-lg transition-all duration-300 hover:-translate-y-1">
+                <i class="fab fa-twitter text-blue-600 text-2xl mb-3"></i>
+                <div class="font-semibold text-gray-900">Twitter</div>
+                <div class="text-sm text-gray-600">@privacytool</div>
+            </a>
+            
+            <a href="https://linkedin.com/company/privacytool" target="_blank"
+               class="bg-white border rounded-lg p-6 text-center hover:shadow-lg transition-all duration-300 hover:-translate-y-1">
+                <i class="fab fa-linkedin text-blue-600 text-2xl mb-3"></i>
+                <div class="font-semibold text-gray-900">LinkedIn</div>
+                <div class="text-sm text-gray-600">PrivacyTool</div>
+            </a>
+        </div>
+        
+        <p class="text-center text-gray-600 text-sm mt-6">
+            También puedes simplemente responder a cualquiera de nuestros emails 
+            y te responderemos personalmente.
+        </p>
     </div>
 </section>
 
 <!-- Footer CTA -->
-<section class="py-5 success-gradient text-white">
-    <div class="container text-center">
-        <div class="row">
-            <div class="col-lg-8 mx-auto">
-                <h2 class="h3 fw-bold mb-3">¡Gracias por confiar en PrivacyTool! 🙏</h2>
-                <p class="mb-4 opacity-90">
-                    Estamos emocionados de tenerte en nuestra comunidad de profesionales 
-                    comprometidos con la privacidad digital.
-                </p>
-                <a href="{% url 'core:home' %}" class="btn btn-light btn-lg px-4">
-                    <i class="fas fa-home me-2"></i>
-                    Explorar PrivacyTool
-                </a>
-            </div>
-        </div>
+<section class="py-16 success-gradient text-white">
+    <div class="max-w-7xl mx-auto px-4 lg:px-8 text-center">
+        <h2 class="text-3xl font-bold mb-4">¡Gracias por confiar en PrivacyTool! 🙏</h2>
+        <p class="text-xl mb-8 opacity-90 max-w-2xl mx-auto">
+            Estamos emocionados de tenerte en nuestra comunidad de profesionales 
+            comprometidos con la privacidad digital.
+        </p>
+        <a href="{% url 'core:home' %}" 
+           class="bg-white text-green-600 px-8 py-3 rounded-lg font-semibold hover:bg-gray-100 transition-all duration-300 inline-flex items-center">
+            <i class="fas fa-home mr-2"></i>
+            Explorar PrivacyTool
+        </a>
     </div>
 </section>
 {% endblock %}
 
-{% block extra_js %}
+{% block extra_scripts %}
 <script>
 // Add confetti effect on page load
 document.addEventListener('DOMContentLoaded', function() {
