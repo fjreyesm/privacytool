@@ -7,186 +7,140 @@
 
 {% block extra_head %}
 <style>
-    .hero-gradient {
-        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    /* Usar el mismo gradiente que el color primary pero más suave */
+    .newsletter-hero {
+        background: linear-gradient(135deg, #005A9C 0%, #3B82F6 100%);
     }
     
-    .newsletter-card {
-        backdrop-filter: blur(10px);
-        background: rgba(255, 255, 255, 0.95);
-        border: 1px solid rgba(255, 255, 255, 0.2);
-    }
-    
-    .feature-icon {
-        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-        background-clip: text;
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
-    }
-    
-    .floating-elements {
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        overflow: hidden;
-        pointer-events: none;
-    }
-    
+    /* Elementos flotantes menos intrusivos - igual que check.html */
     .floating-element {
         position: absolute;
-        opacity: 0.1;
-        animation: float 20s infinite ease-in-out;
+        opacity: 0.03;
+        animation: float 25s infinite ease-in-out;
+        pointer-events: none;
     }
     
     @keyframes float {
         0%, 100% { transform: translateY(0px) rotate(0deg); }
-        33% { transform: translateY(-30px) rotate(120deg); }
-        66% { transform: translateY(-60px) rotate(240deg); }
-    }
-    
-    .interest-option input[type="checkbox"] {
-        position: absolute;
-        opacity: 0;
-    }
-    
-    .interest-option input[type="checkbox"]:checked + label {
-        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-        color: white;
-        transform: scale(1.05);
-    }
-    
-    .testimonial-card {
-        border-left: 4px solid;
-        border-image: linear-gradient(135deg, #667eea 0%, #764ba2 100%) 1;
+        33% { transform: translateY(-20px) rotate(60deg); }
+        66% { transform: translateY(-40px) rotate(120deg); }
     }
 </style>
 {% endblock %}
 
 {% block content %}
-<!-- Hero Section -->
-<section class="hero-gradient text-white relative overflow-hidden min-h-screen">
-    <div class="floating-elements">
-        <div class="floating-element" style="top: 10%; left: 10%; font-size: 2rem;">🔒</div>
-        <div class="floating-element" style="top: 20%; right: 15%; font-size: 1.5rem;">🛡️</div>
-        <div class="floating-element" style="top: 60%; left: 5%; font-size: 2.5rem;">🔐</div>
-        <div class="floating-element" style="top: 70%; right: 10%; font-size: 1.8rem;">🔍</div>
-        <div class="floating-element" style="top: 30%; left: 70%; font-size: 2rem;">⚡</div>
+<div class="max-w-7xl mx-auto py-8 px-4 sm:px-6 lg:px-8">
+    <!-- Header Section -->
+    <div class="text-center mb-12">
+        <h1 class="text-3xl font-bold tracking-tight text-gray-900 mb-4 sm:text-4xl">
+            📧 Newsletter de Seguridad Digital
+        </h1>
+        <p class="text-xl text-gray-600 max-w-3xl mx-auto">
+            Recibe las últimas noticias sobre privacidad, ciberseguridad y protección de datos. 
+            <strong>Sin spam, solo contenido de valor.</strong>
+        </p>
     </div>
     
-    <div class="max-w-7xl mx-auto px-4 py-12 lg:px-8">
-        <div class="lg:flex lg:items-center lg:gap-8 min-h-screen">
-            <!-- Left Content -->
-            <div class="lg:flex-1 py-12">
-                <div class="mb-6">
-                    <span class="inline-flex items-center bg-white text-blue-600 px-4 py-2 rounded-full text-sm font-medium">
-                        <i class="fas fa-envelope mr-2"></i>Newsletter Gratuito
-                    </span>
+    <div class="grid grid-cols-1 lg:grid-cols-3 lg:gap-8">
+        
+        <!-- Main Form Section (2/3 width) -->
+        <div class="lg:col-span-2">
+            <div class="card">
+                <div class="card-header-primary">
+                    <i class="fas fa-envelope mr-3"></i>
+                    Suscripción Gratuita
                 </div>
-                
-                <h1 class="text-4xl lg:text-5xl font-extrabold mb-6">
-                    Mantente <span class="text-yellow-400">Seguro</span> en el Mundo Digital
-                </h1>
-                
-                <p class="text-xl mb-6 opacity-90">
-                    Recibe contenido exclusivo sobre privacidad digital, ciberseguridad y protección de datos. 
-                    <strong>Sin spam, solo valor.</strong>
-                </p>
-                
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-3 mb-6">
-                    <div class="flex items-center">
-                        <i class="fas fa-check-circle text-yellow-400 mr-2"></i>
-                        <span class="text-sm">Newsletter semanal</span>
-                    </div>
-                    <div class="flex items-center">
-                        <i class="fas fa-check-circle text-yellow-400 mr-2"></i>
-                        <span class="text-sm">Alertas de seguridad</span>
-                    </div>
-                    <div class="flex items-center">
-                        <i class="fas fa-check-circle text-yellow-400 mr-2"></i>
-                        <span class="text-sm">Herramientas gratuitas</span>
-                    </div>
-                    <div class="flex items-center">
-                        <i class="fas fa-check-circle text-yellow-400 mr-2"></i>
-                        <span class="text-sm">Guías RGPD</span>
-                    </div>
-                </div>
-                
-                {% if subscriber_count %}
-                <div class="flex items-center mb-6">
-                    <div class="flex -space-x-2 mr-4">
-                        {% for i in "12345" %}
-                        <img src="https://picsum.photos/32/32?random={{ i }}" 
-                             class="w-8 h-8 rounded-full border-2 border-white">
-                        {% endfor %}
-                    </div>
-                    <span class="text-sm opacity-90">
-                        <strong>{{ subscriber_count }}+</strong> profesionales ya reciben nuestro newsletter
-                    </span>
-                </div>
-                {% endif %}
-            </div>
-            
-            <!-- Right Form -->
-            <div class="lg:flex-1 max-w-md mx-auto lg:mx-0">
-                <div class="newsletter-card rounded-lg p-6 lg:p-8 shadow-xl">
-                    <div class="text-center mb-6">
-                        <h2 class="text-2xl font-bold text-gray-900 mb-2">🔒 Suscripción Gratuita</h2>
-                        <p class="text-gray-600 text-sm">Únete a la comunidad de profesionales que protegen su privacidad</p>
-                    </div>
+                <div class="card-body">
+                    <p class="mb-6 text-gray-600">
+                        Únete a más de <strong>{{ subscriber_count|default:"500" }}+ profesionales</strong> que ya reciben 
+                        nuestro newsletter semanal con contenido exclusivo sobre privacidad y seguridad.
+                    </p>
                     
+                    <!-- Messages -->
                     {% if messages %}
                         {% for message in messages %}
-                            <div class="mb-4 p-3 rounded-md {% if message.tags == 'success' %}bg-green-50 text-green-800 border border-green-200{% elif message.tags == 'error' %}bg-red-50 text-red-800 border border-red-200{% else %}bg-blue-50 text-blue-800 border border-blue-200{% endif %}">
-                                {{ message }}
+                            <div class="mb-4 {% if message.tags == 'success' %}alert-success{% elif message.tags == 'error' %}alert-danger{% else %}alert-info{% endif %}">
+                                <div class="alert-icon">
+                                    {% if message.tags == 'success' %}✅{% elif message.tags == 'error' %}❌{% else %}ℹ️{% endif %}
+                                </div>
+                                <div class="alert-content">
+                                    <p>{{ message }}</p>
+                                </div>
                             </div>
                         {% endfor %}
                     {% endif %}
                     
-                    <form method="post" hx-post="{% url 'newsletter:subscribe' %}" hx-target="#newsletter-form" hx-swap="outerHTML">
+                    <!-- Newsletter Form -->
+                    <form method="post" 
+                          hx-post="{% url 'newsletter:subscribe' %}" 
+                          hx-target="#newsletter-form" 
+                          hx-swap="outerHTML"
+                          x-data="{ 
+                              email: '', 
+                              firstName: '', 
+                              interests: [], 
+                              privacyAccepted: false,
+                              isFormValid: false
+                          }"
+                          x-effect="isFormValid = email && privacyAccepted">
+                        
                         <div id="newsletter-form">
                             {% csrf_token %}
                             
-                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+                            <!-- Name and Email Row -->
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
                                 <div>
-                                    <label for="{{ form.first_name.id_for_label }}" class="block text-sm font-medium text-gray-700 mb-1">
-                                        <i class="fas fa-user mr-1"></i>Nombre
+                                    <label for="{{ form.first_name.id_for_label }}" class="block text-sm font-medium text-gray-700 mb-2">
+                                        <i class="fas fa-user mr-1"></i>Nombre (opcional)
                                     </label>
-                                    {{ form.first_name }}
+                                    <input type="text" 
+                                           id="{{ form.first_name.id_for_label }}"
+                                           name="first_name"
+                                           class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200" 
+                                           placeholder="Tu nombre"
+                                           x-model="firstName">
                                     {% if form.first_name.errors %}
                                         <p class="text-red-600 text-xs mt-1">{{ form.first_name.errors.0 }}</p>
                                     {% endif %}
                                 </div>
                                 
                                 <div>
-                                    <label for="{{ form.email.id_for_label }}" class="block text-sm font-medium text-gray-700 mb-1">
+                                    <label for="{{ form.email.id_for_label }}" class="block text-sm font-medium text-gray-700 mb-2">
                                         <i class="fas fa-envelope mr-1"></i>Email *
                                     </label>
-                                    {{ form.email }}
+                                    <input type="email" 
+                                           id="{{ form.email.id_for_label }}"
+                                           name="email"
+                                           class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200" 
+                                           placeholder="tu@email.com"
+                                           x-model="email"
+                                           required>
                                     {% if form.email.errors %}
                                         <p class="text-red-600 text-xs mt-1">{{ form.email.errors.0 }}</p>
                                     {% endif %}
                                 </div>
                             </div>
                             
-                            <div class="mb-4">
+                            <!-- Interests Section -->
+                            <div class="mb-6">
                                 <label class="block text-sm font-medium text-gray-700 mb-2">
-                                    <i class="fas fa-heart mr-1"></i>¿Qué te interesa más?
+                                    <i class="fas fa-heart mr-1"></i>¿Qué te interesa más? (opcional)
                                 </label>
                                 <div class="grid grid-cols-2 gap-2">
                                     {% for value, label in form.interests.field.choices %}
-                                        <div class="interest-option">
-                                            <input type="checkbox" 
-                                                   id="interest_{{ value }}" 
-                                                   name="interests" 
-                                                   value="{{ value }}"
-                                                   {% if value in form.interests.value %}checked{% endif %}>
-                                            <label for="interest_{{ value }}" 
-                                                   class="block p-3 border-2 border-gray-200 rounded-lg cursor-pointer transition-all duration-300 text-center text-xs hover:border-blue-300">
-                                                {% if value == 'privacy' %}🛡️{% elif value == 'tech' %}💻{% elif value == 'security' %}🔐{% else %}⚖️{% endif %}
-                                                <br>{{ label }}
-                                            </label>
+                                        <div class="flex items-start">
+                                            <div class="flex items-center h-5">
+                                                <input id="interest_{{ value }}" 
+                                                       name="interests" 
+                                                       value="{{ value }}"
+                                                       type="checkbox" 
+                                                       class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 focus:ring-2">
+                                            </div>
+                                            <div class="ml-3 text-sm">
+                                                <label for="interest_{{ value }}" class="font-medium text-gray-700 cursor-pointer">
+                                                    {% if value == 'privacy' %}🛡️ {{ label }}{% elif value == 'tech' %}💻 {{ label }}{% elif value == 'security' %}🔐 {{ label }}{% else %}⚖️ {{ label }}{% endif %}
+                                                </label>
+                                            </div>
                                         </div>
                                     {% endfor %}
                                 </div>
@@ -194,217 +148,227 @@
                                     <p class="text-red-600 text-xs mt-1">{{ form.interests.errors.0 }}</p>
                                 {% endif %}
                             </div>
-                            
-                            <div class="mb-6">
-                                <label class="flex items-start text-xs text-gray-600">
-                                    {{ form.privacy_consent }}
-                                    <span class="ml-2">
-                                        Acepto la <a href="#" class="text-blue-600 hover:underline">política de privacidad</a> y 
-                                        el procesamiento de mis datos personales. *
-                                    </span>
-                                </label>
+
+                            <!-- Privacy Consent (REQUIRED) - Same style as check.html -->
+                            <div class="mb-6 p-4 bg-blue-50 border border-blue-200 rounded-lg">
+                                <div class="flex items-start">
+                                    <div class="flex items-center h-5">
+                                        <input id="privacy-consent" 
+                                               name="privacy_consent"
+                                               type="checkbox" 
+                                               class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 focus:ring-2" 
+                                               x-model="privacyAccepted"
+                                               required>
+                                    </div>
+                                    <div class="ml-3 text-sm">
+                                        <label for="privacy-consent" class="font-medium text-gray-700 cursor-pointer">
+                                            <span class="text-red-600">*</span> He leído y acepto las condiciones para la suscripción.
+                                        </label>
+                                        <p class="text-gray-600 mt-1">
+                                            Al marcar esta casilla, confirmas tener la edad mínima requerida (16 años) y aceptas nuestra 
+                                            <a href="{% url 'core:privacy_policy' %}" class="text-blue-600 hover:underline" target="_blank">política de privacidad</a>.
+                                            Tu email solo se usará para enviarte el newsletter.
+                                        </p>
+                                    </div>
+                                </div>
                                 {% if form.privacy_consent.errors %}
                                     <p class="text-red-600 text-xs mt-1">{{ form.privacy_consent.errors.0 }}</p>
                                 {% endif %}
                             </div>
-                            
+
+                            <!-- Submit Button - Same style as check.html -->
                             <button type="submit" 
-                                    class="w-full bg-gradient-to-r from-blue-600 to-purple-600 text-white px-6 py-3 rounded-lg font-semibold transition-all duration-300 hover:from-blue-700 hover:to-purple-700 hover:-translate-y-0.5 shadow-lg">
-                                <i class="fas fa-paper-plane mr-2"></i>
-                                Suscribirme Gratis
+                                    class="w-full sm:w-auto btn-primary"
+                                    :class="isFormValid ? 'hover:shadow-xl transform hover:-translate-y-0.5' : 'opacity-60 cursor-not-allowed'"
+                                    :disabled="!isFormValid">
+                                <i class="fas fa-paper-plane mr-2"></i> 
+                                <span x-show="!isFormValid">Acepta los términos para continuar</span>
+                                <span x-show="isFormValid">Suscribirme Gratis</span>
                             </button>
-                            
-                            <p class="text-center text-xs text-gray-500 mt-3">
+
+                            <!-- Information footer -->
+                            <div class="mt-4 text-xs text-gray-500">
+                                <i class="fas fa-info-circle mr-1"></i>
+                                <span class="text-red-600">*</span> Campos obligatorios. 
                                 <i class="fas fa-shield-alt mr-1"></i>
                                 100% libre de spam. Cancela cuando quieras.
-                            </p>
+                            </div>
                         </div>
                     </form>
                 </div>
             </div>
         </div>
-    </div>
-</section>
+        
+        <!-- Sidebar (1/3 width) - Same style as check.html -->
+        <div class="lg:col-span-1">
+            <!-- Privacy Guarantees -->
+            <div class="card mb-6">
+                <div class="card-body">
+                    <h3 class="text-lg font-semibold text-blue-800 mb-4 flex items-center">
+                        <i class="fas fa-user-shield text-blue-800 mr-2"></i>
+                        Tu Privacidad, Nuestra Prioridad
+                    </h3>
+                    <div class="space-y-4">
+                        <div class="flex items-start">
+                            <i class="fas fa-envelope-open-text text-blue-500 text-xl mt-0.5 flex-shrink-0 w-6 text-center"></i>
+                            <div class="ml-3">
+                                <p class="text-sm font-semibold text-gray-800">Newsletter semanal</p>
+                                <p class="text-sm text-gray-600">Contenido curado sobre privacidad y seguridad digital.</p>
+                            </div>
+                        </div>
+                        <div class="flex items-start">
+                            <i class="fas fa-bell text-blue-500 text-xl mt-0.5 flex-shrink-0 w-6 text-center"></i>
+                            <div class="ml-3">
+                                <p class="text-sm font-semibold text-gray-800">Alertas de seguridad</p>
+                                <p class="text-sm text-gray-600">Notificaciones de brechas importantes y vulnerabilidades.</p>
+                            </div>
+                        </div>
+                        <div class="flex items-start">
+                            <i class="fas fa-tools text-blue-500 text-xl mt-0.5 flex-shrink-0 w-6 text-center"></i>
+                            <div class="ml-3">
+                                <p class="text-sm font-semibold text-gray-800">Herramientas gratuitas</p>
+                                <p class="text-sm text-gray-600">Acceso exclusivo a nuestras herramientas de seguridad.</p>
+                            </div>
+                        </div>
+                        <div class="flex items-start">
+                            <i class="fas fa-gavel text-blue-500 text-xl mt-0.5 flex-shrink-0 w-6 text-center"></i>
+                            <div class="ml-3">
+                                <p class="text-sm font-semibold text-gray-800">Guías RGPD</p>
+                                <p class="text-sm text-gray-600">Información práctica sobre cumplimiento normativo.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
 
-<!-- Features Section -->
-<section class="py-16 bg-gray-50">
-    <div class="max-w-7xl mx-auto px-4 lg:px-8">
-        <div class="text-center mb-12">
-            <h2 class="text-3xl lg:text-4xl font-bold text-gray-900 mb-4">¿Qué recibirás cada semana? 📬</h2>
-            <p class="text-xl text-gray-600 max-w-3xl mx-auto">
-                Contenido curado especialmente para profesionales que valoran su privacidad digital
+            <!-- Stats Section - Same style as check.html -->
+            <div class="bg-gradient-security border border-blue-200 rounded-lg shadow-lg">
+                <div class="px-6 py-5">
+                    <h3 class="text-lg font-semibold text-gray-900 mb-4 flex items-center">
+                        <i class="fas fa-chart-line text-indigo-600 mr-2"></i>
+                        Estadísticas del Newsletter
+                    </h3>
+                    <div class="space-y-3">
+                        <div class="flex justify-between items-center">
+                            <span class="text-sm text-gray-600">Suscriptores activos</span>
+                            <span class="text-lg font-bold text-primary">{{ subscriber_count|default:"500" }}+</span>
+                        </div>
+                        <div class="flex justify-between items-center">
+                            <span class="text-sm text-gray-600">Tasa de apertura</span>
+                            <span class="text-lg font-bold text-success">78%</span>
+                        </div>
+                        <div class="flex justify-between items-center">
+                            <span class="text-sm text-gray-600">Spam enviado</span>
+                            <span class="text-lg font-bold text-success">0</span>
+                        </div>
+                        <div class="flex justify-between items-center">
+                            <span class="text-sm text-gray-600">Satisfacción</span>
+                            <span class="text-lg font-bold text-success">98%</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Tools Section - Same design pattern as check.html -->
+<div class="bg-gradient-security mt-16 sm:mt-24">
+    <div class="max-w-7xl mx-auto py-12 px-4 sm:py-16 sm:px-6 lg:px-8">
+        <div class="text-center">
+            <h2 class="text-base font-semibold text-blue-600 tracking-wider uppercase">¿Ya conoces nuestras herramientas?</h2>
+            <p class="mt-2 text-3xl font-extrabold text-gray-900 tracking-tight sm:text-4xl">
+                Protege tu Seguridad Digital
+            </p>
+            <p class="mt-5 max-w-prose mx-auto text-xl text-gray-500">
+                Descubre nuestras herramientas gratuitas para fortalecer tu privacidad online.
             </p>
         </div>
-        
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-            <div class="text-center">
-                <div class="feature-icon text-6xl mb-4">🛡️</div>
-                <h3 class="text-xl font-bold text-gray-900 mb-3">Análisis de Privacidad</h3>
-                <p class="text-gray-600 text-sm">
-                    Técnicas avanzadas para proteger tu información personal en línea. 
-                    Aprende a configurar tus cuentas de forma segura.
-                </p>
-            </div>
-            
-            <div class="text-center">
-                <div class="feature-icon text-6xl mb-4">🔐</div>
-                <h3 class="text-xl font-bold text-gray-900 mb-3">Herramientas de Seguridad</h3>
-                <p class="text-gray-600 text-sm">
-                    Reseñas de las mejores herramientas gratuitas y de pago para 
-                    proteger tu vida digital.
-                </p>
-            </div>
-            
-            <div class="text-center">
-                <div class="feature-icon text-6xl mb-4">🚨</div>
-                <h3 class="text-xl font-bold text-gray-900 mb-3">Alertas de Brechas</h3>
-                <p class="text-gray-600 text-sm">
-                    Notificaciones inmediatas sobre brechas de datos importantes 
-                    y cómo protegerte.
-                </p>
-            </div>
-            
-            <div class="text-center">
-                <div class="feature-icon text-6xl mb-4">⚖️</div>
-                <h3 class="text-xl font-bold text-gray-900 mb-3">Guías RGPD</h3>
-                <p class="text-gray-600 text-sm">
-                    Información práctica sobre cumplimiento de normativas 
-                    para empresas y profesionales.
-                </p>
-            </div>
-        </div>
-    </div>
-</section>
 
-<!-- Stats Section -->
-<section class="py-12 bg-white">
-    <div class="max-w-7xl mx-auto px-4 lg:px-8">
-        <div class="grid grid-cols-2 lg:grid-cols-4 gap-8">
-            <div class="bg-gray-50 rounded-lg p-6 text-center">
-                <div class="text-3xl font-bold text-blue-600">{{ subscriber_count|default:"100" }}+</div>
-                <div class="text-sm text-gray-600">Suscriptores activos</div>
-            </div>
-            <div class="bg-gray-50 rounded-lg p-6 text-center">
-                <div class="text-3xl font-bold text-blue-600">0</div>
-                <div class="text-sm text-gray-600">Spam enviado</div>
-            </div>
-            <div class="bg-gray-50 rounded-lg p-6 text-center">
-                <div class="text-3xl font-bold text-blue-600">98%</div>
-                <div class="text-sm text-gray-600">Tasa de satisfacción</div>
-            </div>
-            <div class="bg-gray-50 rounded-lg p-6 text-center">
-                <div class="text-3xl font-bold text-blue-600">5min</div>
-                <div class="text-sm text-gray-600">Tiempo de lectura</div>
-            </div>
-        </div>
-    </div>
-</section>
-
-<!-- Testimonials Section -->
-<section class="py-16 bg-gray-50">
-    <div class="max-w-7xl mx-auto px-4 lg:px-8">
-        <div class="text-center mb-12">
-            <h2 class="text-3xl lg:text-4xl font-bold text-gray-900 mb-4">Lo que dicen nuestros lectores 💬</h2>
-        </div>
-        
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            <div class="testimonial-card bg-white rounded-lg p-6 shadow-md">
-                <div class="mb-4">
-                    <i class="fas fa-quote-left text-blue-600 text-2xl"></i>
-                </div>
-                <p class="text-gray-700 mb-4">
-                    "El newsletter de PrivacyTool me ha ayudado a entender mejor cómo proteger 
-                    mis datos personales. Las herramientas recomendadas son excelentes."
-                </p>
-                <div class="flex items-center">
-                    <img src="https://picsum.photos/48/48?random=10" class="w-12 h-12 rounded-full mr-3">
-                    <div>
-                        <div class="font-semibold text-gray-900">María González</div>
-                        <div class="text-sm text-gray-600">Consultora IT</div>
+        <div class="mt-12 grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
+            
+            <!-- Email Verification Tool -->
+            <div class="group">
+                <div class="tool-card">
+                    <div class="flex-grow p-8">
+                        <div class="tool-card-icon-wrapper bg-gradient-to-br from-blue-100 to-indigo-100 text-primary">
+                            <i class="fas fa-shield-alt text-2xl"></i>
+                        </div>
+                        <h3 class="text-xl font-semibold text-gray-900 mb-3">Verificador de Email</h3>
+                        <p class="text-gray-600 mb-4">Comprueba si tu email ha sido expuesto en filtraciones de datos conocidas.</p>
+                        <div class="flex items-center text-sm text-green-600 mb-2">
+                            <i class="fas fa-check-circle mr-2"></i>
+                            <span>100% gratis y anónimo</span>
+                        </div>
+                    </div>
+                    <div class="p-8 pt-0">
+                        <a href="{% url 'core:check_email' %}" class="btn-secondary-outline w-full justify-center">
+                            <i class="fas fa-search mr-2"></i>
+                            Verificar mi email
+                        </a>
                     </div>
                 </div>
             </div>
-            
-            <div class="testimonial-card bg-white rounded-lg p-6 shadow-md">
-                <div class="mb-4">
-                    <i class="fas fa-quote-left text-blue-600 text-2xl"></i>
-                </div>
-                <p class="text-gray-700 mb-4">
-                    "Contenido de calidad, directo al grano y muy útil para mi trabajo 
-                    como responsable de protección de datos."
-                </p>
-                <div class="flex items-center">
-                    <img src="https://picsum.photos/48/48?random=11" class="w-12 h-12 rounded-full mr-3">
-                    <div>
-                        <div class="font-semibold text-gray-900">Carlos Ruiz</div>
-                        <div class="text-sm text-gray-600">DPO</div>
+
+            <!-- Password Generator -->
+            <div class="group">
+                <div class="tool-card">
+                    <div class="flex-grow p-8">
+                        <div class="tool-card-icon-wrapper bg-gradient-to-br from-blue-100 to-indigo-100 text-primary">
+                            <i class="fas fa-key text-2xl"></i>
+                        </div>
+                        <h3 class="text-xl font-semibold text-gray-900 mb-3">Generador de Contraseñas</h3>
+                        <p class="text-gray-600 mb-4">Crea contraseñas robustas e impredecibles con configuración personalizable.</p>
+                        <div class="flex items-center text-sm text-orange-600 mb-2">
+                            <i class="fas fa-clock mr-2"></i>
+                            <span>Próximamente disponible</span>
+                        </div>
+                    </div>
+                    <div class="p-8 pt-0">
+                        <button class="btn-secondary-outline w-full justify-center opacity-60 cursor-not-allowed" disabled>
+                            <i class="fas fa-bell mr-2"></i>
+                            Notificarme
+                        </button>
                     </div>
                 </div>
             </div>
-            
-            <div class="testimonial-card bg-white rounded-lg p-6 shadow-md">
-                <div class="mb-4">
-                    <i class="fas fa-quote-left text-blue-600 text-2xl"></i>
-                </div>
-                <p class="text-gray-700 mb-4">
-                    "Las alertas de seguridad me han salvado más de una vez. 
-                    Información vital para cualquier empresa."
-                </p>
-                <div class="flex items-center">
-                    <img src="https://picsum.photos/48/48?random=12" class="w-12 h-12 rounded-full mr-3">
-                    <div>
-                        <div class="font-semibold text-gray-900">Ana Martín</div>
-                        <div class="text-sm text-gray-600">CISO</div>
+
+            <!-- Blog -->
+            <div class="group">
+                <div class="tool-card">
+                    <div class="flex-grow p-8">
+                        <div class="tool-card-icon-wrapper bg-gradient-to-br from-blue-100 to-indigo-100 text-primary">
+                            <i class="fas fa-newspaper text-2xl"></i>
+                        </div>
+                        <h3 class="text-xl font-semibold text-gray-900 mb-3">Blog de Seguridad</h3>
+                        <p class="text-gray-600 mb-4">Artículos, guías y noticias para mantenerte actualizado sobre ciberseguridad.</p>
+                        <div class="flex items-center text-sm text-blue-600 mb-2">
+                            <i class="fas fa-rss mr-2"></i>
+                            <span>Actualizaciones semanales</span>
+                        </div>
+                    </div>
+                    <div class="p-8 pt-0">
+                        <a href="{% url 'core:blog_list' %}" class="btn-secondary-outline w-full justify-center">
+                            <i class="fas fa-arrow-right mr-2"></i>
+                            Leer artículos
+                        </a>
                     </div>
                 </div>
             </div>
+
         </div>
     </div>
-</section>
+</div>
 
-<!-- Final CTA Section -->
-<section class="py-16 hero-gradient text-white">
-    <div class="max-w-7xl mx-auto px-4 lg:px-8 text-center">
-        <h2 class="text-3xl lg:text-4xl font-bold mb-4">¿Listo para proteger tu privacidad? 🚀</h2>
-        <p class="text-xl mb-8 opacity-90 max-w-2xl mx-auto">
-            Únete a miles de profesionales que ya reciben nuestro newsletter gratuito
-        </p>
-        <a href="#newsletter-form" class="btn-primary bg-white text-blue-600 hover:bg-gray-100 transition-all duration-300 inline-flex items-center px-8 py-3 rounded-lg font-semibold">
-            <i class="fas fa-arrow-up mr-2"></i>
-            Suscribirme Ahora
-        </a>
-        <p class="text-sm mt-4 opacity-75">
-            <i class="fas fa-shield-alt mr-1"></i>
-            Sin compromiso. Cancela cuando quieras.
-        </p>
-    </div>
-</section>
 {% endblock %}
 
 {% block extra_scripts %}
 <script>
-// Smooth scroll to form
-document.addEventListener('DOMContentLoaded', function() {
-    const scrollLinks = document.querySelectorAll('a[href="#newsletter-form"]');
-    scrollLinks.forEach(link => {
-        link.addEventListener('click', function(e) {
-            e.preventDefault();
-            const target = document.querySelector('#newsletter-form');
-            if (target) {
-                target.scrollIntoView({
-                    behavior: 'smooth',
-                    block: 'center'
-                });
-            }
-        });
-    });
-});
-
-// Add loading state to form submission
+// Form validation and interactivity
 document.addEventListener('htmx:beforeRequest', function(evt) {
     const submitBtn = evt.target.querySelector('button[type="submit"]');
     if (submitBtn) {
-        submitBtn.innerHTML = '<span class="inline-block animate-spin mr-2">⏳</span>Enviando...';
+        submitBtn.innerHTML = '<i class="fas fa-circle-notch fa-spin mr-2"></i>Enviando...';
         submitBtn.disabled = true;
     }
 });
