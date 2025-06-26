@@ -61,13 +61,13 @@
 
                 <!-- Action Buttons -->
                 <div class="flex flex-col sm:flex-row gap-3">
-                    <a href="{% url 'core:home' %}" 
-                       class="flex-1 bg-primary hover:bg-primary-dark text-white text-center py-3 px-6 rounded-lg transition-colors duration-200 flex items-center justify-center">
+                    <a href="{% url 'core:index' %}" 
+                       class="flex-1 bg-green-600 hover:bg-green-700 text-white text-center py-3 px-6 rounded-lg transition-colors duration-200 flex items-center justify-center">
                         <i class="fas fa-home mr-2"></i>
                         Volver al inicio
                     </a>
                     
-                    <a href="{% url 'core:privacy_tools' %}" 
+                    <a href="{% url 'core:tools_list' %}" 
                        class="flex-1 bg-gray-100 hover:bg-gray-200 text-gray-700 text-center py-3 px-6 rounded-lg transition-colors duration-200 flex items-center justify-center">
                         <i class="fas fa-tools mr-2"></i>
                         Explorar herramientas
@@ -92,35 +92,24 @@
                     Sin spam
                 </span>
             </div>
-            <p>¿Problemas? <a href="mailto:support@privacytool.com" class="text-primary hover:underline">Contacta con nosotros</a></p>
+            <p>¿Problemas? <a href="mailto:support@privacytool.com" class="text-green-600 hover:underline">Contacta con nosotros</a></p>
         </div>
     </div>
 </div>
 
-<style>
-@keyframes fadeInUp {
-    from {
-        opacity: 0;
-        transform: translateY(30px);
-    }
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
-}
-
-.animate-fadeInUp {
-    animation: fadeInUp 0.6s ease-out;
-}
-</style>
-
 <script>
-// Add fade-in animation to elements
+// Add fade-in animation to elements (Tailwind pure CSS)
 document.addEventListener('DOMContentLoaded', function() {
     const elements = document.querySelectorAll('.bg-white');
     elements.forEach((el, index) => {
-        el.style.animationDelay = `${index * 0.1}s`;
-        el.classList.add('animate-fadeInUp');
+        el.style.opacity = '0';
+        el.style.transform = 'translateY(30px)';
+        
+        setTimeout(() => {
+            el.style.transition = 'all 0.6s ease-out';
+            el.style.opacity = '1';
+            el.style.transform = 'translateY(0)';
+        }, index * 100);
     });
 });
 </script>
