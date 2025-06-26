@@ -35,6 +35,10 @@ DEBUG = os.environ.get('DEBUG', 'True') == 'True'
 #DEBUG = True  # <-- Forzamos el modo DEBUG para poder depurar
 ALLOWED_HOSTS = os.environ.get('ALLOWED_HOSTS', 'localhost,127.0.0.1, 192.168.0.16').split(',')
 
+# 🍪 COOKIE BANNER CONFIGURATION - Opción 2 implementada
+SHOW_COOKIE_BANNER = not DEBUG  # False en desarrollo, True en producción
+ENABLE_COOKIE_CONSENT = not DEBUG  # Banner funcional solo en producción
+
 # CSRF Configuration - FIX CRITICAL
 CSRF_TRUSTED_ORIGINS = [
     'http://127.0.0.1:8000',
@@ -191,11 +195,19 @@ STATIC_URL = '/static/'
 STATIC_ROOT = BASE_DIR / 'staticfiles'
 STATICFILES_DIRS = [BASE_DIR / 'static']
 
-# --- CONFIGURACIÓN DE DJANGO-RATELIMIT ---
-RATELIMIT_KEY = 'ip'  # Limita por dirección IP del usuario.
-RATELIMIT_RATE = '5/m' # 5 peticiones por minuto. Puedes ajustarlo a '10/h' (10 por hora), etc.
-RATELIMIT_BLOCK = True # Si se supera el límite, bloquea la petición (genera un error).
-RATELIMIT_METHOD = 'all' # Aplica el límite a todos los métodos (GET, POST, etc.)
+# --- CONFIGURACIÓN DE DJANGO-RATELIMIT (DIFERENTE POR ENTORNO) ---
+if DEBUG:
+    # Desarrollo: Rate limiting muy permisivo
+    RATELIMIT_RATE = '999/m'  # Sin límites prácticos en desarrollo
+    RATELIMIT_ENABLE = False   # Deshabilitado en desarrollo
+else:
+    # Producción: Rate limiting normal
+    RATELIMIT_RATE = '30/h'    # 30 peticiones por hora en producción
+    RATELIMIT_ENABLE = True    # Habilitado en producción
+
+RATELIMIT_KEY = 'ip'           # Limita por dirección IP del usuario
+RATELIMIT_BLOCK = True         # Si se supera el límite, bloquea la petición
+RATELIMIT_METHOD = 'all'       # Aplica el límite a todos los métodos (GET, POST, etc.)
 
 # Configuración del sitio para sitemaps
 SITE_ID = 1
@@ -279,7 +291,7 @@ NEWSLETTER_SETTINGS = {
     'UNSUBSCRIBE_REASONS': [
         'No me interesa el contenido',
         'Recibo demasiados emails',
-        'No solicitéeeste newsletter',
+        'No solicité este newsletter',
         'Problemas técnicos',
         'Otro'
     ]
