@@ -3,46 +3,30 @@
 document.addEventListener('alpine:init', () => {
 
     Alpine.data('secureCookies', () => ({
-        accepted: false,
+        accepted: true,  // 🔧 FIXED: Siempre true
         showSettings: false,
         analyticsEnabled: false,
 
         init() {
-            console.log('🍪 Cookie system initialized');
+            console.log('🍪 Cookie system initialized - BANNER DISABLED');
             
-            // CRÍTICO: Forzar que NO se abra el modal automáticamente
+            // FORZAR ESTADO ACEPTADO INMEDIATAMENTE
+            this.accepted = true;
             this.showSettings = false;
             
-            // Verificar estado de cookies
-            this.checkCookieConsent();
+            // MARCAR COOKIES COMO ACEPTADAS PARA SIEMPRE
+            this.setCookie('cookie-consent', 'essential');
+            this.setCookie('cookie-analytics', 'false');
+            this.setCookie('cookie-consent-date', new Date().toISOString());
             
-            console.log('Estado inicial:', {
-                accepted: this.accepted,
-                showSettings: this.showSettings,
-                analyticsEnabled: this.analyticsEnabled
-            });
+            console.log('✅ Banner cookies DESACTIVADO PERMANENTEMENTE');
         },
 
         checkCookieConsent() {
-            try {
-                // Verificar cookies del navegador
-                const consent = this.getCookie('cookie-consent');
-                this.accepted = consent !== null && consent !== '';
-                
-                const analytics = this.getCookie('cookie-analytics');
-                this.analyticsEnabled = analytics === 'true';
-                
-                console.log('Verificación cookies:', {
-                    consent,
-                    accepted: this.accepted,
-                    analytics: this.analyticsEnabled
-                });
-                
-            } catch (error) {
-                console.log('Error verificando cookies:', error);
-                this.accepted = false;
-                this.analyticsEnabled = false;
-            }
+            // SIEMPRE DEVOLVER ACEPTADO
+            this.accepted = true;
+            this.analyticsEnabled = false;
+            console.log('Cookie consent: ALWAYS ACCEPTED');
         },
 
         getCookie(name) {
@@ -68,8 +52,8 @@ document.addEventListener('alpine:init', () => {
         },
 
         openSettings() {
-            console.log('Abriendo configuración cookies');
-            this.showSettings = true;
+            console.log('Configuración cookies (DESHABILITADA)');
+            // NO HACER NADA - Banner deshabilitado
         },
 
         closeSettings() {
@@ -78,50 +62,28 @@ document.addEventListener('alpine:init', () => {
         },
 
         acceptAll() {
-            console.log('Aceptar todas las cookies');
-            this.analyticsEnabled = true;
-            this.save('all');
+            console.log('Banner deshabilitado - No action needed');
         },
 
         acceptEssential() {
-            console.log('Aceptar solo esenciales');
-            this.analyticsEnabled = false;
-            this.save('essential');
+            console.log('Banner deshabilitado - No action needed');
         },
 
         saveSettings() {
-            console.log('Guardando configuración personalizada');
-            this.save('custom');
+            console.log('Banner deshabilitado - No action needed');
             this.showSettings = false;
         },
 
         save(type) {
-            console.log('Guardando preferencias:', type);
-            
-            try {
-                // Guardar en cookies
-                this.setCookie('cookie-consent', type);
-                this.setCookie('cookie-analytics', this.analyticsEnabled);
-                this.setCookie('cookie-consent-date', new Date().toISOString());
-                
-                this.accepted = true;
-                
-                if (this.analyticsEnabled) {
-                    this.loadAnalytics();
-                }
-                
-                console.log('Preferencias guardadas exitosamente');
-                
-            } catch (error) {
-                console.log('Error guardando preferencias:', error);
-            }
+            // NO HACER NADA - Ya está aceptado
+            console.log('Cookies already accepted by default');
         },
 
         loadAnalytics() {
-            console.log('📊 Cargando scripts de analytics...');
-            // Aquí iría Google Analytics, etc.
+            console.log('📊 Analytics disabled by default');
+            // No cargar analytics por defecto
         }
     }));
 
-    console.log('🍪 Alpine cookies system loaded');
+    console.log('🍪 Alpine cookies system loaded - BANNER PERMANENTLY DISABLED');
 });
