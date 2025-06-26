@@ -59,12 +59,15 @@ def subscribe_view(request):
                 return redirect('newsletter:subscribe_success')
                 
             except Exception as e:
-                logger.error(f"Error sending confirmation email: {e}")
+                logger.error(f"Error sending confirmation email: {e}", exc_info=True)
                 messages.error(
                     request,
                     'Hubo un problema enviando el email de confirmación. '
                     'Por favor, intenta de nuevo más tarde.'
                 )
+                
+                # Still redirect to success but with error message
+                return redirect('newsletter:subscribe')
         
         else:
             # Form has errors
@@ -118,8 +121,9 @@ def quick_subscribe(request):
                         'success': True,
                         'message': 'Email de confirmación enviado. ¡Revisa tu bandeja de entrada!'
                     }
+                    logger.info(f"Reactivated subscription: {existing.email}")
                 except Exception as e:
-                    logger.error(f"Error sending confirmation email: {e}")
+                    logger.error(f"Error sending confirmation email to {existing.email}: {e}", exc_info=True)
                     response_data = {
                         'success': False,
                         'message': 'Error enviando email. Intenta más tarde.'
@@ -141,7 +145,7 @@ def quick_subscribe(request):
                 }
                 logger.info(f"Quick subscription: {subscriber.email}")
             except Exception as e:
-                logger.error(f"Error sending confirmation email: {e}")
+                logger.error(f"Error sending confirmation email to {subscriber.email}: {e}", exc_info=True)
                 response_data = {
                     'success': False,
                     'message': 'Error enviando email. Intenta más tarde.'
@@ -180,7 +184,7 @@ def confirm_subscription(request, token):
         try:
             send_welcome_email(subscriber, request)
         except Exception as e:
-            logger.error(f"Error sending welcome email: {e}")
+            logger.error(f"Error sending welcome email to {subscriber.email}: {e}", exc_info=True)
     
     else:
         if subscriber.status == 'active':
@@ -284,20 +288,27 @@ def send_confirmation_email(subscriber, request):
         'site_url': settings.SITE_URL,
     }
     
-    # HTML version
-    html_message = render_to_string('newsletter/emails/confirmation.html', context)
-    
-    # Text version
-    text_message = render_to_string('newsletter/emails/confirmation.txt', context)
-    
-    send_mail(
-        subject='Confirma tu suscripción - PrivacyTool Newsletter',
-        message=text_message,
-        from_email=settings.DEFAULT_FROM_EMAIL,
-        recipient_list=[subscriber.email],
-        html_message=html_message,
-        fail_silently=False,
-    )
+    try:
+        # HTML version
+        html_message = render_to_string('newsletter/emails/confirmation.html', context)
+        
+        # Text version  
+        text_message = render_to_string('newsletter/emails/confirmation.txt', context)
+        
+        send_mail(
+            subject='Confirma tu suscripción - PrivacyTool Newsletter',
+            message=text_message,
+            from_email=settings.DEFAULT_FROM_EMAIL,
+            recipient_list=[subscriber.email],
+            html_message=html_message,
+            fail_silently=True,  # 🔧 FIXED: Changed to True to prevent 500 errors
+        )
+        
+        logger.info(f"Confirmation email sent successfully to {subscriber.email}")
+        
+    except Exception as e:
+        logger.error(f"Failed to send confirmation email to {subscriber.email}: {e}", exc_info=True)
+        raise  # Re-raise to be handled by calling function
 
 
 def send_welcome_email(subscriber, request):
@@ -313,17 +324,24 @@ def send_welcome_email(subscriber, request):
         'site_url': settings.SITE_URL,
     }
     
-    html_message = render_to_string('newsletter/emails/welcome.html', context)
-    text_message = render_to_string('newsletter/emails/welcome.txt', context)
-    
-    send_mail(
-        subject='¡Bienvenido a PrivacyTool Newsletter!',
-        message=text_message,
-        from_email=settings.DEFAULT_FROM_EMAIL,
-        recipient_list=[subscriber.email],
-        html_message=html_message,
-        fail_silently=True,  # Welcome email is not critical
-    )
+    try:
+        html_message = render_to_string('newsletter/emails/welcome.html', context)
+        text_message = render_to_string('newsletter/emails/welcome.txt', context)
+        
+        send_mail(
+            subject='¡Bienvenido a PrivacyTool Newsletter!',
+            message=text_message,
+            from_email=settings.DEFAULT_FROM_EMAIL,
+            recipient_list=[subscriber.email],
+            html_message=html_message,
+            fail_silently=True,  # Welcome email is not critical
+        )
+        
+        logger.info(f"Welcome email sent successfully to {subscriber.email}")
+        
+    except Exception as e:
+        logger.error(f"Failed to send welcome email to {subscriber.email}: {e}", exc_info=True)
+        # Don't raise for welcome email - it's not critical
 
 
 # === API ENDPOINTS ===
