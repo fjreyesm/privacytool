@@ -156,20 +156,39 @@ CACHES = {
 }
 
 # ===== CONFIGURACIÓN DE EMAIL MEJORADA =====
-# Email configuration for development/production
+# 🔧 FIX: Configuración de email forzada para usar SMTP siempre que esté configurado
 
-# Para desarrollo: mostrar emails en consola
-if DEBUG:
-    EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
-else:
-    # Para producción: usar SMTP real
-    EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+# Verificar si tenemos configuración de email válida
+HAS_EMAIL_CONFIG = all([
+    os.environ.get('EMAIL_HOST_USER'),
+    os.environ.get('EMAIL_HOST_PASSWORD'),
+    os.environ.get('EMAIL_BACKEND')
+])
+
+# Email configuration
+if HAS_EMAIL_CONFIG:
+    # Si tenemos configuración completa, usar SMTP
+    EMAIL_BACKEND = os.environ.get('EMAIL_BACKEND', 'django.core.mail.backends.smtp.EmailBackend')
     EMAIL_HOST = os.environ.get('EMAIL_HOST', 'smtp.gmail.com')
     EMAIL_PORT = int(os.environ.get('EMAIL_PORT', '587'))
     EMAIL_USE_TLS = os.environ.get('EMAIL_USE_TLS', 'True') == 'True'
     EMAIL_USE_SSL = os.environ.get('EMAIL_USE_SSL', 'False') == 'True'
     EMAIL_HOST_USER = os.environ.get('EMAIL_HOST_USER', '')
     EMAIL_HOST_PASSWORD = os.environ.get('EMAIL_HOST_PASSWORD', '')
+    print(f"📧 Email configurado: {EMAIL_HOST_USER} via {EMAIL_HOST}")
+else:
+    # Sin configuración, usar console en desarrollo
+    if DEBUG:
+        EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+        print("📧 Email: modo console (desarrollo)")
+    else:
+        EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+        EMAIL_HOST = 'smtp.gmail.com'
+        EMAIL_PORT = 587
+        EMAIL_USE_TLS = True
+        EMAIL_HOST_USER = ''
+        EMAIL_HOST_PASSWORD = ''
+        print("⚠️ Email: configuración incompleta en producción")
 
 # Email settings
 DEFAULT_FROM_EMAIL = os.environ.get('DEFAULT_FROM_EMAIL', 'PrivacyTool <noreply@privacytool.com>')
