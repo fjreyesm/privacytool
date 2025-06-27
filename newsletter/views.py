@@ -295,19 +295,27 @@ def send_confirmation_email(subscriber, request):
         # Text version  
         text_message = render_to_string('newsletter/emails/confirmation.txt', context)
         
-        send_mail(
+        # 🔧 FIX: Usar DEFAULT_FROM_EMAIL consistentemente
+        from_email = getattr(settings, 'NEWSLETTER_FROM_EMAIL', settings.DEFAULT_FROM_EMAIL)
+        
+        result = send_mail(
             subject='Confirma tu suscripción - PrivacyTool Newsletter',
             message=text_message,
-            from_email=settings.DEFAULT_FROM_EMAIL,
+            from_email=from_email,
             recipient_list=[subscriber.email],
             html_message=html_message,
-            fail_silently=True,  # 🔧 FIXED: Changed to True to prevent 500 errors
+            fail_silently=False,  # 🔧 FIX: No usar fail_silently=True para poder debuggear
         )
         
-        logger.info(f"Confirmation email sent successfully to {subscriber.email}")
+        logger.info(f"Confirmation email sent successfully to {subscriber.email} from {from_email}")
+        logger.info(f"Send mail result: {result}")
+        
+        return result
         
     except Exception as e:
         logger.error(f"Failed to send confirmation email to {subscriber.email}: {e}", exc_info=True)
+        logger.error(f"Email settings: HOST={getattr(settings, 'EMAIL_HOST', 'Not set')}, "
+                    f"USER={getattr(settings, 'EMAIL_HOST_USER', 'Not set')}")
         raise  # Re-raise to be handled by calling function
 
 
@@ -328,16 +336,19 @@ def send_welcome_email(subscriber, request):
         html_message = render_to_string('newsletter/emails/welcome.html', context)
         text_message = render_to_string('newsletter/emails/welcome.txt', context)
         
-        send_mail(
+        from_email = getattr(settings, 'NEWSLETTER_FROM_EMAIL', settings.DEFAULT_FROM_EMAIL)
+        
+        result = send_mail(
             subject='¡Bienvenido a PrivacyTool Newsletter!',
             message=text_message,
-            from_email=settings.DEFAULT_FROM_EMAIL,
+            from_email=from_email,
             recipient_list=[subscriber.email],
             html_message=html_message,
             fail_silently=True,  # Welcome email is not critical
         )
         
         logger.info(f"Welcome email sent successfully to {subscriber.email}")
+        return result
         
     except Exception as e:
         logger.error(f"Failed to send welcome email to {subscriber.email}: {e}", exc_info=True)
