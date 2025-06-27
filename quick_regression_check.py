@@ -9,8 +9,8 @@ import os
 import sys
 import django
 
-# Setup Django
-os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'securecheck_fixed.settings')
+# Setup Django - CORREGIDO: usar 'securecheck.settings' no 'securecheck_fixed.settings'
+os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'securecheck.settings')
 django.setup()
 
 def test_database_connection():
