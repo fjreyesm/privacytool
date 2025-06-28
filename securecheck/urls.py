@@ -6,6 +6,7 @@ from django.contrib.sitemaps.views import sitemap
 from django.http import HttpResponse
 from django.views.decorators.cache import cache_control
 from core.sitemaps import sitemaps
+from core import views as core_views 
 import os
 
 # Vista para servir robots.txt
@@ -27,6 +28,7 @@ urlpatterns = [
     path('sitemap.xml', sitemap, {'sitemaps': sitemaps}, name='django.contrib.sitemaps.views.sitemap'),
     path('newsletter/', include('newsletter.urls')),  # Newsletter URLs added
     path('', include('core.urls')),
+   
 ]
 
 # Servir archivos multimedia en desarrollo

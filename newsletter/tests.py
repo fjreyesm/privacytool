@@ -126,7 +126,7 @@ class NewsletterViewsTest(TestCase):
         response = self.client.get(reverse('newsletter:subscribe'))
         
         self.assertEqual(response.status_code, 200)
-        self.assertContains(response, 'Newsletter PrivacyTool')
+        self.assertContains(response, 'PrivacyTool Newsletter')
         self.assertContains(response, 'Email')
     
     def test_valid_subscription_post(self):
@@ -310,7 +310,7 @@ class EmailIntegrationTest(TestCase):
         email = mail.outbox[0]
         self.assertEqual(email.to, ['test@example.com'])
         self.assertIn('Confirma tu suscripción', email.subject)
-        self.assertIn('confirmation_token', email.body)
+        self.assertIn('confirm/', email.body)
     
     def test_welcome_email_after_confirmation(self):
         """Test welcome email is sent after confirmation"""

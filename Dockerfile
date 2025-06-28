@@ -26,6 +26,7 @@ RUN pip install --no-cache-dir -r requirements.txt
 COPY package*.json ./
 RUN npm install
 
+
 # Finalmente, copia el resto del código de tu aplicación al contenedor
 COPY . .
 
