@@ -1,5 +1,33 @@
 {# Este div contenedor inicializa Alpine.js para que el modal funcione #}
 <div x-data="{ isModalOpen: false }">
+    {# Newsletter subscription message #}
+    {% if newsletter_result %}
+        {% if newsletter_result == "subscribed" %}
+            <div class="alert alert-success mb-4">
+                <div class="alert-icon"><i class="fas fa-envelope-circle-check"></i></div>
+                <div class="alert-content">
+                    <h4 class="alert-title">¡Suscripción al Newsletter!</h4>
+                    <p>Te has suscrito correctamente. <strong>Revisa tu email</strong> para confirmar la suscripción.</p>
+                </div>
+            </div>
+        {% elif newsletter_result == "already_subscribed" %}
+            <div class="alert alert-info mb-4">
+                <div class="alert-icon"><i class="fas fa-envelope"></i></div>
+                <div class="alert-content">
+                    <h4 class="alert-title">Ya estás suscrito</h4>
+                    <p>Tu email ya está en nuestra lista de newsletter.</p>
+                </div>
+            </div>
+        {% elif newsletter_result == "error" %}
+            <div class="alert alert-warning mb-4">
+                <div class="alert-icon"><i class="fas fa-exclamation-triangle"></i></div>
+                <div class="alert-content">
+                    <h4 class="alert-title">Error en suscripción</h4>
+                    <p>No pudimos suscribirte al newsletter, pero tu verificación fue exitosa. <a href="{% url 'newsletter:subscribe' %}" class="text-primary hover:underline">Inténtalo aquí</a>.</p>
+                </div>
+            </div>
+        {% endif %}
+    {% endif %}
     <div class="w-full">
         {% if count == 0 %}
             <div class="alert alert-success mt-8">

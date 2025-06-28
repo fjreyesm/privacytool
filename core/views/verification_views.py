@@ -1,3 +1,5 @@
+# core/views/verification_views.py - ACTUALIZADA
+
 from django.shortcuts import render, get_object_or_404
 from django.http import HttpResponse, JsonResponse
 from django.views.decorators.http import require_http_methods
@@ -15,6 +17,10 @@ from core.services.hibp_service import HIBPService, check_hibp_service_status
 from core.models.verification import Verification
 from core.models.breach import Breach
 
+# Import para newsletter
+from newsletter.models import Subscriber
+from newsletter.views import send_confirmation_email
+
 import logging
 
 logger = logging.getLogger(__name__)
@@ -31,6 +37,7 @@ def verification_home(request):
 def check_email_view(request):
     """Vista para verificar un email usando HTMX, con límite de peticiones y manejo robusto de errores."""
     email = request.POST.get("email", "").strip()
+    newsletter_subscription = request.POST.get("newsletter_subscription") == "on"
     
     if not email:
         return HttpResponse(
@@ -61,6 +68,34 @@ def check_email_view(request):
         )
         
         logger.info(f"[Verification] Starting check for {email} - ID: {verification.id}")
+        
+        # Manejar suscripción al newsletter SI está marcada
+        newsletter_result = None
+        if newsletter_subscription:
+            try:
+                # Verificar si ya existe suscriptor
+                subscriber, created = Subscriber.objects.get_or_create(
+                    email=email,
+                    defaults={
+                        'first_name': '',
+                        'status': 'pending',
+                        'privacy_consent': True,
+                        'interests': ['security']  # Default para verificaciones
+                    }
+                )
+                
+                if created:
+                    # Enviar email de confirmación
+                    send_confirmation_email(subscriber, request)
+                    newsletter_result = "subscribed"
+                    logger.info(f"[Newsletter] New subscription from verification: {email}")
+                else:
+                    newsletter_result = "already_subscribed"
+                    logger.info(f"[Newsletter] Email already subscribed: {email}")
+                    
+            except Exception as e:
+                logger.error(f"[Newsletter] Error subscribing {email}: {str(e)}")
+                newsletter_result = "error"
         
         # Usar el nuevo servicio HIBP robusto
         hibp_service = HIBPService()
@@ -103,7 +138,8 @@ def check_email_view(request):
             "count": breach_count,
             "verification_id": verification.id,
             "is_cached": is_cached,
-            "status": result['status']
+            "status": result['status'],
+            "newsletter_result": newsletter_result
         }
         
         return render(request, "verification/results_partial.html", context)

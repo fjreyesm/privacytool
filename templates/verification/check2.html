@@ -39,7 +39,7 @@
                             </div>
                         </div>
                         
-                        <button type="submit" class="w-full sm:w-auto inline-flex items-center justify-center px-6 py-3 border border-transparent text-base font-medium rounded-md shadow-sm text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 disabled:opacity-50 disabled:cursor-not-allowed" :disabled="!email">
+                        <button type="submit" class="w-full sm:w-auto inline-flex items-center justify-center px-6 py-3 border border-transparent text-base font-medium rounded-md shadow-sm text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 disabled:opacity-50 disabled:cursor-not-allowed transition-colors duration-200" :disabled="!email">
                             <i class="fas fa-search mr-2"></i> Verificar
                         </button>
                     </form>
@@ -90,79 +90,187 @@
     </div>
 </div>
 
+<!-- Sección de Servicios Premium -->
 <div class="bg-slate-50 mt-16 sm:mt-24">
     <div class="max-w-7xl mx-auto py-12 px-4 sm:py-16 sm:px-6 lg:px-8">
         <div class="text-center">
-            <h2 class="text-base font-semibold text-blue-600 tracking-wider uppercase">Nuestras Herramientas</h2>
+            <h2 class="text-base font-semibold text-blue-600 tracking-wider uppercase">Servicios Premium</h2>
             <p class="mt-2 text-3xl font-extrabold text-gray-900 tracking-tight sm:text-4xl">
-                Lleva tu Seguridad al Siguiente Nivel
+                Protección Profesional para tu Seguridad Digital
             </p>
             <p class="mt-5 max-w-prose mx-auto text-xl text-gray-500">
-                Además de verificar tu email, te ofrecemos otras herramientas gratuitas para fortalecer tu presencia digital.
+                Más allá de la verificación básica, te ofrecemos análisis profesionales y herramientas especializadas para una protección integral.
             </p>
         </div>
 
-        <div class="mt-12 grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
+        <div class="mt-12 grid gap-8 sm:grid-cols-1 lg:grid-cols-3">
             
-            <div class="pt-6 m-48 p-2">
-                <div class="bg-white rounded-lg shadow-xl h-full flex flex-col transition-all duration-300 hover:-translate-y-2 ">
-                    <div class="flex-grow p-8">
-                        <div class="inline-block bg-blue-100 text-blue-600 p-3 rounded-lg mb-4">
-                            <i class="fas fa-key text-2xl"></i>
-                        </div>
-                        <h3 class="text-xl font-semibold text-gray-900 mb-2">Generador de Contraseñas</h3>
-                        <p class="text-gray-600">Crea contraseñas robustas e impredecibles con un solo clic para proteger tus cuentas.</p>
-                    </div>
-                    <div class="p-8 pt-0">
-                         <a href="#" class="btn-secondary-outline">Usar herramienta</a>
-                    </div>
-                </div>
-            </div>
-
-            <div class="pt-6 m-16 p-2">
-                <div class="bg-white rounded-lg shadow-xl h-full flex flex-col transition-all duration-300 hover:-translate-y-2">
-                    <div class="flex-grow p-8">
-                        <div class="inline-block bg-blue-100 text-blue-600 p-3 rounded-lg mb-4">
-                            <i class="fas fa-code text-2xl"></i>
-                        </div>
-                        <h3 class="text-xl font-semibold text-gray-900 mb-2">Analizador de Cabeceras</h3>
-                        <p class="text-gray-600">Revisa las cabeceras de seguridad de tu sitio web para identificar vulnerabilidades.</p>
-                    </div>
-                    <div class="p-8 pt-0">
-                        <a href="#" class="btn-secondary-outline">Analizar ahora</a>
-                    </div>
-                </div>
-            </div>
-
+            <!-- Informe Detallado de Filtraciones -->
             <div class="pt-6">
-                <div class="bg-white rounded-lg shadow-xl h-full flex flex-col transition-all duration-300 hover:-translate-y-2">
+                <div class="bg-white rounded-lg shadow-xl h-full flex flex-col transition-all duration-300 hover:-translate-y-2 relative">
+                    <!-- Badge Popular -->
+                    <div class="absolute -top-2 -right-2 z-10">
+                        <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-orange-100 text-orange-800 border border-orange-200">
+                            <i class="fas fa-star mr-1"></i>
+                            Más Popular
+                        </span>
+                    </div>
+                    
                     <div class="flex-grow p-8">
                         <div class="inline-block bg-blue-100 text-blue-600 p-3 rounded-lg mb-4">
-                             <i class="fas fa-newspaper text-2xl"></i>
+                            <i class="fas fa-file-shield text-2xl"></i>
                         </div>
-                        <h3 class="text-xl font-semibold text-gray-900 mb-2">Blog de Seguridad</h3>
-                        <p class="text-gray-600">Lee nuestros artículos y guías para mantenerte al día con las últimas amenazas y consejos.</p>
+                        <h3 class="text-xl font-semibold text-gray-900 mb-2">Informe Detallado de Filtraciones</h3>
+                        <p class="text-gray-600 mb-4">Análisis completo y personalizado de todas las filtraciones donde aparecen tus datos, con recomendaciones específicas de seguridad.</p>
+                        
+                        <div class="space-y-2 mb-6">
+                            <div class="flex items-center text-sm">
+                                <i class="fas fa-check text-green-500 mr-2 text-xs"></i>
+                                <span class="text-gray-600">Historial completo de exposiciones</span>
+                            </div>
+                            <div class="flex items-center text-sm">
+                                <i class="fas fa-check text-green-500 mr-2 text-xs"></i>
+                                <span class="text-gray-600">Análisis de riesgo personalizado</span>
+                            </div>
+                            <div class="flex items-center text-sm">
+                                <i class="fas fa-check text-green-500 mr-2 text-xs"></i>
+                                <span class="text-gray-600">Plan de acción específico</span>
+                            </div>
+                        </div>
+                        
+                        <div class="mb-4">
+                            <span class="text-2xl font-bold text-gray-900">€29</span>
+                            <span class="text-gray-500 text-sm">/informe</span>
+                        </div>
                     </div>
                     <div class="p-8 pt-0">
-                        <a href="#" class="btn-secondary-outline">Ir al blog</a>
+                        <a href="#" class="w-full inline-flex items-center justify-center px-6 py-3 border border-transparent text-base font-medium rounded-md shadow-sm text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-colors duration-200">
+                            <i class="fas fa-file-download mr-2"></i>
+                            Ver Ejemplo
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Herramientas Recomendadas -->
+            <div class="pt-6">
+                <div class="bg-white rounded-lg shadow-xl h-full flex flex-col transition-all duration-300 hover:-translate-y-2 relative">
+                    <!-- Badge Curado -->
+                    <div class="absolute -top-2 -right-2 z-10">
+                        <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-green-100 text-green-800 border border-green-200">
+                            <i class="fas fa-sparkles mr-1"></i>
+                            Curado
+                        </span>
+                    </div>
+                    
+                    <div class="flex-grow p-8">
+                        <div class="inline-block bg-blue-100 text-blue-600 p-3 rounded-lg mb-4">
+                            <i class="fas fa-tools text-2xl"></i>
+                        </div>
+                        <h3 class="text-xl font-semibold text-gray-900 mb-2">Herramientas Recomendadas</h3>
+                        <p class="text-gray-600 mb-4">Selección curada de las mejores VPNs, antivirus y gestores de contraseñas del mercado, con descuentos exclusivos.</p>
+                        
+                        <div class="space-y-2 mb-6">
+                            <div class="flex items-center text-sm">
+                                <i class="fas fa-shield-virus text-blue-500 mr-2 text-xs"></i>
+                                <span class="text-gray-600">Antivirus Premium</span>
+                            </div>
+                            <div class="flex items-center text-sm">
+                                <i class="fas fa-user-secret text-blue-500 mr-2 text-xs"></i>
+                                <span class="text-gray-600">VPNs de Alto Rendimiento</span>
+                            </div>
+                            <div class="flex items-center text-sm">
+                                <i class="fas fa-key text-blue-500 mr-2 text-xs"></i>
+                                <span class="text-gray-600">Gestores de Contraseñas</span>
+                            </div>
+                        </div>
+                        
+                        <div class="mb-4">
+                            <span class="text-lg font-semibold text-gray-900">Acceso Gratuito</span>
+                            <p class="text-sm text-gray-500">Con descuentos especiales</p>
+                        </div>
+                    </div>
+                    <div class="p-8 pt-0">
+                        <a href="#" class="btn-secondary-outline w-full justify-center">
+                            <i class="fas fa-external-link-alt mr-2"></i>
+                            Explorar Herramientas
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Investigación OSINT -->
+            <div class="pt-6">
+                <div class="bg-white rounded-lg shadow-xl h-full flex flex-col transition-all duration-300 hover:-translate-y-2 relative opacity-95">
+                    <!-- Badge Próximamente -->
+                    <div class="absolute -top-2 -right-2 z-10">
+                        <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-gray-100 text-gray-700 border border-gray-200">
+                            <i class="fas fa-clock mr-1"></i>
+                            Próximamente
+                        </span>
+                    </div>
+                    
+                    <div class="flex-grow p-8">
+                        <div class="inline-block bg-blue-100 text-blue-600 p-3 rounded-lg mb-4">
+                            <i class="fas fa-search text-2xl"></i>
+                        </div>
+                        <h3 class="text-xl font-semibold text-gray-900 mb-2">Investigación OSINT</h3>
+                        <p class="text-gray-600 mb-4">Análisis profesional de tu huella digital completa. Investigamos qué información personal está disponible públicamente.</p>
+                        
+                        <div class="space-y-2 mb-6">
+                            <div class="flex items-center text-sm">
+                                <i class="fas fa-globe text-orange-500 mr-2 text-xs"></i>
+                                <span class="text-gray-600">Análisis de presencia online</span>
+                            </div>
+                            <div class="flex items-center text-sm">
+                                <i class="fas fa-eye text-orange-500 mr-2 text-xs"></i>
+                                <span class="text-gray-600">Detección de información expuesta</span>
+                            </div>
+                            <div class="flex items-center text-sm">
+                                <i class="fas fa-user-shield text-orange-500 mr-2 text-xs"></i>
+                                <span class="text-gray-600">Estrategias de protección</span>
+                            </div>
+                        </div>
+                        
+                        <div class="mb-4">
+                            <span class="text-2xl font-bold text-gray-900">Desde €199</span>
+                            <p class="text-sm text-gray-500">Consulta personalizada</p>
+                        </div>
+                    </div>
+                    <div class="p-8 pt-0">
+                        <button class="btn-secondary-outline w-full justify-center opacity-60 cursor-not-allowed" disabled>
+                            <i class="fas fa-envelope mr-2"></i>
+                            Notificarme al Lanzar
+                        </button>
                     </div>
                 </div>
             </div>
 
         </div>
+
+        <!-- CTA Section -->
+        <div class="mt-16 bg-blue-600 rounded-lg shadow-xl overflow-hidden">
+            <div class="px-6 py-8 sm:px-8 sm:py-12 lg:flex lg:items-center lg:justify-between">
+                <div class="lg:w-0 lg:flex-1">
+                    <h3 class="text-xl font-bold tracking-tight text-white sm:text-2xl">
+                        ¿Necesitas una solución personalizada?
+                    </h3>
+                    <p class="mt-3 max-w-3xl text-base text-blue-100">
+                        Ofrecemos consultorías especializadas en ciberseguridad para empresas y casos complejos. Contacta con nuestro equipo para una evaluación gratuita.
+                    </p>
+                </div>
+                <div class="mt-6 lg:mt-0 lg:ml-8 lg:flex-shrink-0">
+                    <a href="#" class="inline-flex items-center px-6 py-3 border-2 border-white text-base font-medium rounded-md text-white hover:bg-white hover:text-blue-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-white transition-colors duration-200">
+                        <i class="fas fa-comments mr-2"></i>
+                        Solicitar Consulta Gratuita
+                    </a>
+                </div>
+            </div>
+        </div>
+
     </div>
 </div>
-<style>
-/* Usamos @apply para aprovechar las utilidades de Tailwind y mantener la consistencia.
-  Este es el estilo del "ghost button" para acciones secundarias.
-*/
-.btn-secondary-outline {
-  @apply inline-block px-6 py-2 text-base font-semibold text-blue-600 border-2 border-blue-600 rounded-lg transition-colors duration-300;
-}
 
-.btn-secondary-outline:hover {
-  @apply bg-blue-600 text-white;
-}
-</style>
+
 
 {% endblock %}

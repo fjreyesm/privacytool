@@ -12,7 +12,7 @@ Un potente analizador de privacidad y herramientas de seguridad desarrollado con
 
 ```bash
 # 1. Clonar repositorio
-git clone https://github.com/fjreyesm/privacytool.git
+git clone 
 cd privacytool
 
 # 2. Configurar entorno
@@ -31,6 +31,7 @@ docker-compose up --build -d
 ## 🔒 Características de Seguridad
 
 ### Headers HTTP Implementados (10/10)
+
 - ✅ **Content-Security-Policy**: Protección XSS avanzada
 - ✅ **X-Content-Type-Options**: nosniff
 - ✅ **X-Frame-Options**: DENY (anti-clickjacking)
@@ -43,6 +44,7 @@ docker-compose up --build -d
 - ✅ **HTTPS Ready**: SSL/TLS preparado
 
 ### Configuraciones de Seguridad
+
 - 🔑 **SECRET_KEY**: 50 caracteres seguros generados
 - 🚫 **DEBUG**: Automático desarrollo/producción
 - 🌐 **ALLOWED_HOSTS**: Configuración condicional
@@ -53,6 +55,7 @@ docker-compose up --build -d
 ## 📊 Herramientas de Verificación
 
 ### Scripts Incluidos
+
 ```bash
 # Windows PowerShell
 .\verify_security.ps1
@@ -66,6 +69,7 @@ docker-compose exec web python manage.py check --deploy
 ```
 
 ### Comandos de Desarrollo
+
 ```bash
 # Logs en tiempo real
 docker-compose logs -f web
@@ -108,6 +112,7 @@ privacytool/
 ## 🔧 Configuración de Entorno
 
 ### Variables .env Requeridas
+
 ```env
 # Seguridad
 SECRET_KEY=tu_clave_secreta_de_50_caracteres_muy_segura
@@ -129,6 +134,7 @@ HIBP_API_KEY=tu_api_key_hibp
 ## 🚀 Despliegue en Producción
 
 ### Checklist Pre-Despliegue
+
 - [ ] `DEBUG=False` en .env
 - [ ] `SECURE_SSL_REDIRECT=True`
 - [ ] `SECURE_HSTS_SECONDS=31536000`
@@ -137,6 +143,7 @@ HIBP_API_KEY=tu_api_key_hibp
 - [ ] Certificado SSL/TLS instalado
 
 ### Comando de Verificación Final
+
 ```bash
 docker-compose exec web python manage.py check --deploy
 ```
@@ -144,6 +151,7 @@ docker-compose exec web python manage.py check --deploy
 ## 📈 Mejoras Implementadas
 
 ### Desde el Estado Inicial (7 advertencias críticas)
+
 1. ✅ **SECRET_KEY insegura** → Generada secura 50 caracteres
 2. ✅ **Archivo .env corrupto** → Limpio y funcional
 3. ✅ **Error de logging** → Sistema completo configurado
@@ -153,6 +161,7 @@ docker-compose exec web python manage.py check --deploy
 7. ✅ **Cookies inseguras** → HttpOnly + SameSite activos
 
 ### Estado Final (0 advertencias)
+
 - 🎯 **Sistema completamente seguro**
 - 📊 **10/10 headers de seguridad**
 - 🚀 **Listo para producción**
@@ -172,7 +181,7 @@ Distribuido bajo la Licencia MIT. Ver `LICENSE` para más información.
 
 ## 👨‍💻 Autor
 
-**F Reyes M** - [@fjreyesm](https://github.com/fjreyesm)
+**F  M** -
 
 ---
 

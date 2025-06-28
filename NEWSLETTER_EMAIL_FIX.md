@@ -1,12 +1,15 @@
 # NEWSLETTER EMAIL TROUBLESHOOTING GUIDE
 
 ## Problema Identificado
+
 Los emails de confirmación del newsletter no se están enviando correctamente porque hay un conflicto entre la configuración de desarrollo (console backend) y la configuración de producción (SMTP).
 
 ## Causas del Problema
 
 ### 1. Configuración de DEBUG vs EMAIL_BACKEND
+
 En `settings.py` teníamos:
+
 ```python
 if DEBUG:
     EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
@@ -17,14 +20,17 @@ else:
 Esto significa que en modo DEBUG=True, los emails solo se muestran en consola, no se envían realmente.
 
 ### 2. Variables de entorno faltantes
+
 El archivo `.env` no tenía las configuraciones de Gmail necesarias.
 
 ### 3. Inconsistencia en DEFAULT_FROM_EMAIL
+
 El test_email command funcionaba porque usaba configuraciones diferentes a las del newsletter real.
 
 ## Soluciones Implementadas
 
 ### 1. ✅ Archivo `.env.gmail`
+
 Creé un archivo con la configuración completa de Gmail:
 
 ```bash
@@ -35,11 +41,13 @@ cp .env.gmail .env
 **IMPORTANTE**: Reemplaza `xxxx_tu_app_password_aqui` con tu App Password real de Google.
 
 ### 2. ✅ Settings.py Mejorado
+
 - Lógica mejorada para detectar si hay configuración de email válida
 - Fuerza el uso de SMTP cuando hay configuración disponible
 - Mejor logging para debugging
 
 ### 3. ✅ Comando de Diagnóstico
+
 Nuevo comando para diagnosticar problemas:
 
 ```bash
@@ -53,43 +61,50 @@ docker compose exec web python manage.py email_diagnosis --email tu@email.com
 ## Pasos para Resolver el Problema
 
 ### Paso 1: Configurar Gmail App Password
+
 1. Ve a tu cuenta de Google → Seguridad
 2. Habilita autenticación de 2 pasos si no la tienes
 3. Genera una "App Password" específica para esta aplicación
 4. Copia los 16 caracteres (sin espacios)
 
 ### Paso 2: Actualizar .env
+
 ```bash
 # En tu directorio del proyecto
 cp .env.gmail .env
 
 # Editar .env y reemplazar xxxx_tu_app_password_aqui con tu App Password real
-# También verifica que el email sea correcto: franklin.reyes.2003@gmail.com
+# 
 ```
 
 ### Paso 3: Reiniciar Docker
+
 ```bash
 docker compose down
 docker compose up -d
 ```
 
 ### Paso 4: Verificar Configuración
+
 ```bash
 docker compose exec web python manage.py email_diagnosis --check-config
 ```
 
 Deberías ver algo como:
+
 ```
-📧 Email configurado: franklin.reyes.2003@gmail.com via smtp.gmail.com
+📧
 ✅ Configuración SMTP completa
 ```
 
 ### Paso 5: Probar Email
+
 ```bash
 docker compose exec web python manage.py email_diagnosis --email info@yoursecurescan.com
 ```
 
 ### Paso 6: Probar Newsletter Real
+
 1. Ve a tu sitio web
 2. Suscríbete al newsletter con un email de prueba
 3. Deberías recibir el email de confirmación
@@ -97,11 +112,13 @@ docker compose exec web python manage.py email_diagnosis --email info@yoursecure
 ## Debugging Adicional
 
 ### Ver logs en tiempo real
+
 ```bash
 docker compose logs -f web
 ```
 
 ### Verificar que las variables se cargaron
+
 ```bash
 docker compose exec web python manage.py shell
 >>> import os
@@ -110,6 +127,7 @@ docker compose exec web python manage.py shell
 ```
 
 ### Test manual desde Django shell
+
 ```bash
 docker compose exec web python manage.py shell
 ```
@@ -136,20 +154,24 @@ send_mail(
 ## Errores Comunes y Soluciones
 
 ### Error: "SMTPAuthenticationError"
+
 - **Causa**: App Password incorrecto o no configurado
 - **Solución**: Regenerar App Password en Google y actualizar .env
 
 ### Error: "Connection refused"
+
 - **Causa**: Firewall bloqueando puerto 587
 - **Solución**: Verificar que el puerto 587 esté abierto
 
 ### Error: "User not authenticated"
+
 - **Causa**: Usando contraseña normal en lugar de App Password
 - **Solución**: Usar App Password de 16 caracteres
 
 ### Los emails van a spam
+
 - **Causa**: Gmail detecta el email como posible spam
-- **Solución**: 
+- **Solución**:
   - Verificar configuración SPF/DKIM en tu dominio
   - Usar un dominio verificado
   - Por ahora, revisar carpeta de spam
@@ -182,16 +204,7 @@ POSTGRES_PORT=5432
 USE_SQLITE=False
 
 # Email Configuration Gmail
-EMAIL_BACKEND=django.core.mail.backends.smtp.EmailBackend
-EMAIL_HOST=smtp.gmail.com
-EMAIL_PORT=587
-EMAIL_USE_TLS=True
-EMAIL_HOST_USER=franklin.reyes.2003@gmail.com
-EMAIL_HOST_PASSWORD=tu_app_password_de_16_caracteres_aqui
-DEFAULT_FROM_EMAIL=PrivacyTool <franklin.reyes.2003@gmail.com>
-NEWSLETTER_FROM_EMAIL=PrivacyTool <franklin.reyes.2003@gmail.com>
-NEWSLETTER_REPLY_TO=franklin.reyes.2003@gmail.com
-ADMIN_EMAIL=franklin.reyes.2003@gmail.com
+
 
 # API Keys
 HIBP_API_KEY=
