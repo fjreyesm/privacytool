@@ -94,7 +94,7 @@ Write-Host ""
 Write-Host "Step 4: Migration Status" -ForegroundColor Yellow
 Write-Host "------------------------"
 
-Test-Step "Migration Status" "docker compose exec web python manage.py showmigrations --plan" $true
+Test-Step "Migration Status" "docker compose exec web python manage.py showmigrations" $true
 
 # Step 5: Core Tests
 Write-Host ""
