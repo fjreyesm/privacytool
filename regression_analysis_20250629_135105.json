@@ -1,0 +1,96 @@
+{
+  "timestamp": "2025-06-29T13:51:05.101146",
+  "regression_tests": {
+    "status": "failed",
+    "stdout": "",
+    "stderr": "/bin/sh: 1: docker: not found\n",
+    "regression_checks": [],
+    "core_issues": [
+      {
+        "check": "url_patterns",
+        "passed": false,
+        "message": "Verificación de URLs mediante cliente de prueba"
+      },
+      {
+        "check": "model_integrity",
+        "passed": false,
+        "message": "Problemas en modelos: /bin/sh: 1: docker: not found\n"
+      },
+      {
+        "check": "view_responses",
+        "passed": false,
+        "message": "No se pudieron verificar las vistas"
+      },
+      {
+        "check": "template_rendering",
+        "passed": false,
+        "message": "Problemas en plantillas: /bin/sh: 1: docker: not found\n"
+      }
+    ]
+  },
+  "hibp_service_tests": {
+    "status": "failed",
+    "stdout": "",
+    "stderr": "/bin/sh: 1: docker: not found\n",
+    "test_count": 0,
+    "specific_checks": []
+  },
+  "newsletter_tests": {
+    "status": "failed",
+    "stdout": "",
+    "stderr": "/bin/sh: 1: docker: not found\n",
+    "newsletter_checks": [],
+    "email_config": {
+      "configured": false,
+      "details": "",
+      "errors": "/bin/sh: 1: docker: not found"
+    }
+  },
+  "performance_metrics": {
+    "tests": [
+      {
+        "test": "homepage_load_time",
+        "passed": false,
+        "message": "No se pudo medir el tiempo de carga"
+      },
+      {
+        "test": "database_query_performance",
+        "passed": false,
+        "message": "No se pudo medir el rendimiento de consultas"
+      },
+      {
+        "test": "static_files_performance",
+        "passed": false,
+        "message": "No se pudo verificar la configuración de archivos estáticos"
+      }
+    ],
+    "overall_status": false
+  },
+  "security_checks": {},
+  "recommendations": [
+    {
+      "category": "HIBP Service",
+      "priority": "High",
+      "message": "Revisar funcionalidad del servicio HIBP - pueden haber regresiones",
+      "action": "Ejecutar pruebas específicas de HIBP y verificar conectividad a la API"
+    },
+    {
+      "category": "Newsletter",
+      "priority": "Medium",
+      "message": "Problemas detectados en funcionalidad de newsletter",
+      "action": "Verificar configuración de email y modelos de suscripción"
+    },
+    {
+      "category": "Performance",
+      "priority": "Medium",
+      "message": "Detectadas regresiones de rendimiento",
+      "action": "Optimizar consultas a base de datos y tiempo de carga"
+    },
+    {
+      "category": "Core Functionality",
+      "priority": "High",
+      "message": "4 problemas de regresión en funcionalidad core",
+      "action": "Revisar cambios recientes que puedan haber afectado funcionalidad base"
+    }
+  ]
+}

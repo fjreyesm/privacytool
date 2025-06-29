@@ -1,0 +1,22 @@
+{
+  "timestamp": "2025-06-29T13:49:47.869000",
+  "tests_run": 2,
+  "tests_passed": 0,
+  "tests_failed": 2,
+  "test_details": [
+    {
+      "app": "core",
+      "status": "failed",
+      "output": "/bin/sh: 1: docker: not found\n",
+      "timestamp": "2025-06-29T13:49:47.871006"
+    },
+    {
+      "app": "newsletter",
+      "status": "failed",
+      "output": "/bin/sh: 1: docker: not found\n",
+      "timestamp": "2025-06-29T13:49:47.872313"
+    }
+  ],
+  "coverage_report": {},
+  "errors": []
+}
