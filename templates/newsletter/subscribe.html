@@ -363,7 +363,7 @@
 {% endblock %}
 
 {% block extra_scripts %}
-<script>
+<script nonce="{{ request.csp_nonce }}">
 // Form validation and interactivity
 document.addEventListener('htmx:beforeRequest', function(evt) {
     const submitBtn = evt.target.querySelector('button[type="submit"]');

@@ -315,3 +315,38 @@ NEWSLETTER_SETTINGS = {
         'Otro'
     ]
 }
+
+# --- CONFIGURACIÓN DE CONTENT SECURITY POLICY (CSP) ---
+# settings.py - CONFIGURACIÓN FINAL RECOMENDADA
+
+CSP_DEFAULT_SRC = ("'self'",)
+
+CSP_CONNECT_SRC = (
+    "'self'",
+    "https://haveibeenpwned.com",  # ← AGREGAR ESTO
+)
+
+CSP_STYLE_SRC = (
+    "'self'",
+    "fonts.googleapis.com",
+    "cdnjs.cloudflare.com",
+    "'unsafe-inline'", # Requerido por Tailwind CSS y otros estilos en línea
+)
+
+CSP_SCRIPT_SRC = (
+    "'self'",
+    "unpkg.com",
+    "cdn.jsdelivr.net",
+    "'unsafe-eval'",  # Requerido por Alpine.js para funcionar
+    "'unsafe-inline'",
+
+)
+
+CSP_FONT_SRC = ("'self'", "fonts.gstatic.com", "cdnjs.cloudflare.com")
+CSP_IMG_SRC = ("'self'", "data:") 
+
+# Activa nonces para scripts y estilos, permitiendo eliminar 'unsafe-inline'
+CSP_INCLUDE_NONCE_IN = ['style-src']
+
+
+#

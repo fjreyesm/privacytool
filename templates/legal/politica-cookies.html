@@ -201,7 +201,7 @@
 {% endblock %}
 
 {% block scripts %}
-<script>
+<script nonce="{{ request.csp_nonce }}">
 // Funcionalidad específica para la página de política de cookies
 document.addEventListener('DOMContentLoaded', function() {
     // Mostrar estado actual de cookies

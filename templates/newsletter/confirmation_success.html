@@ -249,7 +249,7 @@
 {% endblock %}
 
 {% block extra_scripts %}
-<script>
+<script nonce="{{ request.csp_nonce }}">
 // Add confetti effect on page load (sin dependencias externas)
 document.addEventListener('DOMContentLoaded', function() {
     // Simple confetti effect con animaciones CSS puras

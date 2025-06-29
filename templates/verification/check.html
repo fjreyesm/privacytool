@@ -1,4 +1,5 @@
 {% extends 'base.html' %}
+{% load static %}
 {% block title %}Verificar Email - Yoursecurescan{% endblock %}
 
 {% block content %}
@@ -7,23 +8,26 @@
         Comprueba si tu email ha sido expuesto
     </h1>
     
-    <div class="grid grid-cols-1 lg:grid-cols-3 lg:gap-8">
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 lg:gap-8">
         
-        <div class="lg:col-span-2">
+        <div class="lg:col-span-2 space-y-8">
+            
             <div class="card">
                 <div class="card-header-primary">
                     <i class="fas fa-shield-alt mr-3"></i>
                     Verificar Email
                 </div>
                 <div class="card-body">
-                    <p class="mb-6 text-gray-600">Introduce tu dirección de email para comprobar si ha aparecido en alguna filtración de datos conocida, usando una conexión segura y anónima.</p>
+                    <p class="text-gray-600 mb-6">Introduce tu dirección de email para comprobar si ha aparecido en alguna filtración de datos conocida.</p>
                     
-                    <!-- FORMULARIO CORREGIDO - Solo la parte del form -->
 
-                    <form hx-post="{% url 'core:check_email' %}"
-                         
+                    <!-- FORMULARIO COMPLETO - HIBP + Newsletter Opcional -->
+
+                    <form method="POST" 
+                        hx-post="{% url 'core:check_email' %}" 
                         hx-target="#results" 
                         hx-indicator="#loading"
+                        hx-swap="outerHTML"
                         x-data="{ 
                             email: '', 
                             dataProcessingAccepted: false, 
@@ -36,15 +40,15 @@
                         <!-- Campo Email -->
                         <div class="mb-6">
                             <label for="email" class="block text-sm font-medium text-gray-700 mb-2">
-                                Email a verificar
+                                <i class="fas fa-envelope mr-1"></i>Email a verificar
                             </label>
                             <div class="relative">
                                 <input type="email" 
                                     id="email" 
                                     name="email" 
                                     class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all duration-200" 
-                                    placeholder="ejemplo@correo.com"
-                                    x-model="email"
+                                    placeholder="ejemplo@correo.com" 
+                                    x-model="email" 
                                     required>
                                 <div id="loading" class="htmx-indicator absolute right-3 top-1/2 -translate-y-1/2">
                                     <i class="fas fa-circle-notch fa-spin text-primary text-xl"></i>
@@ -53,7 +57,7 @@
                         </div>
 
                         <!-- Términos y Condiciones OBLIGATORIO -->
-                        <div class="mb-4 p-4 bg-blue-50 border border-blue-200 rounded-lg">
+                        <div class="p-4 bg-blue-50 border border-blue-200 rounded-lg mb-4">
                             <div class="flex items-start">
                                 <div class="flex items-center h-5">
                                     <input id="data-processing" 
@@ -69,16 +73,16 @@
                                     </label>
                                     <p class="text-gray-600 mt-1">
                                         Al marcar esta casilla, confirmas tener la edad mínima requerida (16 años) y aceptas nuestra 
-                                        <a href="{% url 'core:privacy_policy' %}" class="text-primary hover:underline" target="_blank"> política de privacidad</a>
-                                        <a href="{% url 'core:terms_of_use' %}" class="text-primary hover:underline" target="_blank"> y terminos y condiciones</a>
+                                        <a href="{% url 'core:privacy_policy' %}" class="text-primary hover:underline" target="_blank">política de privacidad</a>
+                                        y <a href="{% url 'core:terms_of_use' %}" class="text-primary hover:underline" target="_blank">términos y condiciones</a>.
                                         Usaremos tu email únicamente para realizar esta consulta.
                                     </p>
                                 </div>
                             </div>
                         </div>
 
-                        <!-- Newsletter OPCIONAL -->
-                        <div class="mb-6 p-4 bg-gray-50 border border-gray-200 rounded-lg">
+                        <!-- Newsletter OPCIONAL - IMPLEMENTACIÓN COMPLETA -->
+                        <div class="p-4 bg-gray-50 border border-gray-200 rounded-lg mb-6">
                             <div class="flex items-start">
                                 <div class="flex items-center h-5">
                                     <input id="newsletter" 
@@ -96,36 +100,95 @@
                                         Recibe alertas de nuevas filtraciones, guías de seguridad y recomendaciones personalizadas. 
                                         Puedes cancelar en cualquier momento.
                                     </p>
+                                    
+                                    <!-- Mostrar estado del checkbox para debug -->
+                                    <div class="mt-2 text-xs text-gray-500" x-show="newsletterSubscription">
+                                        <i class="fas fa-check-circle text-green-500 mr-1"></i>
+                                        Te suscribirás al newsletter tras la verificación
+                                    </div>
                                 </div>
                             </div>
                         </div>
 
-                        <!-- Botón de Verificar - CORREGIDO -->
+                        <!-- Botón de Verificar - MISMA SINTAXIS QUE NEWSLETTER -->
                         <button type="submit" 
                                 class="w-full sm:w-auto btn-primary"
                                 :class="isFormValid ? 'hover:shadow-xl transform hover:-translate-y-0.5' : 'opacity-60 cursor-not-allowed'"
                                 :disabled="!isFormValid">
                             <i class="fas fa-search mr-2"></i> 
-                            
+                            <span x-show="!isFormValid">Acepta los términos para continuar</span>
                             <span x-show="isFormValid">Verificar Ahora</span>
                         </button>
 
                         <!-- Información adicional -->
                         <div class="mt-4 text-xs text-gray-500">
                             <i class="fas fa-info-circle mr-1"></i>
-                            <span class="text-red-600">*</span> Campos obligatorios. Tu email solo se usa para realizar esta consulta y no se almacena, a menos que te suscribas a la newsletter.
+                            <span class="text-red-600">*</span> Campos obligatorios. Tu email no se almacena en nuestros servidores.
+                            
+                            <!-- Debug info - solo en desarrollo -->
+                            {% if debug %}
+                            <div class="mt-2 p-2 bg-gray-100 rounded text-xs">
+                                Debug: 
+                                <span x-text="'Email: ' + email"></span> | 
+                                <span x-text="'Términos: ' + dataProcessingAccepted"></span> | 
+                                <span x-text="'Newsletter: ' + newsletterSubscription"></span> |
+                                <span x-text="'Válido: ' + isFormValid"></span>
+                            </div>
+                            {% endif %}
                         </div>
                     </form>
+
+                    <!-- Script de verificación adicional (solo para debug) -->
+                    {% if debug %}
+                    <script>
+                    document.addEventListener('DOMContentLoaded', function() {
+                        console.log('🔍 Verificando formulario check.html...');
+                        
+                        // Verificar que Alpine.js está disponible
+                        if (typeof Alpine !== 'undefined') {
+                            console.log('✅ Alpine.js está disponible:', Alpine.version);
+                        } else {
+                            console.error('❌ Alpine.js NO está disponible');
+                        }
+                        
+                        // Verificar que HTMX está disponible
+                        if (typeof htmx !== 'undefined') {
+                            console.log('✅ HTMX está disponible');
+                        } else {
+                            console.error('❌ HTMX NO está disponible');
+                        }
+                        
+                        // Verificar elementos del formulario
+                        const form = document.querySelector('form[hx-post]');
+                        const emailInput = document.getElementById('email');
+                        const termsCheckbox = document.getElementById('data-processing');
+                        const newsletterCheckbox = document.getElementById('newsletter');
+                        
+                        console.log('📋 Elementos del formulario:');
+                        console.log('- Formulario:', form ? '✅' : '❌');
+                        console.log('- Email input:', emailInput ? '✅' : '❌');
+                        console.log('- Términos checkbox:', termsCheckbox ? '✅' : '❌');
+                        console.log('- Newsletter checkbox:', newsletterCheckbox ? '✅' : '❌');
+                        
+                        if (form) {
+                            console.log('🎯 URL de envío:', form.getAttribute('hx-post'));
+                        }
+                    });
+                    </script>
+                    {% endif %}
                 </div>
             </div>
+            
+            <!-- Resultados -->
+            <div id="results" class="w-full"></div>
         </div>
         
-        <!-- Sidebar con garantías de privacidad -->
+        <!-- Sidebar -->
         <div class="lg:col-span-1">
-            <div class="card">
-                <div class="card-body">
-                    <h3 class="text-lg font-semibold text-blue-800 mb-4 flex items-center">
-                        <i class="fas fa-user-shield text-blue-800 mr-2"></i>
+            <div class="card h-full flex flex-col">
+                <div class="card-body flex-grow">
+                    <h3 class="text-lg font-semibold text-primary mb-4 flex items-center">
+                        <i class="fas fa-user-shield mr-2"></i>
                         Tu Privacidad, Nuestra Prioridad
                     </h3>
                     <div class="space-y-4">
@@ -144,7 +207,7 @@
                             </div>
                         </div>
                         <div class="flex items-start">
-                             <i class="fas fa-user-secret text-blue-500 text-xl mt-0.5 flex-shrink-0 w-6 text-center"></i>
+                            <i class="fas fa-user-secret text-blue-500 text-xl mt-0.5 flex-shrink-0 w-6 text-center"></i>
                             <div class="ml-3">
                                 <p class="text-sm font-semibold text-gray-800">Verificación anónima</p>
                                 <p class="text-sm text-gray-600">El proceso es 100% privado y anónimo.</p>
@@ -160,53 +223,43 @@
                     </div>
                 </div>
             </div>
-
+             
             <!-- Estadísticas -->
-            <div class="bg-gradient-to-br from-blue-50 to-indigo-100 border border-blue-200 rounded-lg shadow-lg mt-6">
-                <div class="px-6 py-5">
-                    <h3 class="text-lg font-semibold text-gray-900 mb-4 flex items-center">
-                        <i class="fas fa-chart-line text-indigo-600 mr-2"></i>
-                        Verificaciones Recientes
-                    </h3>
-                    <div class="space-y-3">
-                        <div class="flex justify-between items-center">
-                            <span class="text-sm text-gray-600">Esta semana</span>
-                            <span class="text-lg font-bold text-indigo-600">+1,247</span>
-                        </div>
-                        <div class="flex justify-between items-center">
-                            <span class="text-sm text-gray-600">Filtraciones detectadas</span>
-                            <span class="text-lg font-bold text-red-600">892</span>
-                        </div>
-                        <div class="flex justify-between items-center">
-                            <span class="text-sm text-gray-600">Emails seguros</span>
-                            <span class="text-lg font-bold text-green-600">355</span>
-                        </div>
+            <div class="bg-gradient-to-br from-blue-50 to-indigo-100 border border-blue-200 rounded-lg shadow-sm mt-6 p-5">
+                <h3 class="text-lg font-semibold text-gray-900 mb-4 flex items-center">
+                    <i class="fas fa-chart-line text-indigo-600 mr-2"></i>
+                    Verificaciones Recientes
+                </h3>
+                <div class="space-y-3">
+                    <div class="flex justify-between items-center">
+                        <span class="text-sm text-gray-600">Esta semana</span>
+                        <span class="text-lg font-bold text-indigo-600">+1,247</span>
+                    </div>
+                    <div class="flex justify-between items-center">
+                        <span class="text-sm text-gray-600">Filtraciones detectadas</span>
+                        <span class="text-lg font-bold text-red-600">892</span>
+                    </div>
+                    <div class="flex justify-between items-center">
+                        <span class="text-sm text-gray-600">Emails seguros</span>
+                        <span class="text-lg font-bold text-green-600">355</span>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-    
-    <div id="results" class="mt-8 w-full">
-        <!-- Los resultados aparecen aquí -->
-    </div>
 </div>
 
 <!-- Sección de herramientas -->
-<div class="bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-50 mt-16 sm:mt-24">
+<div class="bg-gradient-security mt-16 sm:mt-24">
     <div class="max-w-7xl mx-auto py-12 px-4 sm:py-16 sm:px-6 lg:px-8">
         <div class="text-center">
-            <h2 class="text-base font-semibold text-blue-600 tracking-wider uppercase">Herramientas Gratuitas</h2>
+            <h2 class="text-base font-semibold text-primary tracking-wider uppercase">Herramientas Gratuitas</h2>
             <p class="mt-2 text-3xl font-extrabold text-gray-900 tracking-tight sm:text-4xl">
                 Fortalece tu Seguridad Digital
             </p>
-            <p class="mt-5 max-w-prose mx-auto text-xl text-gray-500">
-                Además de verificar tu email, descubre nuestras herramientas gratuitas para proteger tu información.
-            </p>
         </div>
-
         <div class="mt-12 grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
-        
+            
             <!-- Generador de Contraseñas -->
             <div class="group">
                 <div class="tool-card">
@@ -218,57 +271,34 @@
                         <p class="text-gray-600 mb-4">Crea contraseñas robustas e impredecibles con configuración personalizable.</p>
                         <div class="flex items-center text-sm text-green-600 mb-2">
                             <i class="fas fa-check-circle mr-2"></i>
-                            <span> Próximamente disponible</span>
-                        </div>
-                    </div>
-                    <div class="p-8 pt-0">
-                      <button class="btn-secondary-outline w-full justify-center opacity-60 cursor-not-allowed" disabled>
-                            <i class="fas fa-bell mr-2"></i>
-                            Notificarme
-                        </button>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Analizador de Cabeceras -->
-            <div class="group">
-                <div class="tool-card">
-                    <div class="flex-grow p-8">
-                        <div class="tool-card-icon-wrapper bg-gradient-to-br from-blue-100 to-indigo-100 text-primary">
-                            <i class="fas fa-code text-2xl"></i>
-                        </div>
-                        <h3 class="text-xl font-semibold text-gray-900 mb-3">Analizador de exposición digital</h3>
-                        <p class="text-gray-600 mb-4">Análisis de riesgo personalizado.</p>
-                        <div class="flex items-center text-sm text-orange-600 mb-2">
-                            <i class="fas fa-clock mr-2"></i>
-                            <span>Próximamente disponible</span>
+                            <span>100% gratis</span>
                         </div>
                     </div>
                     <div class="p-8 pt-0">
                         <button class="btn-secondary-outline w-full justify-center opacity-60 cursor-not-allowed" disabled>
                             <i class="fas fa-bell mr-2"></i>
-                            Notificarme
+                            Próximamente
                         </button>
                     </div>
                 </div>
             </div>
-
+            
             <!-- Blog de Seguridad -->
             <div class="group">
                 <div class="tool-card">
                     <div class="flex-grow p-8">
                         <div class="tool-card-icon-wrapper bg-gradient-to-br from-blue-100 to-indigo-100 text-primary">
-                             <i class="fas fa-newspaper text-2xl"></i>
+                            <i class="fas fa-newspaper text-2xl"></i>
                         </div>
                         <h3 class="text-xl font-semibold text-gray-900 mb-3">Blog de Seguridad</h3>
-                        <p class="text-gray-600 mb-4">Artículos, guías y noticias para mantenerte actualizado sobre las últimas amenazas y mejores prácticas.</p>
+                        <p class="text-gray-600 mb-4">Artículos, guías y noticias para mantenerte actualizado sobre ciberseguridad.</p>
                         <div class="flex items-center text-sm text-blue-600 mb-2">
                             <i class="fas fa-rss mr-2"></i>
                             <span>Actualizaciones semanales</span>
                         </div>
                     </div>
                     <div class="p-8 pt-0">
-                        <a href="{% url 'core:blog_list' %}" class="btn-secondary-outline w-full justify-center group-hover:bg-purple-600 group-hover:text-white transition-all duration-300">
+                        <a href="{% url 'core:blog_list' %}" class="btn-secondary-outline w-full justify-center">
                             <i class="fas fa-arrow-right mr-2"></i>
                             Leer artículos
                         </a>
@@ -277,27 +307,45 @@
             </div>
 
         </div>
-                <!-- CTA Section -->
-        <div class="mt-16 bg-blue-600 rounded-lg shadow-xl overflow-hidden">
-            <div class="px-6 py-8 sm:px-8 sm:py-12 lg:flex lg:items-center lg:justify-between">
-                <div class="lg:w-0 lg:flex-1">
-                    <h3 class="text-xl font-bold tracking-tight text-white sm:text-2xl">
-                        ¿Necesitas una solución personalizada?
-                    </h3>
-                    <p class="mt-3 max-w-3xl text-base text-blue-100">
-                        Ofrecemos consultorías especializadas en ciberseguridad para empresas y casos complejos. Contacta con nuestro equipo para una evaluación gratuita.
-                    </p>
-                </div>
-                <div class="mt-6 lg:mt-0 lg:ml-8 lg:flex-shrink-0">
-                    <a href="#" class="inline-flex items-center px-6 py-3 border-2 border-white text-base font-medium rounded-md text-white hover:bg-white hover:text-blue-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-white transition-colors duration-200">
-                        <i class="fas fa-comments mr-2"></i>
-                        Solicitar Consulta Gratuita
-                    </a>
-                </div>
-            </div>
-        </div>
-        
     </div>
 </div>
 
+{% endblock %}
+
+{% block extra_scripts %}
+<script nonce="{{ request.csp_nonce }}">
+// Fallback si Alpine.js no se carga por CSP
+document.addEventListener('DOMContentLoaded', function() {
+    // Verificar si Alpine está disponible
+    if (typeof Alpine === 'undefined') {
+        console.warn('Alpine.js bloqueado por CSP, usando fallback');
+        
+        // Implementar funcionalidad básica sin Alpine
+        const form = document.querySelector('form[hx-post]');
+        const emailInput = document.getElementById('email');
+        const termsCheckbox = document.getElementById('data-processing');
+        const submitButton = form.querySelector('button[type="submit"]');
+        
+        function updateButtonState() {
+            const isValid = emailInput.value && termsCheckbox.checked;
+            
+            if (isValid) {
+                submitButton.disabled = false;
+                submitButton.classList.remove('opacity-50', 'cursor-not-allowed');
+                submitButton.querySelector('span').textContent = 'Verificar Ahora';
+            } else {
+                submitButton.disabled = true;
+                submitButton.classList.add('opacity-50', 'cursor-not-allowed');
+                submitButton.querySelector('span').textContent = 'Acepta los términos';
+            }
+        }
+        
+        emailInput.addEventListener('input', updateButtonState);
+        termsCheckbox.addEventListener('change', updateButtonState);
+        
+        // Estado inicial
+        updateButtonState();
+    }
+});
+</script>
 {% endblock %}

@@ -208,7 +208,7 @@
 {% endblock %}
 
 {% block scripts %}
-<script>
+<script nonce="{{ request.csp_nonce }}">
 // Privacy Policy functionality
 document.addEventListener('DOMContentLoaded', function() {
     // Show user status if logged in

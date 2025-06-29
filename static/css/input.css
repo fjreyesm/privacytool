@@ -8,35 +8,42 @@
 
 /*  clases personalizadas */
 @layer components {
+
   /* ----- Componentes de Tarjeta (Card) ----- */
   .card {
     @apply bg-white rounded-lg shadow-md overflow-hidden;
   }
+
   .card-header {
     @apply px-6 py-4 bg-gray-50 border-b border-gray-200 text-lg font-semibold text-gray-800 flex items-center;
   }
+
   .card-header-primary {
-  @apply px-6 py-4 bg-primary text-white text-lg font-semibold flex items-center rounded-t-lg;
+    @apply px-6 py-4 bg-primary text-white text-lg font-semibold flex items-center rounded-t-lg;
   }
+
   .card-body {
     @apply p-6;
   }
+
   .card-hover {
-  @apply transition-all duration-300 hover:-translate-y-2 hover:shadow-2xl;
+    @apply transition-all duration-300 hover:-translate-y-2 hover:shadow-2xl;
   }
 
   .card-premium {
-  @apply bg-white rounded-xl shadow-xl border border-gray-100 overflow-hidden;
+    @apply bg-white rounded-xl shadow-xl border border-gray-100 overflow-hidden;
   }
 
-    /* --- NUEVA CLASE PARA TARJETAS CON TABLAS --- */
+  /* --- NUEVA CLASE PARA TARJETAS CON TABLAS --- */
   .card-table {
-    @apply bg-white rounded-lg shadow-md; /* Es igual que .card, pero SIN 'overflow-hidden' */
+    @apply bg-white rounded-lg shadow-md;
+    /* Es igual que .card, pero SIN 'overflow-hidden' */
   }
 
   .tool-card {
     @apply bg-white rounded-xl shadow-lg h-full flex flex-col transition-all duration-300 hover:-translate-y-1 hover:shadow-2xl border border-gray-100;
   }
+
   .tool-card-icon-wrapper {
     @apply inline-block p-4 rounded-xl mb-4 transition-transform duration-300 group-hover:scale-110;
   }
@@ -45,126 +52,184 @@
   .btn {
     @apply inline-flex items-center justify-center font-medium text-sm px-5 py-2.5 rounded-md hover:bg-opacity-90 transition-colors shadow-sm disabled:opacity-50 disabled:cursor-not-allowed;
   }
+
   .btn-primary {
     @apply btn bg-primary text-white font-bold py-3 px-6 text-base;
   }
+
   .btn-secondary {
     @apply btn bg-secondary text-white;
   }
-    .btn-secondary-outline {
-        @apply inline-flex items-center px-6 py-3 text-base font-semibold text-primary border-2 border-primary rounded-lg transition-all duration-300 hover:bg-primary hover:text-white hover:shadow-lg;
-    }
+
+  .btn-secondary-outline {
+    @apply inline-flex items-center px-6 py-3 text-base font-semibold text-primary border-2 border-primary rounded-lg transition-all duration-300 hover:bg-primary hover:text-white hover:shadow-lg;
+  }
 
   .btn-ghost {
-  @apply inline-flex items-center px-6 py-3 text-base font-medium text-gray-600 bg-transparent border border-gray-300 rounded-lg hover:bg-gray-50 hover:text-gray-900 transition-all duration-200;
+    @apply inline-flex items-center px-6 py-3 text-base font-medium text-gray-600 bg-transparent border border-gray-300 rounded-lg hover:bg-gray-50 hover:text-gray-900 transition-all duration-200;
   }
- /* ----- Gradients y Backgrounds ----- */
+
+  /* ----- Gradients y Backgrounds ----- */
   .bg-gradient-security {
-  @apply bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50;
+    @apply bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50;
   }
 
   .bg-gradient-danger {
-  @apply bg-gradient-to-r from-red-50 to-pink-50;
+    @apply bg-gradient-to-r from-red-50 to-pink-50;
   }
 
   .bg-gradient-success {
-  @apply bg-gradient-to-r from-green-50 to-emerald-50;
+    @apply bg-gradient-to-r from-green-50 to-emerald-50;
   }
+
   /* ----- Badges y Estados ----- */
   .badge-premium {
-  @apply inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-gradient-to-r from-purple-100 to-pink-100 text-purple-800 border border-purple-200;
+    @apply inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-gradient-to-r from-purple-100 to-pink-100 text-purple-800 border border-purple-200;
   }
 
   .badge-popular {
-  @apply inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-gradient-to-r from-orange-100 to-yellow-100 text-orange-800 border border-orange-200;
+    @apply inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-gradient-to-r from-orange-100 to-yellow-100 text-orange-800 border border-orange-200;
   }
 
   /* ----- Iconos con Efectos ----- */
   .icon-bounce {
-  @apply transition-transform duration-300 hover:scale-110;
+    @apply transition-transform duration-300 hover:scale-110;
   }
 
   .icon-glow {
-  @apply drop-shadow-lg;
+    @apply drop-shadow-lg;
   }
 
   /* ----- Componentes de Alerta (Alert) ----- */
   .alert {
-  @apply border-l-4 p-4 rounded-r-lg mb-6 flex items-center;
+    @apply border-l-4 p-4 rounded-r-lg mb-6 flex items-center;
   }
+
   .alert-icon {
-  @apply flex-shrink-0 mr-4 text-3xl;
+    @apply flex-shrink-0 mr-4 text-3xl;
   }
+
   .alert-content {
-  @apply flex-grow;
+    @apply flex-grow;
   }
+
   .alert-title {
-  @apply text-xl font-medium mb-1;
+    @apply text-xl font-medium mb-1;
   }
+
   .alert-danger {
-  @apply alert bg-red-50 border-danger text-red-800;
+    @apply alert bg-red-50 border-danger text-red-800;
   }
-  .alert-danger .alert-icon { @apply text-danger; }
-  
+
+  .alert-danger .alert-icon {
+    @apply text-danger;
+  }
+
   .alert-success {
-  @apply alert bg-green-50 border-success text-green-800;
+    @apply alert bg-green-50 border-success text-green-800;
   }
-  .alert-success .alert-icon { @apply text-success; }
-  
+
+  .alert-success .alert-icon {
+    @apply text-success;
+  }
+
   .alert-info {
-  @apply alert bg-blue-50 border-info text-blue-800;
+    @apply alert bg-blue-50 border-info text-blue-800;
   }
-  .alert-info .alert-icon { @apply text-info; }
-  
+
+  .alert-info .alert-icon {
+    @apply text-info;
+  }
+
   .filter-tag {
-  @apply px-4 py-2 rounded-full text-sm font-medium transition-colors;}
+    @apply px-4 py-2 rounded-full text-sm font-medium transition-colors;
+  }
 
   .filter2-tag {
-  @apply px-4 py-2 rounded-full text-sm font-medium transition-colors;}
+    @apply px-4 py-2 rounded-full text-sm font-medium transition-colors;
+  }
 
-    /* --- NUEVAS CLASES PARA LA IMAGEN DESTACADA --- */
+  /* --- NUEVAS CLASES PARA LA IMAGEN DESTACADA --- */
   .featured-image-container {
-  @apply block max-h-[450px] rounded-lg overflow-hidden mb-8 shadow-lg;
+    @apply block max-h-[450px] rounded-lg overflow-hidden mb-8 shadow-lg;
   }
 
   .featured-image {
-  @apply w-full h-full object-cover;
+    @apply w-full h-full object-cover;
   }
 
-      /* --- Estilos para el Toggle Switch de Cookies --- */
-    .toggle-switch-container {
-        @apply relative inline-flex items-center cursor-pointer;
+  /* --- Estilos para el Toggle Switch de Cookies --- */
+  .toggle-switch-container {
+    @apply relative inline-flex items-center cursor-pointer;
+  }
+
+  .toggle-switch {
+    @apply relative inline-block w-11 h-6 bg-gray-200 rounded-full transition-colors duration-200 ease-in-out;
+  }
+
+  .toggle-switch.active {
+    @apply bg-green-600;
+  }
+
+  .toggle-switch.disabled {
+    @apply bg-gray-400 cursor-not-allowed;
+  }
+
+  .toggle-dot {
+    @apply absolute top-0.5 left-0.5 w-5 h-5 bg-white rounded-full shadow transition-transform duration-200 ease-in-out;
+  }
+
+  .toggle-switch.active .toggle-dot {
+    @apply transform translate-x-5;
+  }
+
+  /* ----- NEWSLETTER SPECIFIC COMPONENTS ----- */
+  .newsletter-form-input {
+    @apply w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200;
+  }
+
+  .newsletter-checkbox {
+    @apply w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 focus:ring-2;
+  }
+
+  .newsletter-card-enhanced {
+    @apply bg-white rounded-lg shadow-lg border border-gray-100;
+  }
+
+  .newsletter-stats-card {
+    @apply bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50 border border-blue-200 rounded-lg shadow-lg;
+  }
+
+  .newsletter-hero {
+    background: linear-gradient(135deg, #005A9C 0%, #3B82F6 100%);
+  }
+
+  /* Elementos flotantes menos intrusivos - igual que check.html */
+  .floating-element {
+    position: absolute;
+    opacity: 0.03;
+    animation: float 25s infinite ease-in-out;
+    pointer-events: none;
+
+
+
+  }
+
+  @media (max-width: 1024px) {
+    .container {
+      max-width: 100%;
     }
-    .toggle-switch {
-        @apply relative inline-block w-11 h-6 bg-gray-200 rounded-full transition-colors duration-200 ease-in-out;
-    }
-    .toggle-switch.active {
-        @apply bg-green-600;
-    }
-    .toggle-switch.disabled {
-        @apply bg-gray-400 cursor-not-allowed;
-    }
-    .toggle-dot {
-        @apply absolute top-0.5 left-0.5 w-5 h-5 bg-white rounded-full shadow transition-transform duration-200 ease-in-out;
-    }
-    .toggle-switch.active .toggle-dot {
-        @apply transform translate-x-5;
+  }
+
+  /* Media Queries para Responsividad - Movidas desde check.html */
+  @media (max-width: 640px) {
+    .grid {
+      gap: 1rem;
     }
 
-    /* ----- NEWSLETTER SPECIFIC COMPONENTS ----- */
-    .newsletter-form-input {
-        @apply w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200;
+    .card {
+      margin-left: 0;
+      margin-right: 0;
     }
-    
-    .newsletter-checkbox {
-        @apply w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 focus:ring-2;
-    }
-    
-    .newsletter-card-enhanced {
-        @apply bg-white rounded-lg shadow-lg border border-gray-100;
-    }
-    
-    .newsletter-stats-card {
-        @apply bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50 border border-blue-200 rounded-lg shadow-lg;
-    }
+  }
 }

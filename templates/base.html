@@ -6,6 +6,34 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <!-- Favicon básico -->
+
+<link href="https://fonts.googleapis.com/css2?..." rel="stylesheet">
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Font Awesome + Tailwind</title>
+  <!-- Font Awesome CDN -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" integrity="sha512-Kc323vGBEqzTmouAECnVceyQqyqdsSiqLQISBL29aUW4U/M7pSPA/gEUZQqv1cwx4OnYxTxve5UMg5GT6L4JJg==" crossorigin="anonymous" referrerpolicy="no-referrer" nonce="{{ request.csp_nonce }}">
+
+
+
+
+<link rel="stylesheet" href="{% static 'css/output.css' %}">
+
+<script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js" 
+        nonce="{{ request.csp_nonce }}"></script>
+<script src="https://unpkg.com/htmx.org@1.9.10" 
+        nonce="{{ request.csp_nonce }}"></script>
+        
+<style nonce="{{ request.csp_nonce }}">
+.mi-clase-inline { display: block; }
+</style>
+<script nonce="{{ request.csp_nonce }}">
+console.log("Este script inline ahora está permitido");
+</script>
 <link rel="icon" type="image/x-icon" href="{% static 'favicon/favicon.ico' %}">
 
 <!-- Favicons PNG para diferentes tamaños -->
@@ -60,7 +88,7 @@
     
     <link href="{% static 'css/output.css' %}" rel="stylesheet">
 
-    <script src="https://unpkg.com/htmx.org@1.9.6"></script>
+    <script nonce="{{ request.csp_nonce }}" src="https://unpkg.com/htmx.org@1.9.6"></script>
     
     {% block extra_head %}{% endblock %}
 </head>
@@ -75,7 +103,7 @@
     
     {% include 'components/toast.html' %}
     
-    <script>
+    <script nonce="{{ request.csp_nonce }}">
         document.body.addEventListener('htmx:configRequest', function(evt) {
             if (evt.detail.verb === 'post') {
                 const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
@@ -85,8 +113,8 @@
     </script>
     
     <!-- ORDEN CORRECTO: Primero nuestro script, después Alpine.js -->
-    <script src="{% static 'js/alpine-init.js' %}"></script>
-    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    <script nonce="{{ request.csp_nonce }}" src="{% static 'js/alpine-init.js' %}"></script>
+    <script nonce="{{ request.csp_nonce }}" defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
     
     {% block extra_scripts %}{% endblock %}
     

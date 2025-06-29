@@ -29,7 +29,7 @@
     <meta name="twitter:image:alt" content="{{ post.get_image_alt_text }}">
     {% endif %}
 
-    <script type="application/ld+json">
+    <script nonce="{{ request.csp_nonce }}" type="application/ld+json">
     {
       "@context": "https://schema.org",
       "@type": "BlogPosting",

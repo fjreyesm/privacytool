@@ -97,7 +97,7 @@
     </div>
 </div>
 
-<script>
+<script nonce="{{ request.csp_nonce }}">
 // Add fade-in animation to elements (Tailwind pure CSS)
 document.addEventListener('DOMContentLoaded', function() {
     const elements = document.querySelectorAll('.bg-white');
