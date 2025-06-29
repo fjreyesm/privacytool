@@ -1,4 +1,4 @@
-# core/views/verification_views.py - ACTUALIZADA
+# core/views/verification_views.py - ARCHIVO COMPLETO
 
 from django.shortcuts import render, get_object_or_404
 from django.http import HttpResponse, JsonResponse
@@ -6,7 +6,6 @@ from django.views.decorators.http import require_http_methods
 from django.utils import timezone
 from django.conf import settings
 from django.views.generic import DetailView
-from django.views.decorators.csrf import csrf_exempt
 
 # Imports de Ratelimit
 from django_ratelimit.decorators import ratelimit
@@ -17,9 +16,14 @@ from core.services.hibp_service import HIBPService, check_hibp_service_status
 from core.models.verification import Verification
 from core.models.breach import Breach
 
-# Import para newsletter
-from newsletter.models import Subscriber
-from newsletter.views import send_confirmation_email
+# IMPORTS PARA NEWSLETTER (SEGUROS)
+try:
+    from newsletter.models import Subscriber
+    from newsletter.views import send_confirmation_email
+    NEWSLETTER_AVAILABLE = True
+except ImportError:
+    NEWSLETTER_AVAILABLE = False
+    print("Newsletter app not available")
 
 import logging
 
@@ -69,9 +73,9 @@ def check_email_view(request):
         
         logger.info(f"[Verification] Starting check for {email} - ID: {verification.id}")
         
-        # Manejar suscripción al newsletter SI está marcada
+        # Manejar suscripción al newsletter SI está marcada Y disponible
         newsletter_result = None
-        if newsletter_subscription:
+        if newsletter_subscription and NEWSLETTER_AVAILABLE:
             try:
                 # Verificar si ya existe suscriptor
                 subscriber, created = Subscriber.objects.get_or_create(
@@ -79,7 +83,6 @@ def check_email_view(request):
                     defaults={
                         'first_name': '',
                         'status': 'pending',
-                        'privacy_consent': True,
                         'interests': ['security']  # Default para verificaciones
                     }
                 )
@@ -96,6 +99,9 @@ def check_email_view(request):
             except Exception as e:
                 logger.error(f"[Newsletter] Error subscribing {email}: {str(e)}")
                 newsletter_result = "error"
+        elif newsletter_subscription and not NEWSLETTER_AVAILABLE:
+            newsletter_result = "error"
+            logger.error(f"[Newsletter] Newsletter app not available for {email}")
         
         # Usar el nuevo servicio HIBP robusto
         hibp_service = HIBPService()

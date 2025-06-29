@@ -184,64 +184,67 @@
         </div>
         
         <!-- Sidebar -->
+        <!-- SIDEBAR CORREGIDO - Solo reemplazar la sección del sidebar -->
+
         <div class="lg:col-span-1">
-            <div class="card h-full flex flex-col">
-                <div class="card-body flex-grow">
+            <!-- Card principal con altura fija -->
+            <div class="card h-auto lg:h-full">
+                <div class="card-body">
                     <h3 class="text-lg font-semibold text-primary mb-4 flex items-center">
                         <i class="fas fa-user-shield mr-2"></i>
                         Tu Privacidad, Nuestra Prioridad
                     </h3>
-                    <div class="space-y-4">
+                    <div class="space-y-3">
                         <div class="flex items-start">
-                            <i class="fas fa-database text-blue-500 text-xl mt-0.5 flex-shrink-0 w-6 text-center"></i>
+                            <i class="fas fa-database text-blue-500 text-lg mt-0.5 flex-shrink-0 w-5 text-center"></i>
                             <div class="ml-3">
                                 <p class="text-sm font-semibold text-gray-800">Sin almacenamiento</p>
-                                <p class="text-sm text-gray-600">Tu email nunca se guarda en nuestros servidores sin tu autorización.</p>
+                                <p class="text-xs text-gray-600">Tu email nunca se guarda en nuestros servidores sin tu autorización.</p>
                             </div>
                         </div>
                         <div class="flex items-start">
-                            <i class="fas fa-check-shield text-blue-500 text-xl mt-0.5 flex-shrink-0 w-6 text-center"></i>
+                            <i class="fas fa-check-shield text-blue-500 text-lg mt-0.5 flex-shrink-0 w-5 text-center"></i>
                             <div class="ml-3">
                                 <p class="text-sm font-semibold text-gray-800">Fuente confiable</p>
-                                <p class="text-sm text-gray-600">Usamos la API oficial de "Have I Been Pwned".</p>
+                                <p class="text-xs text-gray-600">Usamos la API oficial de "Have I Been Pwned".</p>
                             </div>
                         </div>
                         <div class="flex items-start">
-                            <i class="fas fa-user-secret text-blue-500 text-xl mt-0.5 flex-shrink-0 w-6 text-center"></i>
+                            <i class="fas fa-user-secret text-blue-500 text-lg mt-0.5 flex-shrink-0 w-5 text-center"></i>
                             <div class="ml-3">
                                 <p class="text-sm font-semibold text-gray-800">Verificación anónima</p>
-                                <p class="text-sm text-gray-600">El proceso es 100% privado y anónimo.</p>
+                                <p class="text-xs text-gray-600">El proceso es 100% privado y anónimo.</p>
                             </div>
                         </div>
                         <div class="flex items-start">
-                            <i class="fas fa-lock text-blue-500 text-xl mt-0.5 flex-shrink-0 w-6 text-center"></i>
+                            <i class="fas fa-lock text-blue-500 text-lg mt-0.5 flex-shrink-0 w-5 text-center"></i>
                             <div class="ml-3">
                                 <p class="text-sm font-semibold text-gray-800">Datos seguros</p>
-                                <p class="text-sm text-gray-600">Toda la comunicación está cifrada (HTTPS).</p>
+                                <p class="text-xs text-gray-600">Toda la comunicación está cifrada (HTTPS).</p>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-             
-            <!-- Estadísticas -->
-            <div class="bg-gradient-to-br from-blue-50 to-indigo-100 border border-blue-200 rounded-lg shadow-sm mt-6 p-5">
-                <h3 class="text-lg font-semibold text-gray-900 mb-4 flex items-center">
+            
+            <!-- Estadísticas - Compactas -->
+            <div class="bg-gradient-to-br from-blue-50 to-indigo-100 border border-blue-200 rounded-lg shadow-sm mt-4 p-4">
+                <h3 class="text-base font-semibold text-gray-900 mb-3 flex items-center">
                     <i class="fas fa-chart-line text-indigo-600 mr-2"></i>
                     Verificaciones Recientes
                 </h3>
-                <div class="space-y-3">
+                <div class="space-y-2">
                     <div class="flex justify-between items-center">
-                        <span class="text-sm text-gray-600">Esta semana</span>
-                        <span class="text-lg font-bold text-indigo-600">+1,247</span>
+                        <span class="text-xs text-gray-600">Esta semana</span>
+                        <span class="text-base font-bold text-indigo-600">+1,247</span>
                     </div>
                     <div class="flex justify-between items-center">
-                        <span class="text-sm text-gray-600">Filtraciones detectadas</span>
-                        <span class="text-lg font-bold text-red-600">892</span>
+                        <span class="text-xs text-gray-600">Filtraciones detectadas</span>
+                        <span class="text-base font-bold text-red-600">892</span>
                     </div>
                     <div class="flex justify-between items-center">
-                        <span class="text-sm text-gray-600">Emails seguros</span>
-                        <span class="text-lg font-bold text-green-600">355</span>
+                        <span class="text-xs text-gray-600">Emails seguros</span>
+                        <span class="text-base font-bold text-green-600">355</span>
                     </div>
                 </div>
             </div>
