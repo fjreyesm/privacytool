@@ -104,24 +104,24 @@ TEMPLATES = [
 WSGI_APPLICATION = 'securecheck.wsgi.application'
 
 # Database - TEMPORAL: Volver a SQLite hasta resolver PostgreSQL mañana
+#DATABASES = {
+#    'default': {
+#        'ENGINE': 'django.db.backends.sqlite3',
+#        'NAME': BASE_DIR / 'db.sqlite3',
+#    }
+#}
+
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
-    }
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': os.environ.get('POSTGRES_DB', 'privacytool'),
+        'USER': os.environ.get('POSTGRES_USER', 'privacyuser'),
+        'PASSWORD': os.environ.get('POSTGRES_PASSWORD', 'secure_password_2024'),
+        'HOST': os.environ.get('POSTGRES_HOST', 'db'),
+        'PORT': os.environ.get('POSTGRES_PORT', '5432'),
+    },
 }
 
-# PostgreSQL configuration (preparado para mañana)
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.postgresql',
-#         'NAME': os.environ.get('POSTGRES_DB', 'privacytool'),
-#         'USER': os.environ.get('POSTGRES_USER', 'privacyuser'),
-#         'PASSWORD': os.environ.get('POSTGRES_PASSWORD', 'secure_password_2024'),
-#         'HOST': os.environ.get('POSTGRES_HOST', 'db'),
-#         'PORT': os.environ.get('POSTGRES_PORT', '5432'),
-#     }
-# }
 
 # Password validation
 AUTH_PASSWORD_VALIDATORS = [

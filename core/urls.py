@@ -24,7 +24,8 @@ urlpatterns = [
     path('breach/detail/<uuid:pk>/', BreachDetailView.as_view(), name='breach_detail'),
     
     # Herramientas
-    path('tools/', tools_views.tools_list, name='tools_list'),
+    path('tools/', tools_views.tools_list, name='tools_page'),
+    path('tools/category/<slug:category_slug>/', tools_views.tools_list, name='tools_category_page'),
     
     # Blog
     path('blog/', blog_views.blog_list, name='blog_list'),

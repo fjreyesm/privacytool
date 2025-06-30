@@ -1,56 +1,59 @@
 {% extends 'base.html' %}
+{% load static %}
 
-{% block title %} Yoursecurescan - Herramientas Recomendadas{% endblock %}
+{% block title %}Herramientas de Seguridad Digital{% endblock %}
 
 {% block content %}
-<div class="max-w-7xl mx-auto py-8 px-4 sm:px-6 lg:px-8">
-    <h1 class="text-3xl font-bold text-gray-900 mb-8">Herramientas de Seguridad Recomendadas</h1>
-    
-    {% if featured_tools %}
-    <div class="mb-12">
-        <h2 class="text-2xl font-semibold mb-4 border-b border-gray-200 pb-2">Herramientas Destacadas</h2>
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {% for tool in featured_tools %}
-            <div class="card group hover:shadow-xl transition-shadow duration-300 flex flex-col">
-                <div class="h-48 overflow-hidden">
-                    <img src="{{ tool.image.url | default:'/static/images/placeholder.svg' }}" 
-                         alt="{{ tool.name }}" 
-                         class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300">
-                </div>
-                <div class="p-5 flex flex-col flex-grow">
-                    <div class="flex justify-between items-start mb-2">
-                        <h3 class="text-lg font-semibold text-gray-900">{{ tool.name }}</h3>
-                        <span class="flex-shrink-0 bg-blue-100 text-primary text-xs font-medium px-2.5 py-1 rounded-full">{{ tool.get_category_display }}</span>
-                    </div>
-                    
-                    {% include 'components/_rating_stars.html' with rating_value=tool.rating %}
-                    
-                    <p class="text-sm text-gray-600 my-4 flex-grow">{{ tool.description|truncatechars:100 }}</p>
-                    
-                    <a href="{{ tool.display_url }}" target="_blank" rel="noopener noreferrer" 
-                       class="btn-primary mt-auto w-full">
-                       Visitar sitio
-                    </a>
-                </div>
-            </div>
+<div class="w-full bg-gray-50 py-8">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        
+        <div class="text-center mb-12">
+            <h1 class="text-4xl lg:text-5xl font-extrabold text-gray-900 mb-4 tracking-tight">
+                Las <span class="text-blue-600">Mejores Herramientas</span> de Seguridad
+            </h1>
+            <p class="text-lg text-gray-600 max-w-3xl mx-auto">
+                Análisis y guías de las herramientas más fiables para proteger tu privacidad online, probadas por nuestros expertos.
+            </p>
+        </div>
+
+        {% if tool_categories %}
+        <div class="flex flex-wrap justify-center items-center gap-3 mb-16">
+            <span class="text-sm font-semibold text-gray-700 mr-2">Filtrar por:</span>
+            
+            <a href="{% url 'core:tools_page' %}" 
+            class="px-4 py-2 rounded-full text-sm font-semibold transition-colors
+                    {% if not current_category %}bg-blue-600 text-white shadow-sm{% else %}bg-white text-gray-800 hover:bg-gray-100 border border-gray-200{% endif %}">
+                Ver todas
+            </a>
+            
+            {% for value, display_name in tool_categories %}
+                <a href="{% url 'core:tools_category_page' category_slug=value %}"
+                class="px-4 py-2 rounded-full text-sm font-semibold transition-colors
+                        {% if current_category == value %}bg-blue-600 text-white shadow-sm{% else %}bg-white text-gray-800 hover:bg-gray-100 border border-gray-200{% endif %}">
+                    {{ display_name }}
+                </a>
             {% endfor %}
         </div>
+        {% endif %}
+
+        {% if featured_tools %}
+            <div class="mb-16">
+                <h2 class="text-3xl font-bold text-gray-900 mb-6 border-b pb-3">🎯 Herramienta Recomendada</h2>
+                {% for tool in featured_tools %}
+                    {% include 'components/_featured_tool_card.html' with tool=tool %}
+                {% endfor %}
+            </div>
+        {% endif %}
+
+        {% if tools %}
+            {% include 'components/_tool_list_section.html' with title="Otras Herramientas" tool_list=tools %}
+        {% else %}
+            <div class="text-center py-16 bg-white rounded-lg border border-dashed">
+                <h3 class="text-xl font-semibold text-gray-800">No hay herramientas que mostrar</h3>
+                <p class="text-gray-500 mt-2">Prueba a seleccionar otra categoría o vuelve a la lista completa.</p>
+            </div>
+        {% endif %}
+
     </div>
-    {% endif %}
-    
-    {% if vpn_tools %}
-        {% include 'components/_tool_list_section.html' with title="VPNs Recomendadas" tool_list=vpn_tools %}
-    {% endif %}
-
-    {% if antivirus_tools %}
-        {% include 'components/_tool_list_section.html' with title="Antivirus" tool_list=antivirus_tools %}
-    {% endif %}
-    
-    {# Puedes seguir añadiendo más categorías fácilmente #}
-    {% if password_tools %}
-        {% include 'components/_tool_list_section.html' with title="Gestores de Contraseñas" tool_list=password_tools %}
-    {% endif %}
-
-
 </div>
 {% endblock %}

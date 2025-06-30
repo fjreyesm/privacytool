@@ -33,3 +33,5 @@ bleach==6.1.0          # Para limpiar HTML en emails
 # django-extensions==3.2.3
 
 coverage==7.9.1
+
+psycopg2-binary>=2.9.0
