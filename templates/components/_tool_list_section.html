@@ -1,11 +1,11 @@
 {# components/_tool_list_section.html #}
-<div class="mb-12">
+<div class="mb-12"> 
     <h2 class="text-2xl font-semibold mb-4 border-b border-gray-200 pb-2">{{ title }}</h2>
-    <div class="card bg-white p-4 rounded-lg shadow-sm">
-        <div class="flex flex-col gap-6 ">
-            {% for tool in tool_list %}
+    <div class="space-y-4">
+        {% for tool in tool_list %}
+            <div class="bg-white p-4 rounded-lg shadow-sm border border-gray-200">
                 {% include 'components/_tool_list_item.html' with tool=tool %}
-            {% endfor %}
-        </div>
+            </div>
+        {% endfor %}
     </div>
 </div>
